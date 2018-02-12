@@ -8,20 +8,20 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Prompt_Sandbox", "http://lo
 		UseIISExpress = "false"
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
 		Debug.AspNetCompiler.VirtualPath = "/Prompt_Sandbox"
-		Debug.AspNetCompiler.PhysicalPath = "..\..\..\..\..\..\Websites\Prompt_Sandbox\Prompt_Sandbox\"
+		Debug.AspNetCompiler.PhysicalPath = ".\Prompt_Sandbox\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\Prompt_Sandbox\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/Prompt_Sandbox"
-		Release.AspNetCompiler.PhysicalPath = "..\..\..\..\..\..\Websites\Prompt_Sandbox\Prompt_Sandbox\"
+		Release.AspNetCompiler.PhysicalPath = ".\Prompt_Sandbox\"
 		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\Prompt_Sandbox\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		SlnRelativePath = "..\..\..\..\..\..\Websites\Prompt_Sandbox\Prompt_Sandbox\"
+		SlnRelativePath = ".\Prompt_Sandbox\"
 	EndProjectSection
 EndProject
 Global
