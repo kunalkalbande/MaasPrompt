@@ -1,0 +1,461 @@
+<%@ Master Language="VB" ClassName="PromptMaster" %>
+<%@ Import Namespace="Prompt" %>
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
+<%@ Register TagPrefix="prompt" TagName="pagefooter" Src="footer.ascx" %>
+
+<script runat="server">    
+    
+    Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs)
+        
+        ProcLib.CheckSession(Page)
+        BuildMenu()
+    End Sub
+    
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs)
+
+        'Configure the Popup Window(s)
+        ProcLib.LoadPopupJscript(Page)
+        With MasterPopups
+            Response.AddHeader("X-UA-Compatible", "IE=Edge")
+            .VisibleOnPageLoad = False
+            .Skin = "Metro"
+            .KeepInScreenBounds = True
+
+
+            Dim ww As New RadWindow
+
+            ww = New RadWindow
+            With ww
+                .ID = "MasterHelpWin"
+                .NavigateUrl = ""
+                .Title = ""
+                .Top = 100
+                .Left = 300
+                .Width = 900
+                .Height = 600
+                .Modal = True
+                .VisibleStatusbar = False
+                .ReloadOnShow = True
+            End With
+            .Windows.Add(ww)
+
+            Dim search As New RadWindow
+
+            search = New RadWindow
+            With search
+                .ID = "searchWindow"
+                .EnableEmbeddedSkins = False
+                .NavigateUrl = ""
+                .Title = ""
+                .Top = 100
+                .Left = 300
+                .Width = 1080
+                .Height = 540
+                .Modal = False
+                .VisibleStatusbar = False
+                .ReloadOnShow = True
+            End With
+            .Windows.Add(search)
+
+
+        End With
+        
+        Session("alertsview") = ""
+        
+        'BuildMenu()
+        
+    End Sub
+   
+    Public Sub BuildMenu()
+      
+        RadMenu1.Items.Clear()
+        Dim but As RadMenuItem
+        but = New RadMenuItem
+        but.IsSeparator = True
+        but.Width = Unit.Pixel(30)
+        RadMenu1.Items.Add(but)
+        
+        
+        Dim mm As RadMenuItem
+        Dim nFontSize As Integer = 10
+
+        mm = New RadMenuItem
+        With mm
+            .Value = "AppLogo"
+            
+            If ProcLib.GetLocale() = "NOCCCDDev" Then
+                .Value = "AppLogo"
+                If Session("UsePromptName") = 1 Then
+                    .ImageUrl = "images/prompt.ed_logo.png"
+                    .CssClass = "logoheader"
+                    Page.Header.Title = "Welcome to PROMPT.ed NOCCCD"
+                Else
+                    .ImageUrl = "images/prompt.ed_logo.png"
+                    .CssClass = "logoheader"
+                    Page.Header.Title = "Welcome to PROMPT.ed NOCCCD"
+                End If
+            
+                .Width = Unit.Pixel(250)
+               
+            ElseIf ProcLib.GetLocale() = "Beta" Or ProcLib.GetLocale() = "VMBeta" Then
+                .Value = "AppLogo"
+                
+                If Session("UsePromptName") = 1 Then
+                    .ImageUrl = "images/prompt.ed_logo.png"
+                    .CssClass = "logoheader"
+                    Page.Header.Title = "Prompt Beta"
+                Else
+                    .ImageUrl = "images/prompt.ed_logo.png"
+                    .CssClass = "logoheader"
+                    Page.Header.Title = "Prompt Beta"
+                End If
+                .Width = Unit.Pixel(250)
+                
+            Else
+                .Value = "AppLogo"
+                If Session("UsePromptName") = 1 Then
+                    '.ImageUrl = "images//Prompted_Logo_3_Small.png"
+                    .ImageUrl = "images//Prompt_Logo_B.png"
+                    .CssClass = "logoheader"
+                    Page.Header.Title = "Prompt Local"
+                Else
+                    .ImageUrl = "images//Prompted_Logo_3_Small.png"
+                    .CssClass = "logoheader"
+                    Page.Header.Title = "Prompt Local"
+                End If
+                .Width = Unit.Pixel(200)
+                
+            End If
+        End With
+        RadMenu1.Items.Add(mm)
+        
+  
+        mm = New RadMenuItem
+        With mm
+            .Text = "Dashboard"
+            .Value = "Home"
+            .ImageUrl = "images/dashboard.png"
+            .NavigateUrl = "main.aspx?dashboard=12"
+            .Font.Size = nFontSize
+        End With
+        RadMenu1.Items.Add(mm)
+       
+      
+        
+        mm = New RadMenuItem
+        With mm
+            .Text = "PM Dashboard"
+            .Value = "Home"
+            .ImageUrl = "images/projectmanager_small.png"
+            .NavigateUrl = "pm_main.aspx"
+            .Font.Size = nFontSize
+        End With
+        'RadMenu1.Items.Add(mm)
+        
+        'mm = New RadMenuItem
+        'With mm
+        '    .Text = "People"
+        '    .Value = "ContactsMaster"
+        '    .ImageUrl = "images/contacts.png"
+        '    .Font.Size = nFontSize
+        '    .PostBack = False
+        'End With
+       
+        'Dim bShowContacts As Boolean = False
+        Using db As New EISSecurity
+                       
+            If db.FindUserPermission("DistrictOverview", "read") Then
+                mm = New RadMenuItem
+                With mm
+                    .Text = "District Overview"
+                    .Value = "Home"
+                    .ImageUrl = "images/bondsite.png"
+                    .NavigateUrl = "main.aspx?dashboard=16"
+                    .Font.Size = nFontSize
+                End With
+                RadMenu1.Items.Add(mm)
+                   
+            End If
+                                 
+            If db.FindUserPermission("ContactList", "read") Then
+                Dim mmContacts As RadMenuItem = New RadMenuItem
+                With mmContacts
+                    .Text = "Contacts"
+                    .Value = "Contacts"
+                    .ImageUrl = "images/contacts.png"
+                    .NavigateUrl = "contacts.aspx"
+                    .Font.Size = nFontSize
+                End With
+                 
+                RadMenu1.Items.Add(mmContacts)
+                
+            End If
+            
+               
+            If db.FindUserPermission("ContractorList", "read") Then
+                Dim mmContacts As RadMenuItem = New RadMenuItem
+                With mmContacts
+                    .Text = "Companies"
+                    .Value = "Companies"
+                    .ImageUrl = "images/company_small.png"
+                    .NavigateUrl = "companies.aspx"
+                    .Font.Size = nFontSize
+                End With
+                 
+                RadMenu1.Items.Add(mmContacts)
+                
+            End If
+   
+            
+        End Using
+       
+        mm = New RadMenuItem
+        With mm
+            .Text = "Reports"
+            .Value = "Reports"
+            .ImageUrl = "images/printer.png"
+            .NavigateUrl = "reports.aspx"
+            .Font.Size = nFontSize
+        End With
+        RadMenu1.Items.Add(mm)
+                
+        
+        'David D 8/3/17 added forms icon/asp link for NOCCCD
+        Using dba As New EISSecurity
+            If dba.FindUserPermission("FormsManagement", "read") Then
+                Dim mmForms As RadMenuItem = New RadMenuItem
+                With mmForms
+                    .Text = "Forms"
+                    .Value = "Forms"
+                    .ImageUrl = "images/prompt_forms_light.gif"
+                    .NavigateUrl = "forms.aspx"
+                    .CssClass = "prompt_forms_light"
+                    .Font.Size = nFontSize
+                End With
+                RadMenu1.Items.Add(mmForms)
+            End If
+        End Using
+        
+        'David D 8/3/17 added Policies and Procedures icon/asp link for NOCCCD
+        mm = New RadMenuItem
+        With mm
+            .Text = "Procedures & Guidelines"
+            .Value = "Procedures & Guidelines"
+            .ImageUrl = "images/book_red.png"
+            .Target = "_blank"
+            .CssClass = "book_red"
+            .NavigateUrl = "policies-and-procedures/NOCCCD-Project-Manual-Rvsd-FINAL-DRAFT-04-05-17.pdf"
+            .Font.Size = nFontSize
+        End With
+        RadMenu1.Items.Add(mm)
+        
+        'David D 8/3/17 removed P6         
+        'Dim mmP6 As New RadMenuItem
+        'With mmP6
+        '    .Text = "P6"
+        '    .Value = "Administration"
+        '    .ImageUrl = "images/oracle.png"
+        '    .NavigateUrl = "http://204.13.83.249:8209/p6/action/login"
+        '    .Font.Size = nFontSize
+        
+        'End With
+
+        'RadMenu1.Items.Add(mmP6)
+        
+        '********************** Schedules Menu
+        Dim mmSch As New RadMenuItem
+        With mmSch
+            .Text = "Global Schedules"
+            .Value = "Schedules"
+            .ImageUrl = "images/schedule.png"
+            .NavigateUrl = "GlobalSchedules.aspx"
+            .Font.Size = nFontSize
+        
+        End With
+
+        'RadMenu1.Items.Add(mmSch)
+        
+        '********************** Correspondence Menu
+        
+        
+        
+        
+        '********************** Build Admin Menu
+        
+        Dim mmAdmin As New RadMenuItem
+        With mmAdmin
+            .Text = "Administration"
+            .Value = "Administration"
+            .ImageUrl = "images/gear.png"
+            .NavigateUrl = "administration_main.aspx"
+            .Font.Size = nFontSize
+        
+        End With
+
+        RadMenu1.Items.Add(mmAdmin)
+        
+        '***************************************
+
+        mm = New RadMenuItem
+        With mm
+            .Text = "Help"
+            .Value = "Help"
+            .ImageUrl = "images/help.png"
+            .Attributes("onclick") = "return ShowHelp(this);"
+            .Font.Size = nFontSize
+        End With
+        RadMenu1.Items.Add(mm)
+
+
+        mm = New RadMenuItem
+        With mm
+            .Text = "Logout"
+            .Value = "Logout"
+            .ImageUrl = "images/exit.png"
+            .NavigateUrl = "index.aspx?logout=1"
+            .Font.Size = nFontSize
+
+        End With
+        RadMenu1.Items.Add(mm)
+        
+    Dim dbSecurity As New EISSecurity
+        If dbSecurity.FindUserPermission("EnableSearch", "read") Then
+            mm = New RadMenuItem
+            With mm
+                .Text = "Search"
+                .Value = "Search"
+                .EnableImageSprite = True
+                '.CssClass = "prompt_forms_light"
+                .ImageUrl = "images/view.png"
+                .Attributes("onclick") = "return openSearch(this);"
+                .Font.Size = nFontSize
+            End With
+            RadMenu1.Items.Add(mm)
+        End If
+
+
+        '****** Build the district menu ****
+          
+        Dim mmDistrict = New RadMenuItem
+        With mmDistrict
+            .Text = ""
+            .Value = "District"
+            .Font.Size = 10
+            .Font.Bold = True
+            .GroupSettings.ExpandDirection = ExpandDirection.Auto
+            .GroupSettings.Flow = ItemFlow.Vertical
+            .GroupSettings.OffsetX = -20
+            
+        End With
+        
+       
+    
+        Using db As New NavMenu
+            db.LoadClientDistricts(mmDistrict)
+        End Using
+        RadMenu1.Items.Add(mmDistrict)
+        
+ 
+            
+        RadMenu1.FindItemByValue("District").Text = Session("DistrictName")
+   
+ 
+    End Sub
+    
+ 
+</script>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head id="masterHeading" runat="server">
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+<%--NOTE: The metta tag above forces IE to render in IE8 compatibilty mode as the RAD dock breaking in IE9 - dfj 1/2012--%>
+<title id="PageTitle" runat=server></title>
+<link rel="icon" type="image/png" href="images/home.png" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="Styles.css" rel="stylesheet" type="text/css" />
+<link href="styles_prompt_nav.css" rel="stylesheet" type="text/css" />
+<link href="skins/Prompt/Grid.Prompt.css" rel="stylesheet" type="text/css"/>
+<link href="skins/Prompt/Menu.Prompt.css" rel="stylesheet" type="text/css"/>
+<link href="skins/Leftnav/TreeView.Leftnav.css" rel="stylesheet" type="text/css"/>
+<link href="skins/Leftnav/Menu.Leftnav.css" rel="stylesheet" type="text/css"/>
+<link href="skins/Topnav/Menu.Topnav.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" language="javascript">
+    // keeps the frameset as the top frame  
+    if (parent.frames.length != 0) top.location = location.href;
+</script>
+
+<style type="text/css">
+div.RadMenu .rmRootGroup .rmLast {float:right;}  
+div.RadMenu .rmGroup .rmLast {float:none;}
+.logoheader {margin:-5px 0 0 -10px;!important;}
+</style>
+
+<link href="js/jquery-ui.css" type="text/css" rel="Stylesheet" />
+<script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
+<script src="js/jquery-ui.1.8.2.min.js" type="text/javascript"></script>
+
+<script type="text/javascript" language="javascript">
+
+    function ShowHelp(oButton, id)     //for help display
+    {
+
+        var oWnd = window.radopen("help_view.aspx?WinType=RAD", "MasterHelpWin");
+        /*David D 7/27/17 added below position and size for help window*/
+        oWnd.moveTo(300, 100);
+        oWnd.setSize(900, 600);
+        return false;
+    }
+
+
+    function openSearch(oButton, id)     //for help display
+    {
+
+        var oWnd = window.radopen("_searchPage.aspx?WinType=RAD", "searchWindow");
+        /*David D 11/21/17 added below position and size for help window*/
+        oWnd.moveTo(300, 100);
+        oWnd.setSize(1000, 540);
+        return false;
+    }
+
+
+    function GetRadWindow() {
+        var oWindow = null;
+        if (window.RadWindow) oWindow = window.RadWindow;
+        else if (window.frameElement.radWindow) oWindow = window.frameElement.radWindow;
+        return oWindow;
+
+    }
+
+//    jQuery(function () {
+//        var myLink = $('div[id*="RadMenu"] a>span:contains(Search)');
+//        var x = $('<div>');
+//        myLink.click(function () {
+//                  alert('1');
+//            x.dialog({
+//                open: function () { $(this).load('_searchPage.aspx'); },
+//                title: 'Search ...',
+//                height: 400,
+//                width: 500,
+//                resizable: false,
+//                before closing the dialog, change the Search click-action so that it reopens the existing dialog instead of resetting the Search 
+//                  this is very handy as it shows the existing search results without having to retype them... 
+//                beforeClose: function () { myLink.unbind(); myLink.click(function () { x.dialog({ open: null }); }); }
+//            });
+//        });
+//    });
+
+</script>
+</head>
+<body style="margin:0;padding:0;">
+<form id="Form1" method="post" runat="server">
+<telerik:RadScriptManager ID="RadScriptManager1" runat="server" />
+
+<!-- Page Top Menu Items -->
+<telerik:RadMenu ID="RadMenu1" runat="server" width="99.5%" DefaultGroupSettings-Flow="Vertical" EnableEmbeddedSkins="false" Skin="Topnav" />
+
+<!-- Main Content -->
+<asp:Panel ID="Panel1" runat="server" Style="z-index:103;position:absolute;top:25px;left:0px;" Height="95%" Width="99.5%"><asp:ContentPlaceHolder ID="mainBody" runat="Server"></asp:ContentPlaceHolder><prompt:pagefooter ID="Pagefooter1" runat="server" /></asp:Panel>
+
+<telerik:RadWindowManager ID="MasterPopups" BorderWidth=0 runat="server"></telerik:RadWindowManager>
+</form></body></html>

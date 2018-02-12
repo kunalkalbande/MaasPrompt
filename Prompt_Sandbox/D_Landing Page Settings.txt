@@ -1,0 +1,29 @@
+﻿		collegeIDOne = 162
+		collegeIDTwo = 168
+        collegeIDThree = 164
+        collegeIDFour = 165
+        
+        districtName = "North Orange County Community College District"
+        collegeNameOne = "North Orange County Community College District"
+        collegeNameTwo = "Anaheim School of Continuing Education"
+        collegeNameThree = "Cypress College"
+        collegeNameFour = "Fullerton College"
+
+		legendOne = "Anaheim"
+		legendTwo = "Cypress"
+		legendThree = "Fullerton"
+
+		titleName = "Measure J Bond"
+        
+        bondSiteName = "NOCCCD Bond Site"
+        bondSiteURL = "http://nocccdbond.maasco.com"
+        
+        collegeOneLogo = "North Orange.png"
+        collegeTwoLogo = "Anaheim Continuing Education.png"
+        collegeThreeLogo = "Cypress College.png"
+        collegeFourLogo = "Fullerton College.png"
+                
+		collegeLogoSizeOne = "60px"
+        collegeLogoSizeTwo = "50px"
+        collegeLogoSizeThree = "60px"
+        collegeLogoSizeFour = "40px"

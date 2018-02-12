@@ -1,0 +1,261 @@
+<%@ Page Language="vb" %>
+
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
+<%@ Import Namespace="Prompt" %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<script runat="server">
+
+    Private nInfoBulletinID As Integer = 0
+    Private nProjectID As Integer = 0
+    Private strPhysicalPath As String = ""
+
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+        ProcLib.CheckSession(Page)
+        ProcLib.LoadPopupJscript(Page)
+
+        Session("PageID") = "InfoBulletinEdit"        
+        lblMessage.Text = ""
+
+        nInfoBulletinID = Request.QueryString("InfoBulletinID")
+        nProjectID = Request.QueryString("ProjectID")
+     
+        'set up help button
+        butHelp.Attributes.Add("onclick", "openPopup('help_view.aspx','pophelp',550,450,'yes');")
+        butHelp.NavigateUrl = "#"
+        
+  
+        If Not IsPostBack Then
+            
+            'fill the from /to fields
+            Using db As New TeamMember
+                
+                With cboFromID
+                    .DataValueField = "ContactID"
+                    .DataTextField = "Name"
+                    .DataSource = db.GetExistingMembersForDropDowns(nProjectID)
+                    .DataBind()
+                End With
+                
+                With cboToID
+                    .DataValueField = "ContactID"
+                    .DataTextField = "Name"
+                    .DataSource = db.GetExistingMembersForDropDowns(nProjectID)
+                    .DataBind()
+                End With
+                
+            End Using
+            
+            
+            
+            Using db As New InfoBulletin
+                db.CallingPage = Page
+                If nInfoBulletinID = 0 Then
+                    butDelete.Visible = False
+                End If
+                db.GetInfoBulletinForEdit(nInfoBulletinID)
+                
+            End Using
+        End If
+        
+        lblxInfoBulletinID.Text = nInfoBulletinID
+
+        txtReference.Focus()
+        
+
+    End Sub
+    
+
+    Private Sub butSave_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles butSave.Click
+    
+        If txtIBDate.SelectedDate Is Nothing Then
+            lblMessage.Text = "Please enter a Date."
+            Exit Sub
+        End If
+        If txtDescription.Text = "" Then
+            lblMessage.Text = "Please enter a Description."
+            Exit Sub
+        End If
+
+        Using db As New InfoBulletin
+            db.CallingPage = Page
+            db.SaveInfoBulletin(nProjectID, nInfoBulletinID)
+
+        End Using
+
+        Session("RtnFromEdit") = True
+        ProcLib.CloseAndRefreshRADNoPrompt(Page)
+    End Sub
+
+    Private Sub butDelete_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles butDelete.Click
+     
+        Using db As New InfoBulletin
+            db.CallingPage = Page
+            db.DeleteInfoBulletin(nProjectID, nInfoBulletinID)
+        End Using
+
+        Session("RtnFromEdit") = True
+        ProcLib.CloseAndRefreshRADNoPrompt(Page)
+    End Sub
+
+    
+  
+
+</script>
+
+<html>
+<head>
+    <title>InfoBulletin Edit</title>
+    <link href="Styles.css" type="text/css" rel="stylesheet" />
+
+    <script type="text/javascript" language="javascript">
+    function GetRadWindow() {
+        var oWindow = null;
+        if (window.RadWindow) oWindow = window.RadWindow;
+        else if (window.frameElement.radWindow) oWindow = window.frameElement.radWindow;
+        return oWindow;
+    }
+
+
+    </script>
+
+</head>
+<body>
+    <form id="Form1" method="post" runat="server">
+    <telerik:RadScriptManager ID="RadScriptManager1" runat="server" />
+    <asp:HyperLink ID="butHelp" Style="z-index: 112; left: 539px; position: absolute;
+        top: 9px; height: 20px;" runat="server" ImageUrl="images/button_help.gif">HyperLink</asp:HyperLink>
+    <asp:ImageButton ID="butSave" Style="z-index: 113; left: 16px; position: absolute;
+        top: 306px" TabIndex="50" runat="server" ImageUrl="images/button_save.gif"></asp:ImageButton>
+    <asp:ImageButton ID="butDelete" Style="z-index: 107; left: 271px; position: absolute;
+        top: 305px" TabIndex="99" runat="server" 
+        ImageUrl="images/button_delete.gif">
+    </asp:ImageButton>
+    <asp:Label ID="lblMessage" Style="z-index: 105; left: 16px; position: absolute; top: 275px"
+        runat="server" Height="24px" Font-Bold="True" ForeColor="Red">Error Message</asp:Label>
+    <asp:Label ID="Label8" Style="z-index: 105; left: 17px; position: absolute; top: 157px;
+        right: 1151px; width: 110px;" runat="server" Height="24px">To:</asp:Label>
+    <asp:Label ID="Label16" Style="z-index: 105; left: 18px; position: absolute; top: 230px"
+        runat="server" Height="24px">Location:</asp:Label>
+    <asp:Label ID="Label9" Style="z-index: 105; left: 459px; position: absolute; top: 302px; width: 10px;"
+        runat="server" Height="24px">ID:</asp:Label>
+    <asp:Label ID="Label6" Style="z-index: 105; left: 17px; position: absolute; top: 193px;
+        width: 122px;" runat="server" Height="24px">From:</asp:Label>
+    <asp:Label ID="lblxInfoBulletinID" Style="z-index: 105; left: 477px; position: absolute; top: 302px"
+        runat="server" Height="24px"></asp:Label>
+    <asp:Label ID="Label12" Style="z-index: 105; left: 230px; position: absolute; top: 38px"
+        runat="server" Height="24px">Ref:</asp:Label>
+    <asp:Label ID="Label2" Style="z-index: 105; left: 11px; position: absolute; top: 40px"
+        runat="server" Height="24px">Date:</asp:Label>
+    <telerik:RadDatePicker ID="txtIBDate" Style="z-index: 103; left: 97px; position: absolute;
+        top: 39px; right: 1390px;" runat="server" Width="120px" Skin="Web20" 
+        TabIndex="3">
+        <DateInput runat="server" Skin="WebBlue" Font-Size="13px" ForeColor="Blue" 
+            TabIndex="3">
+        </DateInput>
+        <Calendar runat="server" UseRowHeadersAsSelectors="False" UseColumnHeadersAsSelectors="False"
+            ViewSelectorText="x" Skin="Web20">
+        </Calendar>
+        <DatePopupButton ImageUrl="" HoverImageUrl="" TabIndex="3"></DatePopupButton>
+    </telerik:RadDatePicker>
+   
+   
+    <telerik:RadComboBox ID="cboToID" runat="server" Style="z-index: 5505;
+        left: 98px; position: absolute; top: 154px; right: 1119px; bottom: 728px;" 
+        Skin="Vista" Text="ToID" Width="250px"
+        DropDownWidth="420px" MaxHeight="150px" TabIndex="14">
+    
+                                      <HeaderTemplate>
+                                <table style="width: 415px; text-align: left">
+                                    <tr>
+                                        <td style="width: 125px;">
+                                            Name
+                                        </td>
+                                        <td style="width: 125px;">
+                                            Company
+                                        </td>
+                                        <td style="width: 125px;">
+                                            Group
+                                        </td>
+                                    </tr>
+                                </table>
+                            </HeaderTemplate>
+                            <ItemTemplate>
+                                <table style="width: 415px; text-align: left">
+                                    <tr>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "Name")%>
+                                        </td>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "Company")%>
+                                        </td>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "TeamGroupName")%>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </ItemTemplate>
+    
+    
+    </telerik:RadComboBox>
+   
+   
+   
+   
+    <telerik:RadComboBox ID="cboFromID" runat="server" Style="z-index: 2505;
+        left: 98px; position: absolute; top: 190px; right: 1119px;" Skin="Vista" Text="FromID"
+        DropDownWidth="420px" MaxHeight="150px"  Width="250px" TabIndex="16">
+   
+   
+                                     <HeaderTemplate>
+                                <table style="width: 415px; text-align: left">
+                                    <tr>
+                                        <td style="width: 125px;">
+                                            Name
+                                        </td>
+                                        <td style="width: 125px;">
+                                            Company
+                                        </td>
+                                        <td style="width: 125px;">
+                                            Group
+                                        </td>
+                                    </tr>
+                                </table>
+                            </HeaderTemplate>
+                            <ItemTemplate>
+                                <table style="width: 415px; text-align: left">
+                                    <tr>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "Name")%>
+                                        </td>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "Company")%>
+                                        </td>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "TeamGroupName")%>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </ItemTemplate>
+   
+   
+   
+    </telerik:RadComboBox>
+  
+  
+  
+    <asp:Label ID="Label5" Style="z-index: 105; left: 12px; position: absolute; top: 77px"
+        runat="server" Height="24px">Description:</asp:Label>
+    <asp:TextBox ID="txtReference" Style="z-index: 103; left: 262px; position: absolute;
+        top: 38px; width: 135px;" runat="server" Height="24px" TabIndex="1" 
+        CssClass="EditDataDisplay"></asp:TextBox>
+    <asp:TextBox ID="txtLocation" Style="z-index: 103; left: 99px; position: absolute;
+        top: 228px; width: 361px;" runat="server" Height="24px" TabIndex="40" 
+        CssClass="EditDataDisplay"></asp:TextBox>
+    <asp:TextBox ID="txtDescription" Style="z-index: 103; left: 96px; position: absolute;
+        top: 79px; height: 60px; width: 412px;" runat="server" TabIndex="12" CssClass="EditDataDisplay"
+        TextMode="MultiLine"></asp:TextBox>
+    </form>
+</body>
+</html>

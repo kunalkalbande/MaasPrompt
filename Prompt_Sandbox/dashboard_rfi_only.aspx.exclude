@@ -1,0 +1,922 @@
+﻿<%@ Page Language="VB" MasterPageFile="~/outside.master" %>
+
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
+<%@ Import Namespace="Prompt" %>
+<script runat="server">
+    Dim nProjectID As Integer
+    Dim contID As Integer
+    Dim parentID As Integer
+    Dim contactType As String
+    Dim companyName As String
+    Dim nContractID As Integer = 0
+    Private isPMtheCM As Integer = 0
+    Private bReadOnly As Boolean = False
+    
+    Protected Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs)
+        Using db As New promptUserPrefs
+            db.SaveGridSettings(RadGrid1, "RFIGridSettings", "ProjectID", nProjectID)
+        End Using
+              
+    End Sub
+    
+    'David D 6/19/17 updated below sub Page-Init to handle return from edit, and to set the default value of rfi hide complete/Show all dropdown
+    Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs)
+        
+        If Session("RtnFromEdit") = True Then
+            cboShowStatus.SelectedValue = Session("rfiSelect")
+            nProjects.SelectedValue = Session("ProjectID")
+            nProjectID = Session("ProjectID")
+            RadGrid1.Rebind()
+            Session("RtnFromEdit") = Nothing
+            'Session("ProjectID") = Nothing
+            'nContractID = Session("ContractID")
+        Else
+            'cboShowStatus.SelectedValue = "All"
+            Session("RtnFromEdit") = Nothing
+        End If
+    End Sub
+        
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        
+        ProcLib.CheckSession(Page)
+        ProcLib.LoadPopupJscript(Page)
+        
+        If Not IsPostBack Then
+            nProjects.SelectedValue = Session("ProjectDropdown")
+            cboShowStatus.SelectedValue = "Closed"
+        End If
+        
+        Session("PageID") = "RFIs"
+        
+        'Dim contID = Session("RFIContactID")
+        Dim disID = Session("DistrictID")
+        Dim masterViewTitle As Label = Master.FindControl("lblViewTitle")
+
+        'cboShowStatus.SelectedValue = "All"
+        Using db As New RFI
+            
+            'David D 6/1/17 added below "Try" for the isPMtheCM variable, if block of code is not nested in Try then a server error occurs
+            Try
+                nProjectID = Session("ProjectID")
+                nContractID = Session("ContractID")
+                Dim thObj As Object = db.getCM(nProjectID, nContractID)
+            
+                Session("CMID") = thObj(0)
+                Session("ContractorID") = thObj(1)
+                If Session("CMID") = 0 Then isPMtheCM = True Else isPMtheCM = False ' gives pm cm privilages if no cm specified
+                'If no PM is assigned in the "Project Overview" Session("CMID") = 0 and isPMtheCM = True
+
+            Catch ex As Exception
+            End Try
+            'End Try for isPMtheCM variable
+            
+            Try
+                contID = db.getContactID(Session("UserID"), Session("DistrictID"))
+                contactID.Value = contID
+            Catch ex As Exception
+            End Try
+            Try
+                Dim contactData As Object = db.getContactData(contID, disID)
+                parentID = contactData(0)
+                Session("ParentContactID") = parentID
+                contactType = contactData(1)
+                Session("ContactType") = contactType
+                companyName = contactData(2)
+                'Dim Obj As Object = db.getTeamContactData(Session("DistrictID"), contID, nProjectID)
+                'parentID = Obj(0)
+                'Session("ParentContactID") = parentID
+                'contactType = Obj(1)
+                'Session("ContactType") = contactType
+                'testPlace.Value = contactType
+            Catch ex As Exception
+            End Try
+        End Using
+        
+        If contactType = "Design Professional" Then
+            NewRFI.Visible = False
+        Else
+            NewRFI.Visible = False
+        End If
+        
+        Submittals.Visible = False
+        
+        If Session("RtnFromEdit") <> True Then
+            Try
+                nProjectID = nProjects.SelectedValue
+            Catch
+                Using db As New RFI
+                    Dim tbl As DataTable = db.getUserProjects(contID)
+                    Try
+                        nProjectID = tbl.Rows(0).Item("ProjectID")
+                    Catch ex As Exception
+                        nProjectID = 0
+                    End Try
+                End Using
+            End Try
+            Session("ProjectID") = nProjectID
+            Session("ContractID") = Nothing
+        ElseIf Session("RtnFromEdit") = True Then
+            'David D 6/19/17 moved Session("rfiSelect") below to Sub Page_Init above
+            Session("rfiSelect") = cboShowStatus.SelectedValue
+            nProjects.SelectedValue = Session("ProjectID")
+            nProjectID = Session("ProjectID")
+            RadGrid1.Rebind()
+            Session("RtnFromEdit") = Nothing
+            'Session("ProjectID") = Nothing
+            nContractID = Session("ContractID")
+        End If
+               
+        Submittals.NavigateUrl = "dashboard_submittals_only.aspx"
+        
+        NewRFI.Attributes.Add("onclick", "EditRFI(0, " & nProjectID & ",0, 'New')")
+        NewRFI.NavigateUrl = "#"
+        'Set Grid Properties
+        With RadGrid1
+            .EnableEmbeddedSkins = False
+            .Skin = "Prompt"
+            .GroupingEnabled = False
+            .AllowSorting = True
+                        
+            .ClientSettings.AllowColumnsReorder = True
+            .ClientSettings.ColumnsReorderMethod = GridClientSettings.GridColumnsReorderMethod.Reorder
+            .ClientSettings.Scrolling.AllowScroll = True
+            .ClientSettings.Scrolling.ScrollHeight = Unit.Percentage(50)
+            .ClientSettings.Scrolling.UseStaticHeaders = True
+            .ClientSettings.Resizing.AllowColumnResize = True
+
+            .MasterTableView.EnableHeaderContextMenu = False
+            .MasterTableView.TableLayout = GridTableLayout.Fixed
+            .MasterTableView.AllowMultiColumnSorting = False
+
+            .Height = Unit.Pixel(600)
+
+            '.ExportSettings.FileName = "PromptRFIExport"
+            '.ExportSettings.OpenInNewWindow = True
+            '.ExportSettings.Pdf.PageTitle = masterViewTitle.Text & " RFIs"
+        End With
+        
+        With contentPopup
+            .VisibleOnPageLoad = False
+            .Skin = "Windows7"
+                         
+            Dim ww As New RadWindow
+
+            ww = New RadWindow
+            With ww
+                .ID = "NewWindow"
+                '.NavigateUrl = "#"
+                
+                .Title = ""
+                .Width = 900
+                .Height = 600
+                .Modal = True
+                .VisibleStatusbar = False
+                .ReloadOnShow = True
+                .Behaviors = WindowBehaviors.Close + WindowBehaviors.Move
+            End With
+            .Windows.Add(ww)
+            
+            ww = New RadWindow
+            With ww
+                .ID = "EditWindow"
+                '.NavigateUrl = "#"
+                
+                .Title = ""
+                .Width = 900
+                .Height = 600
+                .Modal = True
+                '.MaxHeight = 300
+                .VisibleStatusbar = False
+                .ReloadOnShow = True
+                .Behaviors = WindowBehaviors.Close + WindowBehaviors.Move
+                '.Behaviors = WindowBehaviors.Move
+                .OnClientClose = "onThisClientClose"
+            End With
+            .Windows.Add(ww)
+            
+            ww = New RadWindow
+            With ww
+                .ID = "AttachmentsWindow"
+                .NavigateUrl = "#"
+                .Title = ""
+                .Width = 500
+                .Height = 350
+                .Modal = True
+                .VisibleStatusbar = False
+                .ReloadOnShow = True
+                .Behaviors = WindowBehaviors.Close + WindowBehaviors.Move
+            End With
+            .Windows.Add(ww)
+            
+            ww = New RadWindow
+            With ww
+                .ID = "closeSessionWindow"
+                .NavigateUrl = "#"
+                .Title = ""
+                .Width = 300
+                .Height = 50
+                .Modal = True
+                .VisibleStatusbar = False
+                .ReloadOnShow = True
+                .Behaviors = WindowBehaviors.Close + WindowBehaviors.Move
+            End With
+            .Windows.Add(ww)
+            
+            ww = New RadWindow
+            With ww
+                .ID = "HybridPopup"
+                .NavigateUrl = "#"
+                .Width = 500
+                .Height = 500
+                .Modal = True
+                .VisibleStatusbar = False
+                .ReloadOnShow = True
+                .Behaviors = WindowBehaviors.Close + WindowBehaviors.Move
+            End With
+            .Windows.Add(ww)
+            
+            
+        End With
+       
+      
+        
+        BuildMenu()
+ 
+        If Not IsPostBack Then
+            Try
+                Using db As New RFI
+                    With nProjects
+                        .DataValueField = "ProjectID"
+                        .DataTextField = "ProjectName"
+                        .DataSource = db.getUserProjects(contID)
+                        .DataBind()
+                    End With
+                End Using
+            Catch ex As Exception
+            End Try
+            rfiSelectDropdown_Change()
+        End If
+    End Sub
+    
+    Private Sub BuildMenu()
+        If Not IsPostBack Then          'Configure Tool Bar
+            
+            With RadMenu1
+                .EnableEmbeddedSkins = False
+                .Skin = "Prompt"
+                .Width = Unit.Percentage(100)
+                '.EnableOverlay = False
+                .OnClientItemClicking = "OnClientItemClicking"
+
+                .CollapseAnimation.Duration = "200"
+                .CollapseAnimation.Type = AnimationType.InOutBounce
+                .ExpandAnimation.Duration = "200"
+                .ExpandAnimation.Type = AnimationType.InOutBounce
+                
+            End With
+            
+            Dim butAdd As RadMenuItem
+            
+            butAdd = New RadMenuItem
+            With butAdd
+                .Text = "New Request For Information"
+                .ImageUrl = "images/add.png"
+                .Attributes("onclick") = "return EditRFI(" & 0 & "," & nProjectID & "," & 0 & ",'New');"
+                '.ToolTip = "Add a New Meeting."
+                .PostBack = False
+            End With
+            RadMenu1.Items.Add(butAdd)
+            
+            Dim butTest As RadMenuItem
+            butTest = New RadMenuItem
+
+            With butTest
+                
+                .Text = "Test"
+                .ImageUrl = "images/add.png"
+                .Attributes("onclick") = "return mailTest_click()"
+                .PostBack = False
+            End With
+            'RadMenu1.Items.Add(butTest)
+            
+            Dim butConfig As New RadMenuItem
+            With butConfig
+                .Text = "Preferences"
+                .ImageUrl = "images/gear.png"
+                .PostBack = False
+            End With
+            RadMenu1.Items.Add(butConfig)
+            
+            'Add sub items
+            Dim butConfigSub As New RadMenuItem
+            With butConfigSub
+                .Text = "Visible Columns"
+                .ImageUrl = "images/column_preferences.png"
+                .PostBack = False
+            End With
+            
+            'Load the avaialble columns as checkbox items
+            For Each col As GridColumn In RadGrid1.Columns
+                If col.HeaderText <> "" Then
+                    Dim butCol As New RadMenuItem
+                    With butCol
+                        .Text = col.HeaderText
+                        .Value = "ColumnVisibility"
+                        If col.Visible = True Then
+                            .ImageUrl = "images/check2.png"
+                            .Attributes("Visibility") = "On"
+                        Else
+                            .ImageUrl = ""
+                            .Attributes("Visibility") = "Off"
+                        End If
+                        
+                        .Attributes("ID") = col.UniqueName
+                    End With
+                    butConfigSub.Items.Add(butCol)
+                End If
+ 
+            Next
+            butConfig.Items.Add(butConfigSub)
+            
+            'Add sub items
+            butConfigSub = New RadMenuItem
+            With butConfigSub
+                .Text = "Restore Default Settings"
+                .Value = "RestoreDefaultSettings"
+                .ImageUrl = "images/gear_refresh.png"
+            End With
+            butConfig.Items.Add(butConfigSub)
+        End If
+        
+        'RadMenu1 .Attributes("onclick") = "return EditRFI(" & 0 & "," & nProjectID & "," & 0 & ",'New');"
+        
+    End Sub
+ 
+    
+    'David D 6/13/17 added below sub routine to prevent RadGrid from collapsing on "Hide Close" toggle
+    Protected Sub RefreshDetailTable(rg As RadGrid, iDetailIndex As Integer)
+        ' Refresh detail table by setting Expanded to false for all, then setting it to true again
+        Dim eiExpanded As New List(Of GridEditableItem)()
+        For Each item As GridItem In rg.MasterTableView.Items
+            If TypeOf item Is GridEditableItem Then
+                Dim ei As GridEditableItem = TryCast(item, GridEditableItem)
+                If ei.Expanded Then
+                    eiExpanded.Add(ei)
+                    ei.Expanded = False
+                End If
+            End If
+        Next
+        'RadGrid1.MasterTableView.DetailTables(0).Rebind()
+        For Each ei As GridEditableItem In eiExpanded
+            ei.Expanded = True
+        Next
+    End Sub
+    
+    
+    Protected Sub RadMenu1_ItemClick(ByVal sender As Object, ByVal e As Telerik.Web.UI.RadMenuEventArgs)
+       
+        
+        Dim btn As RadMenuItem = e.Item
+        
+        Select Case btn.Value
+            Case "LogPrint"
+                'PrintRFILog()
+                
+            Case "ExportExcel"
+                RadGrid1.Columns.FindByUniqueName("QuestionAttachments").Visible = False
+                'RadGrid1.Columns.FindByUniqueName("AnswerAttachments").Visible = False
+                RadGrid1.MasterTableView.ExportToExcel()
+                
+            Case "ExportPDF"
+                RadGrid1.Columns.FindByUniqueName("QuestionAttachments").Visible = False
+                'RadGrid1.Columns.FindByUniqueName("AnswerAttachments").Visible = False
+                For Each item As GridItem In RadGrid1.MasterTableView.Items
+                    If TypeOf item Is GridDataItem Then
+                        Dim dataItem As GridDataItem = CType(item, GridDataItem)
+                        Dim lnk As HyperLink = CType(dataItem("RefNumber").Controls(0), HyperLink)
+                        lnk.NavigateUrl = ""
+                    End If
+                Next
+                RadGrid1.MasterTableView.ExportToPdf()
+            
+            Case "HideAnswered"
+                If btn.Attributes("Filter") = "Off" Then
+                    btn.Attributes("Filter") = "On"
+                    'bHideAnswered = True
+                    btn.ImageUrl = "images/funnel_down.png"
+                Else
+                    btn.Attributes("Filter") = "Off"
+                    'bHideAnswered = False
+                    btn.ImageUrl = "images/funnel.png"
+                End If
+                RadGrid1.Rebind()
+                
+                
+            Case "ColumnVisibility"
+                If btn.Attributes("Visibility") = "Off" Then
+                    btn.ImageUrl = "images/check2.png"
+                    btn.Attributes("Visibility") = "On"
+                    RadGrid1.Columns.FindByUniqueName(btn.Attributes("ID")).Visible = True
+                Else
+                    btn.ImageUrl = ""
+                    btn.Attributes("Visibility") = "Off"
+                    RadGrid1.Columns.FindByUniqueName(btn.Attributes("ID")).Visible = False
+                End If
+                Using db As New promptUserPrefs
+                    db.SaveGridColumnVisibility("RFIGridColumns", btn.Attributes("ID"), btn.Attributes("Visibility"), "ProjectID", nProjectID)
+                End Using
+                RadGrid1.Rebind()
+                
+            Case "RestoreDefaultSettings"
+                
+                Using db As New promptUserPrefs
+                    db.RemoveUserSavedSettings("RFIGridSettings", "ProjectID", nProjectID)
+                    db.RemoveUserSavedSettings("RFIGridColumns", "ProjectID", nProjectID)
+                End Using
+                Response.Redirect(Page.Request.RawUrl)
+
+        End Select
+    End Sub
+     
+    Private Sub rfiSelectDropdown_Change() Handles cboShowStatus.SelectedIndexChanged
+        
+        Session("rfiSelect") = cboShowStatus.SelectedValue
+        projectDropdown_Change() 'Read below comment
+        'David D 6/13/17 added below try to allow separate functionality for the "Show All"/"Hide Completed" from the project dropdown
+        Try
+            nProjectID = nProjects.SelectedValue
+            Session("ProjectDropdown") = nProjects.SelectedValue
+            Using db As New RFI
+                'RadGrid1.DataSource = db.getAllProjectContracts(nProjectID, False, Session("ContactType"), "RFIs")
+                'RadGrid1.Rebind() 'David D 6/13/17 not needed. Using below sub routine to keep detail table expanded during hide/close
+                'sRefreshDetailTable(RadGrid1, 0)
+            End Using
+        Catch ex As Exception
+
+        End Try
+        'errorMsg.Text = Session("rfiSelect") & " - change sub"       
+        
+    End Sub
+    
+    Private Sub projectDropdown_Change() Handles nProjects.SelectedIndexChanged
+        Try
+            nProjectID = nProjects.SelectedValue
+            Session("ProjectDropdown") = nProjects.SelectedValue
+            Using db As New RFI
+                RadGrid1.DataSource = db.getAllProjectRFIs(nProjectID, contID, Session("ContactType"), cboShowStatus.SelectedValue)
+                RadGrid1.Rebind()
+            End Using
+            RadMenu1.Items(0).Attributes("onclick") = "return EditRFI(" & 0 & "," & nProjectID & "," & 0 & ",'New');"
+        Catch ex As Exception
+        End Try
+    End Sub
+    
+    Private Function buildWorkflowDescription(WFP As String) As String
+        Dim wfpDesc As String = ""
+        
+        Using db As New RFI
+            Dim contactData As Object = db.getContactData(contID, Session("DistrictID"))
+        
+
+            Select Case WFP
+                Case "CM:Review Pending"
+                    wfpDesc = "LOCATION: Construction Manager" & vbCrLf
+                    wfpDesc &= contactData(2) & vbCrLf
+                    wfpDesc &= "Office: " & contactData(3) & vbCrLf & "Cell:  " & contactData(4) & vbCrLf
+                    wfpDesc &= vbCrLf & "Review of the RFI is in process. CM to send to DP or return to GC." & vbCrLf & "------- "
+                Case "CM:Completion Pending"
+                    wfpDesc = "LOCATION: Construction Manager"
+                Case "CM:Distribution Pending"
+                    wfpDesc = "LOCATION: Construction Manager"
+                Case "DP:Response Pending"
+                    wfpDesc = "LOCATION: Design Professional"
+ 
+                Case Else
+                    wfpDesc = WFP
+            End Select
+        End Using
+        
+        Return wfpDesc
+    End Function
+    
+    Protected Sub RadGrid1_NeedDataSource(ByVal source As Object, ByVal e As Telerik.Web.UI.GridNeedDataSourceEventArgs) Handles RadGrid1.NeedDataSource
+        Using db As New RFI
+            RadGrid1.DataSource = db.getAllProjectRFIs(nProjectID, contID, Session("ContactType"), cboShowStatus.SelectedValue)
+        End Using
+    End Sub
+ 
+    Protected Sub RadGrid1_DetailTableDataBind(ByVal source As Object, ByVal e As GridDetailTableDataBindEventArgs) Handles RadGrid1.DetailTableDataBind
+        'Dim parentItem As GridDataItem = CType(e.DetailTableView.ParentItem, GridDataItem)        
+        ' Dim rfiSelect As String = Session("rfiSelect") 'cboShowStatus.SelectedValue        
+        'Using db As New RFI
+        'e.DetailTableView.DataSource = db.getAllContractRFIs(parentItem("contractid").Text, contactType, contID, rfiSelect)
+        'e.DetailTableView.DataSource = db.getAllProjectRFIs(nProjectID, contID, Session("ContactType"), "")
+        'End Using        
+    End Sub
+    
+    Protected Sub RadGrid1_ItemCreated(ByVal sender As Object, ByVal e As Telerik.Web.UI.GridItemEventArgs) Handles RadGrid1.ItemCreated
+
+        If nContractID <> 0 Then
+            For Each dataitem As GridDataItem In RadGrid1.MasterTableView.Items
+                'If dataitem("ContractID").Text = nContractID Then
+                'dataitem.Expanded = True
+                'End If
+            Next
+        End If
+            
+        If (TypeOf e.Item Is GridDataItem) Then
+            
+            Dim item As GridDataItem = CType(e.Item, GridDataItem)
+            Dim wFposition As String = ProcLib.CheckNullDBField(item.OwnerTableView.DataKeyValues(item.ItemIndex)("WFPosition"))
+
+            Dim nRFIID As Integer = item.GetDataKeyValue("RFIID")
+            
+            Dim sRFIRef As String = item.OwnerTableView.DataKeyValues(item.ItemIndex)("RefNumber")
+            Dim nContractID As Integer = item.OwnerTableView.DataKeyValues(item.ItemIndex)("ContractID")
+            Dim LinkButton As HyperLink
+            'Dim refNum As HyperLink = nRFIID & " REV - " & item.OwnerTableView.DataKeyValues(item.ItemIndex)("Revision")
+            
+            If bReadOnly Then
+                item("RefNumber").Controls.Clear()
+                item("RefNumber").Text = nRFIID.ToString
+            Else
+                Try
+                    LinkButton = CType(item("RefNumber").Controls(0), HyperLink)
+                    'LinkButton = refNum
+                    LinkButton.Text = nRFIID.ToString
+                    LinkButton.Attributes("onclick") = "return EditRFI(" & nRFIID & "," & nProjectID & "," & nContractID & ",'Edit');"
+                    LinkButton.NavigateUrl = "#"
+                    LinkButton.ToolTip = "Edit this RFI."
+                    If wFposition = "None" Then
+                        'LinkButton.CssClass = "rfi_preparing"
+                    End If
+                Catch
+                End Try
+            End If
+            
+            'Added by Scott 2/13/2014
+            'Check for flag and show flag icon if present
+            Dim strFlagLink As String = ""
+            Dim isFlag = ""
+            Dim strFlagParms As String = "Flag:" & nProjectID & ":" & ""    'concatonate the popup type, projectID and field name to use for hover window parm
+            Using db As New promptFlag
+                db.ParentRecID = nRFIID     'projectID
+                db.ParentRecType = "RFI"
+                db.BudgetItemField = ""
+                If db.FlagExists Then
+                    isFlag = "true"
+                Else
+                    strFlagLink = ""
+                End If
+                
+            End Using
+            
+            'Added by Scott 2/13/2014
+            If isFlag = "true" Then
+                Try
+                    LinkButton = CType(item("Flag").Controls(0), HyperLink)
+                    LinkButton.Attributes("onclick") = "openPopup('PM_flag_edit.aspx?ParentRecID=" & nRFIID & "&ParentRecType=RFI&BudgetItem=" & "" & "&RFIID=" & nRFIID & "','pophelp',550,450,'yes');"
+                    LinkButton.NavigateUrl = "#"
+                    LinkButton.ImageUrl = "images/flag.gif"
+                    '.ToolTip = "Edit this RFI."
+                Catch
+                End Try
+            End If
+                                    
+            Dim sQuestionAttachments As String = Nothing
+            Try
+                sQuestionAttachments = ProcLib.CheckNullDBField(item.OwnerTableView.DataKeyValues(item.ItemIndex)("QuestionAttachments"))
+            Catch
+            End Try
+            
+            'update the link button to open attachments/notes window
+            Try
+                LinkButton = CType(item("QuestionAttachments").Controls(0), HyperLink)
+                LinkButton.ToolTip = "Upload Question Attachments."
+                LinkButton.NavigateUrl = "#"
+                LinkButton.ImageUrl = "images/add.png"
+            
+                LinkButton.Attributes("onclick") = "return ManageQuestionAttachments('" & nRFIID & "','" & nProjectID & "');"
+                
+                If sQuestionAttachments = "Y" Then    'add link for each file
+                    LinkButton.ImageUrl = "images/paper_clip_small.gif"
+                End If
+            Catch
+            End Try
+            
+        End If
+
+    End Sub
+    
+    Private Sub RadGrid1_ItemDataBound(ByVal sender As Object, ByVal e As Telerik.Web.UI.GridItemEventArgs) Handles RadGrid1.ItemDataBound
+        If (TypeOf e.Item Is GridDataItem) Then
+            Dim dataItem As GridDataItem = CType(e.Item, GridDataItem)
+            Dim dRequiredBy As String = ProcLib.CheckNullDBField(dataItem.OwnerTableView.DataKeyValues(dataItem.ItemIndex)("sRequiredBy"))
+            Dim dReturnedOn As String = ProcLib.CheckNullDBField(dataItem.OwnerTableView.DataKeyValues(dataItem.ItemIndex)("ReturnedOn"))
+            Dim sStatus As String = ProcLib.CheckNullDBField(dataItem.OwnerTableView.DataKeyValues(dataItem.ItemIndex)("Status"))
+            Dim wfPosition As String = ProcLib.CheckNullDBField(dataItem.OwnerTableView.DataKeyValues(dataItem.ItemIndex)("WFPosition"))
+            Dim sNewWorkflow As String = ProcLib.CheckNullDBField(dataItem.OwnerTableView.DataKeyValues(dataItem.ItemIndex)("NewWorkflow"))
+            Dim dDate As Date
+                
+            dataItem.CssClass = "rfi_unassigned" 'Style for all lines                      
+            
+            If sStatus = "Unassigned" Or sStatus = "Active" Then
+                dataItem.Item("sRequiredBy").CssClass = "rfi_pending"
+                If sStatus = "Unassigned" Then
+                    dataItem.Item("sRequiredBy").CssClass = "rfi_unassigned"
+                End If
+                'dDate = Date.ParseExact(dRequiredBy, "dd/MM/yyy", System.Globalization.DateTimeFormatInfo.InvariantInfo)
+                If dRequiredBy <> "" Then
+                    dDate = DateTime.Parse(dRequiredBy)
+                End If
+                               
+                If IsDate(dDate) Then
+                    If dDate = DateAdd(DateInterval.Day, 1, Date.Today) Or dDate = DateAdd(DateInterval.Day, 2, Date.Today) Then
+                        dataItem.Item("sRequiredBy").CssClass = "rfi_warning"
+                    ElseIf CDate(dDate) < CDate(Now()) Then
+                        dataItem.Item("sRequiredBy").CssClass = "rfi_overdue"
+                    End If
+                End If
+            ElseIf sStatus = "Answered" Or sStatus = "Closed" Then
+                dataItem.Item("sRequiredBy").CssClass = "rfi_answered"
+                dataItem.Font.Bold = False
+            End If
+            
+            Select Case wfPosition
+                
+                Case "CM:Distribution Pending", "CM:Acceptance Pending", "CM:Review Pending", "CM:Completion Pending"
+                    If ((Session("ContactType") = "Construction Manager" And isPMtheCM = False) And Trim(sNewWorkflow) = "True") Then
+                        dataItem.CssClass = "NewWorkflow"
+                        
+                    End If
+                Case "DP:Response Pending"
+                    If Session("ContactType") = "Design Professional" And Trim(sNewWorkflow) = "True" Then
+                        dataItem.CssClass = "NewWorkflow"
+                    End If
+                Case "GC:Acceptance Pending"
+                    If Session("ContactType") = "General Contractor" And Trim(sNewWorkflow) = "True" Then
+                        dataItem.CssClass = "NewWorkflow"
+                    End If
+            End Select
+                       
+            If dDate < Now() Then
+                'dataItem.CssClass = "rfi_overdue"
+            End If
+            
+            If wfPosition = "None" Then
+                dataItem.Item("sRequiredBy").CssClass = "rfi_preparing"
+                dataItem.Font.Bold = False
+            End If
+            'dataItem("Revision").Text = "Check : "
+            '& ProcLib.CheckNullDBField(dataItem.OwnerTableView.DataKeyValues(dataItem.ItemIndex)("Revision"))
+            Try
+                dataItem("Position").ToolTip = buildWorkflowDescription(dataItem("Position").Text)
+            Catch ex As Exception
+                'dataItem("Position").ToolTip = dataItem("Position").Text
+            End Try
+            
+            Try
+                Using db As New RFI
+                    dataItem("Question").ToolTip = db.buildRFIQAndAJavaScript(dataItem("RFIID").Text, Session("ContactType"))
+                End Using
+                       
+                If Len(dataItem("Question").Text) > 55 Then
+                    dataItem("Question").Text = Left((dataItem("Question").Text).Replace("~", "'"), 55) & "..."
+                Else
+                    dataItem("Question").Text = Left((dataItem("Question").Text).Replace("~", "'"), 55) & "..."
+                End If
+            Catch
+            End Try
+                    
+        End If
+        
+    End Sub
+    
+
+</script>
+<asp:Content ID="Content1" ContentPlaceHolderID="mainBody" runat="Server">
+    <telerik:RadWindowManager ID="contentPopup" runat="server" />
+    <asp:HiddenField ID="openRFIID" runat="server"></asp:HiddenField>
+    <asp:HiddenField ID="contactID" runat="server"></asp:HiddenField>
+    <asp:HiddenField ID="pageType" Value="RFI" runat="server"></asp:HiddenField>
+    <asp:HiddenField ID="testPlace" runat="server" />
+
+    <telerik:RadComboBox ID="nProjects" runat="server" Width="400px" Height="100px" Style="z-index: 505;
+        left: 350px; position: relative; top: 8px;" Skin="Vista" TabIndex="7" AutoPostBack="true"
+        Visible="true">
+    </telerik:RadComboBox>
+    <asp:HyperLink ID="NewRFI" Style="z-index: 112; left: 420px; position: absolute;
+        top: 4px; height: 20px;" runat="server" ImageUrl="images/New RFI.jpg"></asp:HyperLink>
+    <asp:HyperLink ID="Submittals" Style="z-index: 112; left: 516px; position: absolute;
+        top: 4px; height: 20px;" runat="server" ImageUrl="images/Submittals.jpg"></asp:HyperLink>
+    <telerik:RadComboBox ID="cboShowStatus" runat="server" Width="120px" Style="z-index: 505;
+        left: 800px; position: absolute; top: 8px;" Skin="Vista" TabIndex="7" Visible="true"
+        AutoPostBack="True" Text="(Status)">
+        <Items>
+            <telerik:RadComboBoxItem runat="server" Text="Hide Completed" Value="Closed" />
+            <telerik:RadComboBoxItem runat="server" Text="Show All" Value="All" />
+        </Items>
+    </telerik:RadComboBox>
+    <asp:Label ID="lblModule" Text="Requests For Information" Style="z-index: 105; left: 20px;
+        position: absolute; top: 9px; font-size: 18px; font-weight: bold; font-family: arial;
+        letter-spacing: 3px; width: 500px" runat="server" Height="24px"></asp:Label>
+    <div style="height: 16px; border-style: solid; border-width: 0px; width: 1050px;
+        position: relative; top: 12px;">
+        <div style="position: relative; width: 100px; display: inline-block; height: 16px;
+            line-height: 16px; vertical-align: top; text-align: right; font-size: 10px; font-weight: bold">
+            Status Indicator:&nbsp;&nbsp;</div>
+        <div class="rfi_preparing" style="width: 150px; height: 16px; position: relative;
+            display: inline-block; text-align: center; font-size: 10px">
+            RFI Preparing</div>
+        <div style="position: absolute; display: inline-block; width: 5px">
+        </div>
+        <div class="rfi_unassigned" style="width: 150px; height: 16px; position: relative;
+            display: inline-block; text-align: center; font-size: 10px">
+            RFI Unassigned to DP</div>
+        <div style="position: absolute; display: inline-block; width: 5px">
+        </div>
+        <div class="rfi_pending" style="width: 150px; height: 16px; position: relative; display: inline-block;
+            text-align: center; font-size: 10px">
+            RFI Active</div>
+        <div style="position: absolute; display: inline-block; width: 5px">
+        </div>
+        <div class="rfi_warning" style="width: 150px; height: 16px; position: relative; display: inline-block;
+            text-align: center; font-size: 10px">
+            RFI Near Overdue (< 3 Days)</div>
+        <div style="position: absolute; display: inline-block; width: 5px">
+        </div>
+        <div class="rfi_overdue" style="width: 150px; height: 16px; position: relative; display: inline-block;
+            text-align: center; font-size: 10px">
+            RFI Overdue</div>
+        <div style="position: absolute; display: inline-block; width: 5px">
+        </div>
+        <div class="rfi_answered" style="width: 150px; height: 16px; position: relative;
+            display: inline-block; text-align: center; font-size: 10px">
+            RFI Complete/Closed</div>
+    </div>
+    <telerik:RadMenu ID="RadMenu1" runat="server" OnItemClick="RadMenu1_ItemClick" Style="z-index: 10;
+        top: -35px; position: relative; width: 350px; height: 27px" />
+
+
+    <telerik:RadGrid ID="RadGrid1" runat="server" AllowSorting="true" AutoGenerateColumns="False"
+        GridLines="None" Width="99%" EnableEmbeddedSkins="false" enableajax="True" Style="margin-top: -10px;
+        float: left; clear: both">
+        <ClientSettings>
+            <Selecting AllowRowSelect="False" />
+            <Scrolling AllowScroll="True" UseStaticHeaders="True" ScrollHeight="50%" />
+        </ClientSettings>
+        <MasterTableView Width="99%" GridLines="None" DataKeyNames="ContractID,RefNumber,RFIID,Answer,Question,sRequiredBy,ReturnedOn,Status,QuestionAttachments,NewWorkflow,WFPosition"
+            NoMasterRecordsText="No Contracts with RFI(s) found.">
+            <Columns>
+                   <telerik:GridHyperLinkColumn UniqueName="RefNumber" HeaderText="RFI #" DataTextField="itemNum"
+                        SortExpression="RefNumber">
+                        <ItemStyle HorizontalAlign="Left" Width="40px" VerticalAlign="top" CssClass="InnerItemStyle"   />
+                        <HeaderStyle HorizontalAlign="Left" Width="40px" />
+                    </telerik:GridHyperLinkColumn>
+
+                    <telerik:GridBoundColumn UniqueName="Revision" HeaderText="Revision" DataField="Revision">
+                        <ItemStyle HorizontalAlign="Left" Width="50px" VerticalAlign="Top" />
+                        <HeaderStyle HorizontalAlign="Left" Width="50px" />
+                    </telerik:GridBoundColumn> 
+
+                    <telerik:GridHyperLinkColumn HeaderText="Flag" UniqueName="Flag" Visible="true">
+                        <ItemStyle Width="50px" HorizontalAlign="Center" VerticalAlign="Middle" />
+                        <HeaderStyle Width="50px" HorizontalAlign="Center" />
+                    </telerik:GridHyperLinkColumn>
+                  
+                    <telerik:GridHyperLinkColumn HeaderText="Attach" UniqueName="QuestionAttachments" Visible="false">
+                        <ItemStyle Width="50px" HorizontalAlign="Center" VerticalAlign="Middle" />
+                        <HeaderStyle Width="50px" HorizontalAlign="Center" />
+                    </telerik:GridHyperLinkColumn>
+
+                     <telerik:GridBoundColumn UniqueName="QueAttach" HeaderText="Attach" DataField="QuestionAttachments" Visible="false">
+                        <ItemStyle HorizontalAlign="Left" Width="40px" VerticalAlign="Top" />
+                        <HeaderStyle HorizontalAlign="Left" Width="40px" />
+                    </telerik:GridBoundColumn> 
+
+                   <telerik:GridBoundColumn UniqueName="Position" HeaderText="Workflow Position" DataField="WFPosition">
+                        <ItemStyle HorizontalAlign="Left" Width="150px" VerticalAlign="Top" />
+                        <HeaderStyle HorizontalAlign="Left" Width="150px" />
+                    </telerik:GridBoundColumn> 
+
+                    <telerik:GridBoundColumn UniqueName="Status" HeaderText="Status" DataField="Status" Visible="false">
+                        <ItemStyle HorizontalAlign="Left" Width="150px" VerticalAlign="Top" />
+                        <HeaderStyle HorizontalAlign="Left" Width="150px" />
+                    </telerik:GridBoundColumn> 
+
+                    <telerik:GridBoundColumn UniqueName="CreatedBy" HeaderText="Created By" DataField="Name" Visible="True">
+                        <ItemStyle HorizontalAlign="Left" Width="100px" VerticalAlign="Top" Wrap="true" />
+                        <HeaderStyle HorizontalAlign="Left" Width="100px" />
+                    </telerik:GridBoundColumn>
+
+                    <telerik:GridBoundColumn UniqueName="Company" HeaderText="Company" DataField="CompanyName" Visible="True">
+                        <ItemStyle HorizontalAlign="Left" Width="150px" VerticalAlign="Top" Wrap="true" />
+                        <HeaderStyle HorizontalAlign="Left" Width="150px" />
+                    </telerik:GridBoundColumn>
+
+                     <telerik:GridBoundColumn UniqueName="AltReference" HeaderText="Alt Ref #" DataField="AltRefNumber" Visible="True" >
+                        <ItemStyle HorizontalAlign="Left" Width="130px" VerticalAlign="Top" Wrap="True" />
+                        <HeaderStyle HorizontalAlign="Left" Width="130px" />
+                    </telerik:GridBoundColumn>
+
+                    <telerik:GridBoundColumn DataField="ReceivedOn" HeaderText="RFI Created" UniqueName="ReceivedOn"
+                        DataFormatString="{0:MM/dd/yy}">
+                        <ItemStyle Width="90px" HorizontalAlign="Center" VerticalAlign="Top" />
+                        <HeaderStyle Width="90px" HorizontalAlign="Center" />
+                    </telerik:GridBoundColumn>
+
+                     <telerik:GridBoundColumn DataField="sRequiredBy" HeaderText="Date Required" UniqueName="sRequiredBy" visible="True"
+                        DataFormatString="{0:MM/dd/yy}">
+                        <ItemStyle Width="90px" HorizontalAlign="Center" VerticalAlign="Top" />
+                        <HeaderStyle Width="90px" Height="20px" HorizontalAlign="Center" />
+                    </telerik:GridBoundColumn>
+
+                    <telerik:GridBoundColumn UniqueName="Question" HeaderText="Question/Response" DataField="Question">
+                        <ItemStyle HorizontalAlign="Left" Width="175px" VerticalAlign="Top" Wrap="true" />
+                        <HeaderStyle HorizontalAlign="Left" Width="175px" />
+                    </telerik:GridBoundColumn>
+
+                    <telerik:GridBoundColumn UniqueName="Answer" HeaderText="Answer" DataField="Answer" Visible="false">
+                        <ItemStyle HorizontalAlign="Left" Width="100px" VerticalAlign="Top" Wrap="true" />
+                        <HeaderStyle HorizontalAlign="Left" Width="100px" />
+                    </telerik:GridBoundColumn>
+
+                    <telerik:GridBoundColumn UniqueName="SubmittedTo" HeaderText="Submitted To" DataField="SubmittedTo" visible="false">
+                        <ItemStyle HorizontalAlign="Left" Width="100px" VerticalAlign="Top" />
+                        <HeaderStyle HorizontalAlign="Left" Width="100px" />
+                    </telerik:GridBoundColumn>
+
+                    <telerik:GridBoundColumn DataField="ClosedOn" HeaderText="Date Closed" UniqueName="ClosedOn"
+                        DataFormatString="{0:MM/dd/yy}">
+                        <ItemStyle Width="90px" HorizontalAlign="Center" VerticalAlign="Top" />
+                        <HeaderStyle Width="90px" Height="20px" HorizontalAlign="Center" />
+                    </telerik:GridBoundColumn>
+
+                    <telerik:GridBoundColumn UniqueName="RFIID" HeaderText="RFIID" DataField="RFIID" Visible="false">
+                        <ItemStyle HorizontalAlign="Left" Width="150px" VerticalAlign="Top" />
+                        <HeaderStyle HorizontalAlign="Left" Width="150px" />
+                    </telerik:GridBoundColumn>
+
+                     <telerik:GridBoundColumn UniqueName="NewWorkflow" HeaderText="NewWorkflow" DataField="NewWorkflow" Visible="false">
+                        <ItemStyle HorizontalAlign="Left" Width="150px" VerticalAlign="Top" />
+                        <HeaderStyle HorizontalAlign="Left" Width="150px" />
+                    </telerik:GridBoundColumn>
+            </Columns>
+           
+        </MasterTableView>
+
+        <ExportSettings OpenInNewWindow="True">
+            <Pdf PageWidth="297mm" PageHeight="210mm" />
+        </ExportSettings>
+    </telerik:RadGrid>
+                 
+
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            $(window).bind("beforeunload", function () {
+                onThisClientClose()
+            });
+        });
+
+        function onThisClientClose() {
+
+            var openRFIID = document.getElementById('<%= openRFIID.ClientID %>').value
+            var contactID = document.getElementById('<%= contactID.ClientID %>').value
+            var pageType = document.getElementById('<%= pageType.ClientID %>').value
+
+            //$.post("closeSession.aspx?RFIID=" + openRFIID + "&contactID=" + contactID, function () {
+            $.post("closeSession.aspx?RFIID=" + openRFIID + "&contactID=" + contactID + "&pageType=" + pageType, function () {
+                document.getElementById('<%= openRFIID.ClientID %>').value = ""
+            });
+        }
+
+        function OnClientItemClicking(sender, args) {
+            // set this var so that we can cancel ajax for grid export function
+            var button = args.get_item();
+            sCancelAjax = button.get_attributes().getAttribute("CancelAjax");
+        }
+
+        function EditRFI(id, projectid, contractid, type) {
+            document.getElementById('<%= openRFIID.ClientID %>').value = id
+            var windowtype = type + "Window"
+            var oWnd = window.radopen("RFI_edit.aspx?RFIID=" + id + "&ProjectID=" + projectid + "&ContractID=" + contractid + "&EditType=" + type, windowtype);
+
+            return false;
+        }
+
+        function OpenTest() {
+            var oWnd = window.radopen("Hybrid_Testing.aspx");
+        }
+
+        function EditFlag(id, projectid) {
+
+            var oWnd = window.radopen("PM_flag_edit.aspx?ProjectID=" + projectid + "ParentRecType=Project");
+            return false;
+
+        }
+        function refreshParentPage() {     //called from child pages when reloaded after edit and when nav needs updating
+            //document.location.href = 'dashboard_rfi_only.aspx';
+        }
+
+    </script>
+</asp:Content>

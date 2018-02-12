@@ -1,0 +1,304 @@
+﻿body {
+   overflow-y:scroll;
+   margin:0px;
+}
+.pep_ttl {
+   overflow:hidden;
+   margin:0px;
+   font-family:Arial;
+   font-weight:bold;
+   font-size:18px;
+   color:#013766;
+   padding:7px 4px 4px;
+   text-align:left;
+   float:bottom;
+
+}
+.gridhdr {
+   background:#013766;
+   color:#fff;
+   font-family:Arial;
+   font-weight:bold;
+   font-size:12px;
+   font-style:italic;
+   padding-left:6px;
+   padding-top:2px;
+   padding-bottom:2px;
+}
+.gridhdrMinus {
+    background:#013766;
+    color:#fff;
+    font-family:Arial;
+    font-weight:bold;
+    font-size:12px;
+    font-style:italic;
+    border-bottom:5px solid white;
+    border:none;
+    padding-left:20px;
+    padding-top:2px;
+    padding-bottom:2px;
+    /*padding-top:10px;*/
+    background-image:url('/images/Caret Expand (white 4px).png');
+    background-repeat:no-repeat;
+    background-position:left top;
+}
+.gridhdrPlus {
+    background:#013766;
+    color:#fff;
+    font-family:Arial;
+    font-weight:bold;
+    font-size:12px;
+    font-style:italic;
+    border-bottom:5px solid white;
+    padding-left:20px;
+    padding-top:2px;
+    padding-bottom:2px;
+    /*padding-top:10px;*/
+    background-image:url('/images/Caret Collapse (white 4px).png');
+    background-repeat:no-repeat;
+    background-position:left top;
+}
+.calLegend
+{
+    color:#013766;
+    font-style:italic;
+    text-align:center;
+    padding:5px;
+}
+
+.calLegend label 
+{
+    border:1px solid black;
+    /*background-color:RGB(226,107,10);*/
+    margin:0 5px 0 40px;
+    width:20px;
+}
+
+.picbtn {
+   cursor:pointer;
+}
+.block {
+   width:49%;
+   height:94px;
+   float:left;
+}
+.cell {
+   font-family:Arial;
+   font-weight:normal;
+   font-size:12px;
+   padding-left:6px;
+   padding-top:4px;
+   padding-bottom:0px;
+   border-bottom:#ccc solid 1px;
+   border-right:#ccc solid 1px;
+   height:22px;
+}
+
+.comments {
+   font-family:Arial;
+   font-weight:normal;
+   font-size:12px;
+   font-style:italic;
+   padding-left:6px;
+   padding-top:1px;
+   padding-bottom:0px;
+   color:#013766;
+   float:bottom;
+}
+.comm2 {
+   font-family:Arial;
+   font-weight:normal;
+   font-size:12px;
+   font-style:italic;
+   padding-left:6px;
+   padding-top:1px;
+   padding-bottom:0px;
+   color:#013766;
+   float:bottom;
+
+}
+.tbox {
+   font-family:Arial;
+   font-weight:normal;
+   font-size:12px;
+   padding-left:4px;
+   padding-top:1px;
+   padding-bottom:0px;
+   border:none;
+}
+
+.cwiev {
+   position:absolute;
+   top:0px;
+   left:400px;
+   background: url (/img/cwiev.png) top left no-repeat;
+   width:32px;
+   height:32px;
+   }
+.calbox {
+   background: url (/img/calbg.png);
+   }
+.fill1 {
+   background:#e46d0c;
+   }
+.fill2 {
+   background:#00b0f0;
+   }
+.fill3 {
+   background:#953735;
+   }
+.fill4 {
+   background:#ffc000;
+   }
+.fill5 {
+   background:#339;
+   }
+.fill6 {
+   background:#92d050;
+   }
+.fill7{
+   background:#FF3399;
+}
+       
+   
+.calttl {
+   font-family:Arial;
+   font-weight:bold;
+   color:#83ff00;
+   valign:top;
+//   padding-bottom:4px;
+	text-align:center;
+	font-size:12px;
+	width:216px;
+	/*border:solid white;
+	border-width:0 1px 0 1px;*/
+        /*background: url(/img/monthes.png) top left no-repeat;*/
+        float:left;
+    }
+.celltext {
+	padding-right: 20px;
+	cursor: pointer;
+	text-align:center;
+	font-size:12px;
+	width:160px;
+	border:none;
+	border-left:#fff solid 1px;
+}
+.hlbl {
+padding-top:4px;
+        font-family:Arial;
+        font-weight:normal;
+        cursor: pointer;
+	text-align:right;
+	font-size:12px;
+	width:160px;
+	border:none;
+}
+.cellhdr {
+	text-align:center;     
+}
+/*
+	Stylesheet for Tigra Calendar v5.0
+	Product is Public Domain (Free for any kind of applicaiton, customization and derivative works are allowed) 
+	URL: http://www.softcomplex.com/products/tigra_calendar/
+
+	- all image paths are relative to path of stylesheet
+	- the styles below can be moved into the document or in existing stylesheet
+
+*/
+
+/* input box in default state */ 
+.tcalInput {
+	background: url('../img/cal.gif') 100% 50% no-repeat;
+	padding-right: 20px;
+	cursor: pointer;
+	text-align:center;
+	font-size:12px;
+	width:160px;
+	border:none;
+	border-left:#fff solid 1px;
+}
+
+/* additional properties for input boxe in activated state, above still applies unless in conflict */
+.tcalActive {
+	background-image: url('../img/no_cal.gif');
+}
+/* container of calendar's pop-up */
+#tcal {
+	position: absolute;
+	visibility: hidden;
+	z-index: 50000;
+	width: 170px;
+	background-color: white;
+	margin-top: 0px;
+	padding: 0 2px 2px 2px;
+	border: 1px solid silver;
+
+	-moz-box-shadow: 3px 3px 4px silver;
+	-webkit-box-shadow: 3px 3px 4px silver;
+	box-shadow: 3px 3px 4px silver;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='silver')";
+	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='silver');
+}
+
+/* table containing navigation and current month */
+#tcalControls {
+	border-collapse: collapse;
+	border: 0;
+	width: 100%;
+}
+#tcalControls td {
+	border-collapse: collapse;
+	border: 0;
+	padding: 0;
+	width: 16px;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
+#tcalControls th {
+	border-collapse: collapse;
+	border: 0;
+	padding: 0;
+	line-height: 25px;
+	font-size: 10px;
+	text-align: center;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-weight: bold;
+	white-space: nowrap;
+}
+#tcalPrevYear { background-image: url('../img/prev_year.gif'); }
+#tcalPrevMonth { background-image: url('../img/prev_mon.gif'); }
+#tcalNextMonth { background-image: url('../img/next_mon.gif'); }
+#tcalNextYear { background-image: url('../img/next_year.gif'); }
+
+/* table containing week days header and calendar grid */
+#tcalGrid {
+	border-collapse: collapse;
+	border: 1px solid white;
+	width: 100%;
+}
+#tcalGrid th {
+	border: 1px solid white;
+	border-collapse: collapse;
+	padding: 3px 0;
+	text-align: center;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: 10px;
+	background-color: white;
+	color: white;
+}
+#tcalGrid td {
+	border: 0;
+	border-collapse: collapse;
+	padding: 2px 0;
+	text-align: center;
+	font-family: Tahoma, Geneva, sans-serif;
+	width: 14%;
+	font-size: 11px;
+	cursor: pointer;
+}		
+#tcalGrid td.tcalOtherMonth { color: silver; }
+#tcalGrid td.tcalWeekend { background-color: #ACD6F5; }
+#tcalGrid td.tcalToday { border: 1px solid red; }
+#tcalGrid td.tcalSelected { background-color: #FFB3BE; }		

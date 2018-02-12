@@ -1,0 +1,116 @@
+<%@ Page Language="vb" %>
+
+<%@ Import Namespace="Prompt" %>
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<script runat="server">
+
+    Public nBatchID As Integer
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+        ProcLib.CheckSession(Page)
+
+        ProcLib.LoadPopupJscript(Page)
+
+        'set up help button
+        Session("PageID") = "BudgetBatchEdit"
+        butHelp.Attributes.Add("onclick", "openPopup('help_view.aspx','pophelp',550,450,'yes');")
+        butHelp.NavigateUrl = "#"
+
+        nBatchID = Request.QueryString("ID")
+
+        If IsPostBack Then   'only do the following post back
+            nBatchID = lblBatchID.Text
+        Else  'only do the following on first load
+            
+            Using db As New promptBudget
+                db.CallingPage = Page
+                If Request.QueryString("new") = "y" Then    'flag new record for add
+                    nBatchID = 0
+                Else
+                    'editing existing record
+                    db.GetBudgetBatch(Me.FindControl("Form1"), nBatchID)
+                End If
+                lblBatchID.Text = nBatchID
+                
+            End Using
+        End If
+ 
+        txtDescription.Focus()
+        
+    End Sub
+
+  
+    Private Sub butSave_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles butSave.Click
+
+        Using db As New promptBudget
+            db.CallingPage = Page
+            db.SaveBudgetBatch()
+        End Using
+       
+        Session("RtnFromEdit") = True
+        ProcLib.CloseAndRefresh(Page)
+
+    End Sub
+
+    Private Sub butDelete_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles butDelete.Click
+
+        Session("RtnFromEdit") = True
+        Response.Redirect("confirm_delete_record.aspx?RecordType=BudgetChangeBatch&ID=" & nBatchID)
+    End Sub
+
+
+</script>
+
+<html>
+<head>
+    <title>Budget Change Batch Edit</title>
+    <meta content="False" name="vs_snapToGrid">
+    <meta content="Microsoft Visual Studio .NET 7.1" name="GENERATOR">
+    <meta content="Visual Basic .NET 7.1" name="CODE_LANGUAGE">
+    <meta content="JavaScript" name="vs_defaultClientScript">
+    <meta content="http://schemas.microsoft.com/intellisense/ie5" name="vs_targetSchema">
+    <link href="Styles.css" type="text/css" rel="stylesheet">
+</head>
+
+<body>
+   <form id="Form1" method="post" runat="server">
+     <telerik:RadScriptManager ID="RadScriptManager1" runat="server" />
+    <asp:TextBox ID="txtDescription" Style="z-index: 106; left: 122px; position: absolute;
+        top: 71px" runat="server" CssClass="EditDataDisplay" EnableViewState="False"
+        Width="192px"></asp:TextBox>
+    <asp:Label ID="Label5" Style="z-index: 116; left: 19px; position: absolute; top: 108px"
+        runat="server" CssClass="FieldLabel" EnableViewState="False" Height="24px">Board Approval Date:</asp:Label>
+    <asp:ImageButton ID="butDelete" Style="z-index: 115; left: 197px; position: absolute;
+        top: 161px" TabIndex="41" runat="server" ImageUrl="images/button_delete.gif">
+    </asp:ImageButton>
+    <asp:ImageButton ID="butSave" Style="z-index: 114; left: 26px; position: absolute;
+        top: 159px" TabIndex="40" runat="server" ImageUrl="images/button_save.gif"></asp:ImageButton>
+    <asp:Label ID="lblBatchID" Style="z-index: 113; left: 49px; position: absolute; top: 48px"
+        runat="server" CssClass="FieldLabel" Height="8px">999</asp:Label>
+    <asp:Label ID="Label4" Style="z-index: 112; left: 20px; position: absolute; top: 48px"
+        runat="server" CssClass="FieldLabel" EnableViewState="False" Height="8px">ID:</asp:Label>
+    <asp:Label ID="lblCollegeName" Style="z-index: 101; left: 16px; position: absolute;
+        top: 71px" runat="server" CssClass="FieldLabel" EnableViewState="False" Height="24px">Description:</asp:Label>
+    <table id="Table1" style="z-index: 104; left: 16px; position: absolute; top: 8px;
+        height: 2px" cellspacing="1" cellpadding="1" width="96%" border="0">
+        <tr height="1">
+            <td style="height: 6px" valign="top">
+                <asp:Label ID="Label8" runat="server" CssClass="PageHeading" EnableViewState="False"
+                    Width="131px" Height="24px">Edit Budget Batch</asp:Label>
+            </td>
+            <td style="height: 6px" valign="top" align="right">
+                <asp:HyperLink ID="butHelp" runat="server" ImageUrl="images/button_help.gif">HyperLink</asp:HyperLink>
+            </td>
+        </tr>
+    </table>
+    <hr style="z-index: 105; left: 16px; position: absolute; top: 40px" width="96%" size="1">
+    <telerik:RadDatePicker ID="txtBoardApprovalDate" Style="z-index: 117; left: 141px;
+        position: absolute; top: 109px" runat="server" Width="120px">
+        <DateInput runat="server" Skin="WebBlue" Font-Size="13px" ForeColor="Blue">
+        </DateInput>
+    </telerik:RadDatePicker> &nbsp;
+    </form>
+</body>
+</html>

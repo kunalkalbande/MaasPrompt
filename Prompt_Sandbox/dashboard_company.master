@@ -1,0 +1,265 @@
+<%@ Master Language="VB" ClassName="PromptCompanyMaster" %>
+
+<%@ Import Namespace="Prompt" %>
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
+<%@ Register TagPrefix="prompt" TagName="pagefooter" Src="footer.ascx" %>
+
+<script runat="server"> 
+     
+    Private ProjectID As Integer = 0
+    Private CollegeID As Integer = 0
+    
+    Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs)
+ 
+        BuildMenu()
+    End Sub
+    
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs)
+        ProcLib.CheckSession(Page)
+        ProcLib.LoadPopupJscript(Page)
+        
+        ProjectID = 738
+        CollegeID = 113
+        
+        If Not IsPostBack Then
+            
+            Using db As New EISSecurity
+           
+                db.DistrictID = Session("DistrictID")
+                db.CollegeID = CollegeID
+                db.ProjectID = ProjectID
+                                          
+                tabMain.SelectedIndex = 0
+                
+                Dim tbl As DataTable = db.GetDistrictObjectVisibilitySettings("ProjectTabs")
+                For Each row In tbl.Rows
+                    If ProcLib.CheckNullNumField(row("Visibility")) = 1 Then
+                        If db.FindUserPermission(row("ObjectID"), "read") Then            'Does the user have read rights to this object
+                            Select Case row("ObjectID")
+                                Case "ProjectOverview"
+                                    AddTab("Overview", "Overview", "images/home2.png", "project_overview.aspx")                                   
+                                Case "RFILog"
+                                    AddTab("RFIs", "RFIs", "images/rfis1.png", "RFIs.aspx")
+                                Case "SubmittalLog"
+                                    AddTab("Submittals", "Submittals", "images/submittals.png", "submittals.aspx")
+                                Case "MeetingMinutes"
+                                    AddTab("Meeting Minutes", "MeetingMinutes", "images/meetingminutes.png", "meetingminutes.aspx")
+                                Case "ProcurementLog"
+                                    AddTab("Procurement Log", "ProcurementLog", "images/procurementlog.png", "procurementlog.aspx")
+                                Case "TransmittalLog"
+                                    AddTab("Transmittals", "Transmittals", "images/transmittallog.png", "transmittals.aspx")
+                                Case "InfoBulletinLog"
+                                    AddTab("IBs", "InfoBulletins", "images/infobulletins.png", "InfoBulletins.aspx")                                   
+                                Case "BondWebsite"
+                                    AddTab("Bond Website", "BondWebsite", "images/bondsite.png", "bondsite_projectinfo.aspx")
+                                Case "ProjectPhotos"
+                                    AddTab("Photos", "Photos", "images/photos.png", "photos.aspx")
+                                Case "ProjectNotesTab"
+                                    AddTab("Notes", "Notes", "images/note.png", "notes.aspx")
+                                Case "ProjectAttachments"
+                                    AddTab("Attachments", "Attachments", "images/tab_attachments.png", "attachments.aspx")
+                                Case "JCAFBudget"
+                                    AddTab("JCAF Budget", "Budget", "images/tab_budget.png", "budget.aspx")
+                                Case "PMBudget"
+                                    AddTab("PM Budget", "PMBudget", "images/tab_budget.png", "pm_budget.aspx")
+                                Case "ProjectPassthroughInfo"
+                                    AddTab("Passthrough", "Passthrough", "images/ledger_account.png", "passthrough_entries_view.aspx")
+                                Case "State14D"
+                                    AddTab("State 14Ds", "State14D", "images/14d.png", "state14ds.aspx")                                          
+                                Case "PMProgressReport"
+                                    AddTab("Prog Reports", "PMProgressReports", "images/submittals.png", "project_progressreports.aspx")
+                                Case "SubmittalLog"
+                                    AddTab("Submittals", "Submittals", "images/submittals.png", "submittals.aspx")
+                                Case "ChangeOrderLog"
+                                    AddTab("Change Orders", "ChangeOrderLog", "images/changeorders.png", "ChangeOrders.aspx")
+                                Case "Correspondence"
+                                    AddTab("Correspondence", "Correspondence", "images/tab_attachments2.png", "Correspondence.aspx")
+                                Case "Schedules"
+                                    AddTab("Schedules", "Schedules", "images/schedule.png", "Schedules.aspx")
+                            End Select
+                        End If
+            
+                    End If
+                Next
+                                              
+            End Using                                 
+                        
+        End If
+                                                   
+    End Sub
+    
+    Private Sub tabMain_TabClick(ByVal sender As Object, ByVal e As Telerik.Web.UI.RadTabStripEventArgs) Handles tabMain.TabClick
+        Session("CurrentTab") = e.Tab.Value
+        
+    End Sub
+    
+    
+   
+    Public Sub BuildMenu()
+      
+        RadMenu1.Items.Clear()
+        Dim mm As RadMenuItem
+        Dim nFontSize As Integer = 10
+
+        mm = New RadMenuItem
+        With mm
+            .Value = "AppLogo"
+            
+            If ProcLib.GetLocale() = "Production" Then
+                .Value = "AppLogo"
+                If Session("UsePromptName") = 1 Then
+                    .ImageUrl = "images/prompt.ed_logo.png"
+                    .CssClass = "logoheader"
+                    Page.Header.Title = "Welcome to PROMPT.ed"
+                Else
+                    .ImageUrl = "images/prompt.ed_logo.png"
+                    .CssClass = "logoheader"
+                    Page.Header.Title = "Welcome to PROMPT.ed"
+                End If
+            
+                .Width = Unit.Pixel(250)
+               
+            ElseIf ProcLib.GetLocale() = "Beta" Or ProcLib.GetLocale() = "VMBeta" Then
+                .Value = "AppLogo"
+                
+                If Session("UsePromptName") = 1 Then
+                    .ImageUrl = "images/prompt.ed_logo.png"
+                    .CssClass = "logoheader"
+                    Page.Header.Title = "Prompt Beta"
+                Else
+                    .ImageUrl = "images/prompt.ed_logo.png"
+                    .CssClass = "logoheader"
+                    Page.Header.Title = "Prompt Beta"
+                End If
+                .Width = Unit.Pixel(250)
+                
+            Else
+                .Value = "AppLogo"
+                If Session("UsePromptName") = 1 Then
+                    .ImageUrl = "images/prompt.ed_logo.png"
+                    .CssClass = "logoheader"
+                    Page.Header.Title = "Prompt Local"
+                Else
+                    .ImageUrl = "images/prompt.ed_logo.png"
+                    .CssClass = "logoheader"
+                    Page.Header.Title = "Prompt Local"
+                End If
+                .Width = Unit.Pixel(250)
+                
+            End If
+        End With
+        RadMenu1.Items.Add(mm)
+        
+  
+        mm = New RadMenuItem
+        With mm
+            .Text = "PROMPT Project Dashboard for " & Session("UserName")
+            .Value = "Home"
+            '.ImageUrl = "images/dashboard.png"
+            .NavigateUrl = ""
+            .PostBack = False
+            .Font.Size = nFontSize
+        End With
+        RadMenu1.Items.Add(mm)
+ 
+ 
+        '****** Build the district menu ****
+        Using db As New PromptDataHelper
+            Dim mmDistrict = New RadMenuItem
+            With mmDistrict
+                .Text = db.ExecuteScalar("SELECT Name FROM Districts WHERE DistrictID = " & Session("DistrictID"))
+                .Value = "District"
+                .Font.Size = 10
+                .Font.Bold = True
+                .GroupSettings.ExpandDirection = ExpandDirection.Auto
+                .GroupSettings.Flow = ItemFlow.Vertical
+                .GroupSettings.OffsetX = -20
+            
+            End With
+
+            RadMenu1.Items.Add(mmDistrict)
+        End Using
+  
+     
+ 
+    End Sub
+    
+    Private Sub AddTab(ByVal DisplayTitle As String, ByVal TabValue As String, ByVal ImagePath As String, Optional ByVal PageLink As String = "", Optional ByVal tabwidth As Integer = 0)
+
+        'Adds a tab to the tab strip
+        Dim sQueryString As String = Request.ServerVariables("QUERY_STRING")
+        If Not sQueryString.Contains("&t=y") Then
+            sQueryString &= "&t=y"           't=y  indicates it was a click on a tab
+        End If
+        Dim t1 As New RadTab
+        With t1
+            .Value = TabValue
+            .Text = DisplayTitle
+            .ImageUrl = ImagePath
+            .NavigateUrl = PageLink & "?" & sQueryString   'append the calling querystring. 
+            If tabwidth > 0 Then
+                .Width = Unit.Pixel(tabwidth)
+            End If
+            
+        End With
+        
+        tabMain.Tabs.Add(t1)
+
+    End Sub
+   
+    
+ 
+</script>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head id="masterHeading" runat="server">
+    <title id="PageTitle" runat="server"></title>
+    <link rel="icon" type="image/png" href="images/home.png" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+     <link href="Styles.css" type="text/css" rel="stylesheet" />
+    <link href="skins/Prompt/TabStrip.Prompt.css" rel="stylesheet" type="text/css" />
+    <link href="skins/Prompt/Grid.Prompt.css" rel="stylesheet" type="text/css" />
+    <link href="skins/Prompt/Dock.Prompt.css" rel="stylesheet" type="text/css" />
+    <link href="skins/Prompt/Menu.Prompt.css" rel="stylesheet" type="text/css" />
+    <link href="skins/Prompt/TreeView.Prompt.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" language="javascript">
+        // keeps the frameset as the top frame  
+        if (parent.frames.length != 0) top.location = location.href;                                        
+    </script>
+
+    <style type="text/css">
+        div.RadMenu .rmRootGroup .rmLast
+        {
+            float: right;
+        }
+        div.RadMenu .rmGroup .rmLast
+        {
+            float: none;
+        }
+        .logoheader
+        {
+            margin: -5px 0 0 -10px; !important;}</style> 
+</head>
+<body style="margin: 0; padding: 0;">
+    <form id="Form1" method="post" runat="server">
+    <telerik:RadScriptManager ID="RadScriptManager1" runat="server" />
+    <!-- Page Top Menu Items -->
+    <telerik:RadMenu ID="RadMenu1" runat="server" Width="99.5%" DefaultGroupSettings-Flow="Vertical"
+        EnableEmbeddedSkins="false" Skin="Topnav" />
+        
+    <telerik:RadTabStrip ID="tabMain" runat="server" BackColor="Transparent" AutoPostBack="True"
+        SelectedIndex="0" ScrollChildren="true" Skin="Windows7">
+    </telerik:RadTabStrip>
+
+    <asp:Panel ID="Panel1" runat="server" Style="z-index: 103; position: absolute; top: 25px;
+        left: 0px;" Height="95%" Width="99.5%">
+        <asp:ContentPlaceHolder ID="mainBody" runat="Server">
+        <!-- Main Content -->
+        </asp:ContentPlaceHolder>
+        <prompt:pagefooter ID="Pagefooter1" runat="server" />
+    </asp:Panel>
+    </form>
+</body>
+</html>

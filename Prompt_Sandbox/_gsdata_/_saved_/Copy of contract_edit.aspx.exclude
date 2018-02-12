@@ -1,0 +1,625 @@
+<%@ Page Language="vb" %>
+
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
+<%@ Import Namespace="Prompt" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<script runat="server">
+    
+  
+    Public nContractID As Integer = 0
+    Public nProjectID As Integer = 0
+    
+    Dim bEnabled As Boolean = True
+    
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+        
+        If ProcLib.CheckExpiredSessionForPopup(Page) Then    'session died so close the page - this is to prevent orphaned popups
+            ProcLib.CloseAndRefresh(Page)
+        End If
+        
+        lblMsg.Text = ""
+        
+        ProcLib.LoadPopupJscript(Page)
+        
+        'set up help button
+        Session("PageID") = "ContractEdit"
+        butHelp.Attributes("onclick") = "return ShowHelp();"
+        butHelp.NavigateUrl = "#"
+          
+            
+        'set up add new contractor link
+        lnkAddNew.Attributes("onclick") = "return AddContractor();"
+
+        nContractID = Request.QueryString("ContractID")
+        nProjectID = Request.QueryString("ProjectID")
+        
+        butFlag.Attributes.Add("onclick", "openPopup('flag_edit.aspx?ParentRecID=" & nContractID & "&ParentRecType=Contract','pophelp',500,250,'yes');")
+        butFlag.NavigateUrl = "#"
+         
+        If IsPostBack Then   'only do the following post back
+            nContractID = lblContractID.Text
+        Else  'only do the following on first load
+            
+            Using db As New promptContract
+                db.CallingPage = Page
+                If nContractID = 0 Then    'get blank contract record
+                    db.GetNewContract(nProjectID)   'loads default values to record from parent project
+                    butDelete.Visible = False
+                    lnkManageAttachments.Visible = False
+                Else
+                    db.GetExistingContract(nContractID)   'loads default values to record from parent project
+                    
+                    LoadLinkedAttachments()
+ 
+                 
+                    'set up attachments button
+                    lnkManageAttachments.Attributes("onclick") = "return ManageAttachments('" & nContractID & "','Contract');"
+                    lnkManageAttachments.NavigateUrl = "#"
+                    
+                End If
+
+                lblMinAmount.Text = FormatCurrency(db.ContractMinimumAmount)
+                lblMinAmount.ToolTip = "This is the minimum amount this contract can have due to previously associated transactions."
+                lblMaxAmount.Text = FormatCurrency(db.ContractMaximumAmount)
+                lblMaxAmount.ToolTip = "This is the maximum total for this contract based on balance in JCAF for assigned object code (above)."
+                
+                'Save old contract Amount value for validation
+                ViewState.Add("OldContractAmount", txtAmount.Text)
+                ViewState.Add("OldReimbAmount", txtReimbAmount.Text)
+                
+                If HttpContext.Current.Session("EnableWorkflow") <> "1" Then
+                    lblAssignedWorkflowScenerios.Visible = False 'turn off workflow info
+                    lstWorkflowScenerios.Visible = False
+            
+                Else   'Load up workflow scenerio info
+                    db.GetAssignedWorkflowScenerios(lstWorkflowScenerios)
+            
+                End If
+                
+            End Using
+
+            lblContractID.Text = nContractID
+
+        End If
+        
+        txtAmount.ClientEvents.OnValueChanging = "ValidateAmounts"
+        txtReimbAmount.ClientEvents.OnValueChanging = "ValidateAmounts"
+        
+        
+        
+        
+        With RadPopups
+            .Skin = "Windows7"
+            .VisibleOnPageLoad = False
+            Dim ww As New Telerik.Web.UI.RadWindow
+            With ww
+                .ID = "ShowHelpWindow"
+                .NavigateUrl = ""
+                .Title = ""
+                .Width = 450
+                .Height = 450
+                .Top = 100
+                .Left = 20
+                .Modal = False
+                .VisibleStatusbar = True
+                .ReloadOnShow = True
+                .Behaviors = WindowBehaviors.Close + WindowBehaviors.Resize
+            End With
+            .Windows.Add(ww)
+            
+            
+                                  
+            ww = New Telerik.Web.UI.RadWindow
+            With ww
+                .ID = "OpenAttachmentWindow"
+                .NavigateUrl = ""
+                .Title = "Open Attachment"
+                .Width = 500
+                .Height = 300
+                .Top = 100
+                .Left = 20
+                .Modal = False
+                .VisibleStatusbar = True
+                .ReloadOnShow = True
+                .Behaviors = WindowBehaviors.Close + WindowBehaviors.Resize
+            End With
+            .Windows.Add(ww)
+            
+            
+            ww = New Telerik.Web.UI.RadWindow
+            With ww
+                .ID = "ManageAttachmentsWindow"
+                .NavigateUrl = ""
+                .Title = "Manage Attachments"
+                .Width = 500
+                .Height = 450
+                .Top = 100
+                .Left = 20
+                .Modal = False
+                .VisibleStatusbar = True
+                .ReloadOnShow = True
+                .Behaviors = WindowBehaviors.Close + WindowBehaviors.Resize
+            End With
+            .Windows.Add(ww)
+           
+           
+            ww = New Telerik.Web.UI.RadWindow
+            With ww
+                .ID = "AddContractorWindow"
+                .NavigateUrl = ""
+                .Title = "Add Contractor"
+                .Width = 475
+                .Height = 450
+                .Top = 100
+                .Left = 20
+                .Modal = False
+                .VisibleStatusbar = True
+                .ReloadOnShow = True
+                .Behaviors = WindowBehaviors.Close + WindowBehaviors.Resize
+            End With
+            .Windows.Add(ww)
+            
+        End With
+        
+        Using db As New EISSecurity
+            db.ProjectID = nProjectID
+            If db.FindUserPermission("ContractOverview", "Write") Then
+                bEnabled = True
+            End If
+        End Using
+        
+        'check for passback value and if there, add entry to dropdown and select
+        If Session("passback") <> "" Then
+            Dim i As New ListItem
+            i.Text = Session("passback")
+            i.Value = Session("passbackID")
+            'lstContractorID.Items.Add(i)
+            lstContractorID.SelectedValue = i.Value
+            lstContractorID.Text = i.Text.ToString
+            Session("passback") = ""
+            Session("passbackID") = ""
+                       
+        End If
+                   
+        'Save old object code value for validation
+        ViewState.Add("OldObjectCode", lstObjectCode.SelectedValue)
+        
+        If Session("DistrictID") <> 55 Then
+            cboBlanketPONumber.Height = Unit.Pixel(0)      'HACK: only show for FHDA now
+        End If
+  
+
+    End Sub
+
+    Private Sub LoadLinkedAttachments()
+               
+        'get the linked attachements
+        lstAttachments.Items.Clear()
+        Using db1 As New promptAttachment
+            Dim rs As DataTable = db1.GetLinkedAttachments(nContractID, "Contract")
+            If rs.Rows.Count > 0 Then
+                For Each Row As DataRow In rs.Rows
+                    Dim li As New ListItem
+                    li.Text = Row("FileName")
+                    li.Value = Row("AttachmentID")
+                    li.Attributes("ondblclick") = "return OpenAttachment('" & li.Value & "');"
+                    lstAttachments.Items.Add(li)
+                Next
+            Else '
+                lstAttachments.Items.Add("No Attachments Found")
+            End If
+        End Using
+       
+    End Sub
+    
+    Private Sub lnkAddNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lnkAddNew.Click
+        Dim jscript As New StringBuilder
+        'Opens a new popup for adding a new value on the fly while editing a record.
+        jscript.Append("<script language='javascript'>")
+        jscript.Append("openPopup('contractor_edit.aspx?new=y&passback=y','ContractorEdit',700,700,'yes');")
+        jscript.Append("</" & "script" & ">")
+        ClientScript.RegisterStartupScript(GetType(String), "NewContractor", jscript.ToString)
+    End Sub
+
+
+    Private Sub butSave_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles butSave.Click
+        
+        Dim IsNew As Boolean = False
+        
+
+        If bEnabled Then  'save contract
+            Using db As New promptContract
+                db.CallingPage = Page
+                db.SaveContract(nContractID, nProjectID)
+                If nContractID = 0 Then  'new so get new id
+                    nContractID = db.ContractID
+                End If
+            End Using
+        End If
+
+        Session("nodeid") = "Contract" & nContractID
+        Session("RefreshNav") = True
+        ProcLib.CloseAndRefreshNoPrompt(Page)
+
+    End Sub
+
+    Private Sub butDelete_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles butDelete.Click
+ 
+        
+        Dim msg As String = ""
+        Using db As New promptContract
+            msg = db.DeleteContract(nContractID)
+        End Using
+        If msg <> "" Then
+            Response.Redirect("delete_error.aspx?msg=" & msg)
+        Else
+            Session("RtnFromEdit") = True
+            Session("nodeid") = "Project" & nProjectID    'locate to parent Project
+            Session("RefreshNav") = True
+            Session("delcontract") = True
+            ProcLib.CloseAndRefresh(Page)
+        End If
+        
+        
+        
+    End Sub
+
+    
+    Protected Sub lstObjectCode_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+        'Get current max contract amount for this contract object code
+        Using db As New promptContract
+            db.GetCurrentObjectCodeMaximumAmount(sender.SelectedValue, nProjectID, nContractID)
+            lblMaxAmount.Text = FormatCurrency(db.ContractMaximumAmount)
+        End Using
+   
+    End Sub
+           
+    'Protected Sub txtAmount_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+
+    '    'validate new amount
+    '    Dim result As String = ValidateAmounts(sender.text, txtReimbAmount.Text)
+    '    If result <> "" Then
+    '        lblMsg.Text = result
+    '        DirectCast(Form.FindControl(sender.ID), Telerik.Web.UI.RadNumericTextBox).Text = ViewState("OldContractAmount")
+    '        RadAjaxManager1.FocusControl(sender.ID + "_text")  'set focus back to sending control
+    '    End If
+
+    'End Sub
+
+    'Protected Sub txtReimbAmount_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+
+    '    'validate new amount
+    '    Dim result As String = ValidateAmounts(txtAmount.Text, sender.text)
+    '    If result <> "" Then
+    '        lblMsg.Text = result
+    '        DirectCast(Form.FindControl(sender.ID), Telerik.Web.UI.RadNumericTextBox).Text = ViewState("OldReimbAmount")
+    '        RadAjaxManager1.FocusControl(sender.ID + "_text")  'set focus back to sending control
+    '    End If
+
+    'End Sub
+    
+    'Private Function ValidateAmounts(ByVal nAmt As Double, ByVal nReimb As Double) As String
+    '    'Validate
+    '    Dim msg As String = ""
+    '    Dim nMax As Double = lblMaxAmount.Text
+    '    If (nAmt + nReimb) > nMax Then
+    '        msg = "Sorry, Contract Amount + Reimb Amount cannot exceed " & FormatCurrency(nMax) & " -- Check that Object Code is assigned."
+    '    End If
+
+    '    Dim nMin As Double = lblMinAmount.Text
+    '    If (nAmt + nReimb) < nMin Then
+    '        msg = "Sorry, Contract Amount + Reimb Amount cannot be less than " & FormatCurrency(nMin)
+    '    End If
+
+    '    Return msg
+
+    'End Function
+    
+    Protected Sub AttachmentsPopup_AjaxHiddenButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles AttachmentsPopup_AjaxHiddenButton.Click
+        'This is method used to handle the workflow popup close to update the linked attachments list 
+        LoadLinkedAttachments()
+    End Sub
+    
+</script>
+
+<head>
+    <title>Contract Edit</title>
+    <link href="Styles.css" type="text/css" rel="stylesheet" />
+
+    <script type="text/javascript" language="javascript">
+
+        function ShowHelp()     //for help display
+        {
+
+            var oWnd = window.radopen("help_view.aspx?WinType=RAD", "ShowHelpWindow");
+            return false;
+        }
+
+        function AddContractor()     //for adding contractor on the fly
+        {
+
+            var oWnd = window.radopen("contractor_edit.aspx?new=y&passback=y&WinType=RAD", "AddContractorWindow");
+            return false;
+        }
+
+        function GetRadWindow() {
+            var oWindow = null;
+            if (window.RadWindow) oWindow = window.RadWindow;
+            else if (window.frameElement.radWindow) oWindow = window.frameElement.radWindow;
+            return oWindow;
+        }
+
+        function ManageAttachments(id, rectype)     //for managing attachments 
+        {
+
+            var oWnd = window.radopen("attachments_manage_linked.aspx?ParentRecID=" + id + "&ParentType=" + rectype, "ManageAttachmentsWindow");
+            return false;
+        }
+
+
+        function OpenAttachment(id)     //for opening attachments 
+        {
+
+            var oWnd = window.radopen("attachment_get_linked.aspx?ID=" + id, "OpenAttachmentWindow");
+            return false;
+        }
+
+
+        //For handling ajax post back from Attachment Manage RAD Popup
+        function HandleAjaxPostbackFromAttachmentsPopup() {
+            var oButton = document.getElementById("<%=AttachmentsPopup_AjaxHiddenButton.ClientID%>");
+            oButton.click();
+        }
+
+
+        function ValidateAmounts(sender, eventArgs) {
+
+            // called by contract amount textboxes to validate the entry 
+
+            var objMaxAmount = document.getElementById("lblMaxAmount");
+            var nMaxAmt = objMaxAmount.innerHTML;
+            nMaxAmt = nMaxAmt.slice(1);                                  // remove $ start of string
+            nMaxAmt = nMaxAmt.replace(/,/g, '');                           //remove commas if any -- the //g are regular expressions which mean all occurances
+
+
+            var objMinAmount = document.getElementById("lblMinAmount");
+            var nMinAmt = objMinAmount.innerHTML;
+            nMinAmt = nMinAmt.slice(1);                                  // remove $ start of string
+            nMinAmt = nMinAmt.replace(/,/g, '');                           //remove commas if any -- the //g are regular expressions which mean all occurances
+
+            var objAmount = $find("txtAmount");
+            var nAmount = objAmount.get_displayValue();
+            nAmount = nAmount.replace(/,/g, '');
+
+            var objReimbAmount = $find("txtReimbAmount");
+            var nReimAmount = objReimbAmount.get_displayValue();
+            nReimAmount = nReimAmount.replace(/,/g, '');
+
+            var nNewTotal = parseFloat(nAmount) + parseFloat(nReimAmount);
+
+
+            if (nNewTotal < nMinAmt) {
+                alert('Sorry, Contract Amount + Reimb Amount must be at least ' + nMinAmt);
+                eventArgs.set_cancel(true);
+                window.setTimeout(function() { sender.focus(); }, 50);
+                return false;
+            }
+
+            if (nNewTotal > nMaxAmt) {
+                alert('Sorry, Contract Amount + Reimb Amount cannot be more than ' + nMaxAmt + '. Check that you have assigned an Object Code to this Contract that has cooresponding balance in JCAF for this Project');
+                eventArgs.set_cancel(true);
+                window.setTimeout(function() { sender.focus(); }, 50);
+                return false;
+            }
+        }
+
+    
+    </script>
+
+</head>
+<body>
+    <form id="Form1" method="post" runat="server">
+    <telerik:RadScriptManager ID="RadScriptManager1" runat="server" />
+    <telerik:RadDatePicker ID="txtSignedCopyReceived" Style="z-index: 100; left: 136px;
+        position: absolute; top: 368px" TabIndex="70" runat="server" SharedCalendarID="sharedCalendar"
+        Width="120px">
+        <DateInput runat="server" Skin="WebBlue" Font-Size="13px" ForeColor="Blue">
+        </DateInput>
+    </telerik:RadDatePicker>
+    <div id="navrow">
+        <asp:Label ID="Label8" runat="server" CssClass="left" EnableViewState="False">&nbsp;&nbsp;&nbsp;Edit Contract</asp:Label>
+        <div class="right">
+            <asp:HyperLink ID="butFlag" runat="server" CssClass="flag" TabIndex="400">Flag</asp:HyperLink>
+            <asp:HyperLink ID="butHelp" runat="server" CssClass="help" TabIndex="400">Help</asp:HyperLink></div>
+    </div>
+    <div class="innertube">
+        <asp:Label ID="Label1" Style="z-index: 101; left: 24px; position: absolute; top: 56px;"
+            runat="server" CssClass="left">ID:</asp:Label>
+        <asp:Label ID="lblContractID" Style="z-index: 129; left: 56px; position: absolute;
+            top: 56px" runat="server" CssClass="ViewDataDisplay" Height="16px" TabIndex="300">###</asp:Label>
+        <asp:Label ID="lblMsg" runat="server" CssClass="smalltext" Font-Bold="True" ForeColor="Red"
+            Height="16px" Style="z-index: 102; left: 135px; position: absolute; top: 58px"
+            TabIndex="300">Error Message</asp:Label>
+        <asp:Label ID="Label3" Style="z-index: 103; left: 24px; position: absolute; top: 80px"
+            runat="server" CssClass="smalltext" Height="16px">Contractor:</asp:Label>
+        <asp:Label ID="Label4" Style="z-index: 104; left: 24px; position: absolute; top: 112px"
+            runat="server" CssClass="smalltext" Height="16px">Contract Date:</asp:Label>
+        <asp:Label ID="Label18" runat="server" CssClass="smalltext" Height="16px" Style="z-index: 105;
+            left: 265px; position: absolute; top: 114px">Expire Date:</asp:Label>
+        <asp:Label ID="Label5" Style="z-index: 106; left: 24px; position: absolute; top: 460px"
+            runat="server" CssClass="smalltext" Height="16px">Pay Status:</asp:Label>
+        <asp:Label ID="Label6" Style="z-index: 108; left: 24px; position: absolute; top: 176px"
+            runat="server" CssClass="smalltext" Height="16px">Contract Amount:</asp:Label>
+        <asp:Label ID="lblMinAmount" runat="server" CssClass="EditDataDisplay" Height="16px"
+            Style="z-index: 109; left: 306px; position: absolute; top: 181px" ToolTip='You may not reduce the contract amount below the total transactions booked to date.'
+            TabIndex="300">$0.00</asp:Label>
+        <asp:Label ID="lblMaxAmount" runat="server" CssClass="EditDataDisplay" Height="16px"
+            Style="z-index: 110; left: 433px; position: absolute; top: 181px" ToolTip='You may not exceed your current JCAF budget allocated to contract Object Code.'
+            TabIndex="300">$0.00</asp:Label>
+        <asp:Label ID="Label2" runat="server" CssClass="smalltext" Height="16px" Style="z-index: 111;
+            left: 273px; position: absolute; top: 181px" ToolTip='You may not reduce the contract amount below the total transactions booked to date.'>Min:</asp:Label>
+        <asp:Label ID="Label19" runat="server" CssClass="smalltext" Height="16px" Style="z-index: 112;
+            left: 395px; position: absolute; top: 181px" ToolTip='You may not exceed your current JCAF budget allocated to contract Object Code.'>Max:</asp:Label>
+        <asp:Label ID="Label22" Style="z-index: 113; left: 320px; position: absolute; top: 211px"
+            runat="server" CssClass="smalltext">Contract Type:</asp:Label>
+        <asp:Label ID="Label9" Style="z-index: 113; left: 24px; position: absolute; top: 208px"
+            runat="server" CssClass="smalltext">Reimb Amount:</asp:Label>
+        <asp:Label ID="Label10" Style="z-index: 114; left: 24px; position: absolute; top: 240px"
+            runat="server" CssClass="smalltext" Height="16px">Description:</asp:Label>
+        <asp:Label ID="Label11" Style="z-index: 115; left: 24px; position: absolute; top: 272px"
+            runat="server" CssClass="smalltext" Height="16px">Status:</asp:Label>
+        <asp:Label ID="Label17" runat="server" CssClass="smalltext" Height="16px" Style="z-index: 116;
+            left: 25px; position: absolute; top: 145px">Object Code:</asp:Label>
+        <asp:Label ID="Label12" Style="z-index: 117; left: 24px; position: absolute; top: 304px"
+            runat="server" CssClass="smalltext" Height="16px">Retention %:</asp:Label>
+        <asp:Label ID="Label13" Style="z-index: 118; left: 24px; position: absolute; top: 341px"
+            runat="server" CssClass="smalltext" Height="16px">Bid Pak #:</asp:Label>
+        <asp:Label ID="Label14" Style="z-index: 119; left: 24px; position: absolute; top: 368px"
+            runat="server" CssClass="smalltext" Height="16px">Signed Copy Rec'd:</asp:Label>
+        <asp:Label ID="Label15" Style="z-index: 120; left: 24px; position: absolute; top: 428px"
+            runat="server" CssClass="smalltext" Height="16px">Blanket P.O. #:</asp:Label>
+        <asp:Label ID="lblAssignedWorkflowScenerios" runat="server" CssClass="smalltext"
+            Height="16px" Style="z-index: 121; left: 318px; position: absolute; top: 380px">Assigned Workflow Scenerios:</asp:Label>
+        <asp:Label ID="Label7" runat="server" CssClass="smalltext" Height="16px" Style="z-index: 121;
+            left: 243px; position: absolute; top: 340px">Account #:</asp:Label>
+        <asp:Label ID="Label16" Style="z-index: 122; left: 23px; position: absolute; top: 519px;
+            height: 4px;" runat="server" CssClass="smalltext">Comments:</asp:Label>
+        &nbsp;
+        <asp:TextBox ID="txtDescription" Style="z-index: 123; left: 136px; position: absolute;
+            top: 240px" runat="server" Width="376px" TabIndex="30" CssClass="EditDataDisplay"></asp:TextBox>
+        <asp:TextBox ID="txtRetentionEscrowAgent" runat="server" CssClass="EditDataDisplay"
+            Style="z-index: 145; left: 136px; position: absolute; top: 486px" TabIndex="94"
+            Width="181px"></asp:TextBox>
+        <asp:TextBox ID="txtRoomNumber" runat="server" CssClass="EditDataDisplay" Style="z-index: 145;
+            left: 394px; position: absolute; top: 486px" TabIndex="94" Width="127px"></asp:TextBox>
+        <asp:TextBox ID="txtAccountNumber" runat="server" CssClass="EditDataDisplay" Style="z-index: 126;
+            left: 309px; position: absolute; top: 343px" TabIndex="90" Width="210px"></asp:TextBox>
+        <asp:TextBox ID="txtBidPackNumber" Style="z-index: 127; left: 136px; position: absolute;
+            top: 340px" runat="server" Width="75px" TabIndex="60" CssClass="EditDataDisplay"></asp:TextBox>
+        <asp:TextBox ID="txtComments" Style="z-index: 128; left: 136px; position: absolute;
+            top: 520px" runat="server" Height="66px" Width="384px" TextMode="MultiLine" TabIndex="95"
+            CssClass="EditDataDisplay"></asp:TextBox>
+        <asp:DropDownList ID="lstContractorID" Style="z-index: 130; left: 136px; position: absolute;
+            top: 80px" runat="server" Width="208px" CssClass="EditDataDisplay">
+        </asp:DropDownList>
+        <asp:DropDownList ID="lstPayStatus" Style="z-index: 131; left: 136px; position: absolute;
+            top: 458px" runat="server" TabIndex="92" CssClass="EditDataDisplay">
+        </asp:DropDownList>
+        <asp:DropDownList ID="lstStatus" Style="z-index: 132; left: 136px; position: absolute;
+            top: 272px" runat="server" TabIndex="40" CssClass="EditDataDisplay">
+        </asp:DropDownList>
+        <asp:DropDownList ID="lstContractType" Style="z-index: 133; left: 397px; position: absolute;
+            top: 207px" runat="server" TabIndex="11" CssClass="EditDataDisplay" OnSelectedIndexChanged="lstObjectCode_SelectedIndexChanged"
+            AutoPostBack="True">
+            <asp:ListItem>Contract</asp:ListItem>
+        </asp:DropDownList>
+        <asp:DropDownList ID="lstObjectCode" Style="z-index: 133; left: 136px; position: absolute;
+            top: 145px" runat="server" TabIndex="11" CssClass="EditDataDisplay" OnSelectedIndexChanged="lstObjectCode_SelectedIndexChanged"
+            AutoPostBack="True">
+        </asp:DropDownList>
+        <asp:DropDownList ID="lstRetentionPercent" Style="z-index: 134; left: 136px; position: absolute;
+            top: 304px" runat="server" TabIndex="50" CssClass="EditDataDisplay">
+        </asp:DropDownList>
+        <asp:LinkButton ID="lnkAddNew" Style="z-index: 135; left: 360px; position: absolute;
+            top: 88px" runat="server" TabIndex="300">add new...</asp:LinkButton>
+        <telerik:RadDatePicker ID="txtContractDate" Style="z-index: 136; left: 136px; position: absolute;
+            top: 112px" TabIndex="5" runat="server" Width="120px" SharedCalendarID="sharedCalendar">
+            <DateInput Font-Size="13px" ForeColor="Blue">
+            </DateInput>
+        </telerik:RadDatePicker>
+        <telerik:RadDatePicker ID="txtExpireDate" runat="server" Style="z-index: 137; left: 353px;
+            position: absolute; top: 115px" TabIndex="10" Width="120px" SharedCalendarID="sharedCalendar">
+            <DateInput Skin="WebBlue" Font-Size="13px" ForeColor="Blue">
+            </DateInput>
+        </telerik:RadDatePicker>
+        <telerik:RadNumericTextBox ID="txtAmount" runat="server" Style="z-index: 136; left: 136px;
+            position: absolute; top: 179px" SelectionOnFocus="SelectAll" MinValue="0" TabIndex="15"
+            AutoPostBack="True">
+        </telerik:RadNumericTextBox>
+        <telerik:RadNumericTextBox ID="txtReimbAmount" runat="server" Style="z-index: 137;
+            left: 136px; position: absolute; top: 208px" TabIndex="20" SelectionOnFocus="SelectAll"
+            MinValue="0" AutoPostBack="True">
+        </telerik:RadNumericTextBox>
+        <asp:ImageButton ID="butSave" Style="z-index: 138; left: 133px; position: absolute;
+            top: 609px" runat="server" ImageUrl="images/button_save.gif" TabIndex="100">
+        </asp:ImageButton>
+        <asp:ImageButton ID="butDelete" Style="z-index: 139; left: 388px; position: absolute;
+            top: 612px" runat="server" ImageUrl="images/button_delete.gif" TabIndex="200">
+        </asp:ImageButton>
+        &nbsp; &nbsp;&nbsp; &nbsp;
+        <telerik:RadAjaxManager ID="RadAjaxManager1" runat="server">
+            <AjaxSettings>
+                <telerik:AjaxSetting AjaxControlID="lstObjectCode">
+                    <UpdatedControls>
+                        <telerik:AjaxUpdatedControl ControlID="lblMsg" />
+                        <telerik:AjaxUpdatedControl ControlID="lblMinAmount" />
+                        <telerik:AjaxUpdatedControl ControlID="lblMaxAmount" />
+                    </UpdatedControls>
+                </telerik:AjaxSetting>
+                <%-- <telerik:AjaxSetting AjaxControlID="txtAmount">
+                <UpdatedControls>
+                    <telerik:AjaxUpdatedControl ControlID="lblMsg" />
+                    <telerik:AjaxUpdatedControl ControlID="txtAmount" />
+                </UpdatedControls>
+            </telerik:AjaxSetting>--%>
+                <telerik:AjaxSetting AjaxControlID="AttachmentsPopup_AjaxHiddenButton">
+                    <UpdatedControls>
+                        <telerik:AjaxUpdatedControl ControlID="lstAttachments" />
+                    </UpdatedControls>
+                </telerik:AjaxSetting>
+                <%--    <telerik:AjaxSetting AjaxControlID="txtReimbAmount">
+                <UpdatedControls>
+                    <telerik:AjaxUpdatedControl ControlID="lblMsg" />
+                    <telerik:AjaxUpdatedControl ControlID="txtReimbAmount" />
+                </UpdatedControls>
+            </telerik:AjaxSetting>--%>
+            </AjaxSettings>
+        </telerik:RadAjaxManager>
+        <asp:Label ID="Label21" runat="server" CssClass="smalltext" Height="16px" Style="z-index: 107;
+            left: 21px; position: absolute; top: 487px">Ret Escrow Agent:</asp:Label>
+        <telerik:RadWindowManager ID="RadPopups" runat="server">
+        </telerik:RadWindowManager>
+        <asp:Label ID="Label20" runat="server" Style="z-index: 140; left: 266px; position: absolute;
+            top: 265px" Width="1px">Attachments:</asp:Label>
+        <asp:Label ID="lblFHDA_AccountNumber" runat="server" Style="z-index: 140; left: 308px;
+            position: absolute; top: 361px" Width="200px">FHDA_AC_Num</asp:Label>
+        <asp:HyperLink ID="lnkManageAttachments" runat="server" ImageUrl="images/button_folder_view.gif"
+            Style="z-index: 141; left: 499px; position: absolute; top: 289px" TabIndex="71"
+            ToolTip="Manage Attachments" Width="1px">Manage Attachments</asp:HyperLink>
+        <asp:ListBox ID="lstWorkflowScenerios" runat="server" CssClass="ViewDataDisplay"
+            Height="49px" Style="z-index: 142; left: 314px; position: absolute; top: 396px;
+            width: 200px;" TabIndex="71" SelectionMode="Multiple"></asp:ListBox>
+        <asp:ListBox ID="lstAttachments" runat="server" CssClass="smalltext" Height="49px"
+            Style="z-index: 142; left: 265px; position: absolute; top: 285px" TabIndex="71"
+            Width="227px"></asp:ListBox>
+        <asp:DropDownList ID="lstFE_Division" Style="z-index: 133; left: 394px; position: absolute;
+            top: 458px" runat="server" TabIndex="11" CssClass="EditDataDisplay" Width="121px">
+        </asp:DropDownList>
+        <asp:TextBox ID="txtPRNumber" Style="z-index: 125; left: 136px; position: absolute;
+            top: 398px" runat="server" Width="75px" TabIndex="80" CssClass="EditDataDisplay"></asp:TextBox>
+        <asp:Label ID="Label24" runat="server" CssClass="smalltext" Height="16px" Style="z-index: 120;
+            left: 26px; position: absolute; top: 400px">Purch. Req. #</asp:Label>
+        <asp:Label ID="Label23" runat="server" CssClass="smalltext" Height="16px" Style="z-index: 116;
+            left: 310px; position: absolute; top: 461px; width: 77px;">F&E Division:</asp:Label>
+        <asp:Label ID="Label25" runat="server" CssClass="smalltext" Height="16px" Style="z-index: 116;
+            left: 335px; position: absolute; top: 489px; width: 50px;">Room #:</asp:Label>
+        <%-- 
+            Put Hidden button on form to handle ajax post back from rad window
+            
+            --%>
+        <div style="display: none">
+            <asp:Button ID="AttachmentsPopup_AjaxHiddenButton" runat="server"></asp:Button>
+        </div>
+        <telerik:RadComboBox ID="cboBlanketPONumber" Style="z-index: 642; left: 136px; position: absolute;
+            top: 426px" TabIndex="71" runat="server" AllowCustomText="True" Height="100px"
+            Width="95px">
+        </telerik:RadComboBox>
+        <telerik:RadCalendar ID="sharedCalendar" runat="server" EnableMultiSelect="false">
+        </telerik:RadCalendar>
+    </form>
+    </div>
+</body>
+</html>

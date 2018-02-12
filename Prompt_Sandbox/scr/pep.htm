@@ -1,0 +1,256 @@
+﻿{
+    "header": 
+    {
+        "title":"Project Execution Plan - Milestone Schedule",
+        "section": 
+        {
+            "title":"PROJECT INFORMATION",
+            "button": 
+            [
+                {"img":"budget.png","w":"30","action":"swapToBud"},
+                {"img":"milestones.png","w":"24","action":"swapToCal"}
+            ],
+            "columns": 
+            [
+                {
+                    "lines": 
+                    [
+                        {"label":"Campus","type":"text","datafield":"campus"},
+                        {"label":"Revision Date","type":"calendar","datafield":"revdate"},
+                        {"label":"Initiation Date","type":"calendar","datafield":"initdate"},
+                        {"label":"Iteration No.","type":"text","datafield":"iteration"}     
+                    ]
+                },
+                {
+                    "lines": 
+                    [
+                        {"label":"Project Name","type":"text","datafield":"prjname"},
+                        {"label":"Project Number","type":"text","datafield":"prjnumber"},
+                        {"label":"Initiation Date","type":"text","datafield":"pribudget"}
+                    ]
+                }     
+            ]
+        }
+    },
+    "body": 
+    {
+        "section": 
+        [
+            {
+                "title":"PHASES",
+                "columns": 
+                [
+                    {
+                        "title":" ","w":"240",
+                        "labels":
+                        [
+                            "Project Criteria Consultant Selection",
+                            "Project Criteria Development",
+                            "RFQ/RFP for DBE",
+                            "Program Validation",
+                            "Schematic Design", 
+                            "Design Development",
+                            "Construction Documents",
+                            "Agency Processing (DSA)",
+                            "Bidding Process*",
+                            "GMP Agreement",
+                            "Construction",
+                            "FF&E (Installation)",
+                            "Occupancy",
+                            "Close-Out**"
+                        ]
+                    },
+                    {
+                        "title":"Start",
+                        "values":
+                        [
+                            {"type":"calendar","datafield":"pccs"},
+                            {"type":"calendar","datafield":"pcds"},
+                            {"type":"calendar","datafield":"rrds"},
+                            {"type":"calendar","datafield":"pvs"},
+                            {"type":"calendar","datafield":"sds"},
+                            {"type":"calendar","datafield":"dds"},
+                            {"type":"calendar","datafield":"cds"},
+                            {"type":"calendar","datafield":"dsas"},
+                            {"type":"calendar","datafield":"pcs"},
+                            {"type":"calendar","datafield":"gmps"},
+                            {"type":"calendar","datafield":"cs"},
+                            {"type":"calendar","datafield":"ffes"},
+                            {"type":"calendar","datafield":"os"},
+                            {"type":"calendar","datafield":"cos"}
+                        ]
+                    },
+                    {
+                        "title":"Finish",
+                        "values":
+                        [
+                            {"type":"calendar","datafield":"pccp"},
+                            {"type":"calendar","datafield":"pcdp"},
+                            {"type":"calendar","datafield":"rrdp"},
+                            {"type":"calendar","datafield":"pvp"},
+                            {"type":"calendar","datafield":"sdp"},
+                            {"type":"calendar","datafield":"ddp"},
+                            {"type":"calendar","datafield":"cdp"},
+                            {"type":"calendar","datafield":"dsap"},
+                            {"type":"calendar","datafield":"pcp"},
+                            {"type":"calendar","datafield":"gmpp"},
+                            {"type":"calendar","datafield":"cp"},
+                            {"type":"calendar","datafield":"ffep"},
+                            {"type":"calendar","datafield":"op"},
+                            {"type":"calendar","datafield":"cop"}
+                        ]
+                    }    
+                ]
+            },
+            {
+                "title":"CONTRACTS",
+                "columns": 
+                [
+                    {
+                        "title":" ","w":"240",
+                        "labels":
+                        [
+                            {"label":"Architect of Record (AOR) PV","type":"text","datafield":"aort"},
+                            {"label":"AOR Design Throughs Close-Out","type":"text","datafield":"aorcot"},
+                            {"label":"Construction Manager (CM) PC","type":"text","datafield":"cmt"},
+                            {"label":"CM Design Throughs Close-Out","type":"text","datafield":"cmtco"},
+                            {"label":"Inspector of Record (IOR)","type":"text","datafield":"iort"},
+                            {"label":"Other","type":"text","datafield":"xtrat0"},
+                            {"label":"Other","type":"text","datafield":"xtrat1"},
+                            {"label":"Other","type":"text","datafield":"xtrat2"},
+                            {"label":"Other","type":"text","datafield":"xtrat3"},
+                            {"label":"Other","type":"text","datafield":"xtrat4"}
+                        ]
+                    },
+                    {
+                        "title":"Purchase Order Number",
+                        "values":
+                        [
+                            {"type":"text","datafield":"po1"},
+                            {"type":"text","datafield":"po2"},
+                            {"type":"text","datafield":"po3"},
+                            {"type":"text","datafield":"po4"},
+                            {"type":"text","datafield":"po5"},
+                            {"type":"text","datafield":"po6"},    
+                            {"type":"text","datafield":"po7"},       
+                            {"type":"text","datafield":"po8"},       
+                            {"type":"text","datafield":"po9"},       
+                            {"type":"text","datafield":"po10"}       
+                        ]
+                    },
+                    {
+                        "title":"BOT Award",
+                        "values":
+                        [
+                            {"type":"calendar","datafield":"aor"},
+                            {"type":"calendar","datafield":"aorco"},
+                            {"type":"calendar","datafield":"cm"},
+                            {"type":"calendar","datafield":"cmco"},
+                            {"type":"calendar","datafield":"ior"},
+                            {"type":"calendar","datafield":"xtra1"},    
+                            {"type":"calendar","datafield":"xtra2"},       
+                            {"type":"calendar","datafield":"xtra3"},       
+                            {"type":"calendar","datafield":"xtra4"},       
+                            {"type":"calendar","datafield":"xtra5"}       
+                        ]
+                    },
+                    {
+                        "title":"Signed Copy Rec'd / PO Date",
+                        "values":
+                        [
+                            {"type":"calendar","datafield":"aorsc"},
+                            {"type":"calendar","datafield":"aorcosc"},
+                            {"type":"calendar","datafield":"cmsc"},
+                            {"type":"calendar","datafield":"cmscco"},
+                            {"type":"calendar","datafield":"iorsc"},
+                            {"type":"calendar","datafield":"xtras1"},       
+                            {"type":"calendar","datafield":"xtras2"},       
+                            {"type":"calendar","datafield":"xtras3"},       
+                            {"type":"calendar","datafield":"xtras4"},       
+                            {"type":"calendar","datafield":"xtras5"}       
+                        ]
+                    },
+                    {
+                        "title":"Duration",
+                        "values":
+                        [
+                            {"type":"text","datafield":"aord"},
+                            {"type":"text","datafield":"aorcod"},
+                            {"type":"text","datafield":"cmd"},
+                            {"type":"text","datafield":"cmdco"},
+                            {"type":"text","datafield":"iord"},     
+                            {"type":"text","datafield":"xtrad1"},       
+                            {"type":"text","datafield":"xtrad2"},       
+                            {"type":"text","datafield":"xtrad3"},       
+                            {"type":"text","datafield":"xtrad4"},       
+                            {"type":"text","datafield":"xtrad5"}       
+                        ]
+                    }    
+                ]
+            },
+            {
+                "title":"NOTES",
+                "columns": 
+                [
+                ]
+            },
+            {
+                "title":"PROJECT BUDGET",
+                "columns": 
+                [
+                ]
+            },
+            {
+                "title":"DESCRIPTION",
+                "columns": 
+                [
+                    {
+                        "title":" ","w":"240",
+                        "labels":
+                        [
+                            "Soft Costs",
+                            "Program Architect",
+                            "AOR"
+                        ]
+                    },
+                    {
+                        "title":"Budgeted (ETC)",
+                        "values":
+                        [
+                            {"type":"none","datafiedd":"f1"},
+                            {"type":"text","datafiedd":"pabu"},
+                            {"type":"text","datafiedd":"aorbu"}
+                        ]
+                    },
+                    {
+                        "title":"Expended",
+                        "values":
+                        [
+                            {"type":"none","datafiedd":"f2"},
+                            {"type":"text","datafiedd":"paex"},
+                            {"type":"text","datafiedd":"aorex"}
+                        ]
+                    },
+                    {
+                        "title":"Balances (EAC)",
+                        "values":
+                        [
+                            {"type":"none","datafiedd":"f3"},
+                            {"type":"text","datafiedd":"eacbal"},
+                            {"type":"text","datafiedd":"aorbal"}
+                        ]
+                    },
+                    {
+                        "title":"NOTES",
+                        "values":
+                        [
+                            {"type":"none","datafiedd":"f4"},
+                            {"type":"text","datafiedd":"panot"},
+                            {"type":"text","datafiedd":"aornot"}
+                        ]
+                    }    
+                ]
+            }
+        ]
+    }
+}

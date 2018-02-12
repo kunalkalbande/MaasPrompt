@@ -1,0 +1,173 @@
+/* RadComboBox Vista skin */
+
+/*global*/
+
+.RadComboBox_Prompt,
+.RadComboBox_Prompt .rcbInput,
+.RadComboBoxDropDown_Prompt
+{
+	font: 12px "Segoe UI", Arial, sans-serif;
+	color: #1e395b;
+}
+
+/* combobox */
+
+.RadComboBox_Prompt .rcbInputCellLeft,
+.RadComboBox_Prompt .rcbInputCellRight,
+.RadComboBox_Prompt .rcbArrowCellLeft,
+.RadComboBox_Prompt .rcbArrowCellRight
+{
+	background-image: url('ComboBox/rcbSprite.png');
+}
+
+* html .RadComboBox_Prompt .rcbInputCellLeft,
+* html .RadComboBox_Prompt .rcbInputCellRight,
+* html .RadComboBox_Prompt .rcbArrowCellLeft,
+* html .RadComboBox_Prompt .rcbArrowCellRight
+{
+	background-image: url('ComboBox/rcbSpriteIE6.png');
+}
+
+.RadComboBox_Prompt td.rcbInputCellLeft { background-position: 0 0; }
+.RadComboBox_Prompt td.rcbInputCellRight { background-position: 100% 0; }
+
+.RadComboBox_Prompt .rcbHovered .rcbInputCellLeft { background-position: 0 0; }
+.RadComboBox_Prompt .rcbHovered .rcbInputCellRight { background-position: 100% 0; }
+
+.RadComboBox_Prompt .rcbFocused .rcbInputCellLeft { background-position: 0 0; }
+.RadComboBox_Prompt .rcbFocused .rcbInputCellRight { background-position: 100% 0; }
+
+.RadComboBox_Prompt .rcbHovered .rcbReadOnly td.rcbInputCellLeft { background-position: 0 -22px; }
+.RadComboBox_Prompt .rcbHovered .rcbReadOnly td.rcbInputCellRight { background-position: 100% -22px; }
+
+.RadComboBox_Prompt .rcbFocused .rcbReadOnly td.rcbInputCellLeft { background-position: 0 -44px; }
+.RadComboBox_Prompt .rcbFocused .rcbReadOnly td.rcbInputCellRight { background-position: 100% -44px; }
+
+.RadComboBox_Prompt .rcbInputCell .rcbEmptyMessage
+{
+	color: #a7a7a7;
+}
+
+.RadComboBox_Prompt td.rcbArrowCellLeft { background-position: -18px -88px; }
+.RadComboBox_Prompt td.rcbArrowCellRight { background-position: 0 -88px; }
+
+.RadComboBox_Prompt .rcbHovered .rcbArrowCellLeft { background-position: -54px -88px; }
+.RadComboBox_Prompt .rcbHovered .rcbArrowCellRight { background-position: -36px -88px; }
+
+.RadComboBox_Prompt .rcbFocused .rcbArrowCellLeft { background-position: -90px -88px; }
+.RadComboBox_Prompt .rcbFocused .rcbArrowCellRight { background-position: -72px -88px; }
+
+.RadComboBox_Prompt td.rcbArrowCellHidden,
+.RadComboBox_Prompt .rcbHovered td.rcbArrowCellHidden,
+.RadComboBox_Prompt .rcbFocused td.rcbArrowCellHidden { background-position: -15px -88px; }
+
+.RadComboBox_Prompt .rcbHovered .rcbReadOnly td.rcbArrowCellHidden { background-position: -51px -88px; }
+.RadComboBox_Prompt .rcbFocused .rcbReadOnly td.rcbArrowCellHidden { background-position: -87px -88px; }
+
+/* Read-only styles */
+
+.RadComboBox_Prompt .rcbReadOnly td.rcbArrowCellLeft { background-position: -18px -88px; }
+.RadComboBox_Prompt .rcbReadOnly td.rcbArrowCellRight { background-position: -2px -88px; }
+
+.RadComboBox_Prompt .rcbHovered .rcbReadOnly .rcbArrowCellLeft { background-position: -54px -88px; }
+.RadComboBox_Prompt .rcbHovered .rcbReadOnly .rcbArrowCellRight { background-position: -38px -88px; }
+
+.RadComboBox_Prompt .rcbFocused .rcbReadOnly .rcbArrowCellLeft { background-position: -90px -88px; }
+.RadComboBox_Prompt .rcbFocused .rcbReadOnly .rcbArrowCellRight { background-position: -74px -88px; }
+
+.RadComboBox_Prompt .rcbReadOnly td.rcbArrowCellHidden { background-position: -15px -88px; }
+.RadComboBox_Prompt .rcbHovered .rcbReadOnly td.rcbArrowCellHidden { background-position: -51px -88px; }
+.RadComboBox_Prompt .rcbFocused .rcbReadOnly td.rcbArrowCellHidden { background-position: -87px -88px; }
+
+/* dropdown */
+
+.RadComboBoxDropDown_Prompt .rcbHeader,
+.RadComboBoxDropDown_Prompt .rcbFooter,
+.RadComboBoxDropDown_Prompt .rcbMoreResults a
+{
+	background-image: url('ComboBox/rcbSprite.png');
+}
+
+* html .RadComboBoxDropDown_Prompt .rcbHeader,
+* html .RadComboBoxDropDown_Prompt .rcbFooter,
+* html .RadComboBoxDropDown_Prompt .rcbMoreResults a
+{
+	background-image: url('ComboBox/rcbSpriteIE6.png');
+}
+
+.RadComboBoxDropDown_Prompt
+{
+	background: #fff;
+	border-color: #a5b3c5;
+	color: #000;
+}
+
+.RadComboBoxDropDown_Prompt .rcbHeader,
+.RadComboBoxDropDown_Prompt .rcbFooter
+{
+	background-color: #f1f2f4;
+	background-position: 0 -110px;
+}
+
+.RadComboBoxDropDown_Prompt .rcbHeader
+{
+	border-bottom-color: #a5b3c5;
+}
+
+.RadComboBoxDropDown_Prompt .rcbFooter
+{
+	border-top-color: #a5b3c5;
+}
+
+.RadComboBoxDropDown_Prompt .rcbItem em
+{
+	background: #e5e5e5;
+}
+
+.RadComboBoxDropDown_Prompt .rcbHovered
+{
+	background: #eef6ff;
+	color: #1e395b;
+}
+
+.RadComboBoxDropDown_Prompt .rcbSeparator
+{
+    color: #666;
+    background: #e0e0e0;
+}
+
+.RadComboBox_Prompt .rcbDisabled .rcbInputCell .rcbInput,
+.RadComboBoxDropDown_Prompt .rcbDisabled
+{
+	color: #a7a7a7;
+}
+
+.RadComboBox_Prompt .rcbDisabled td.rcbInputCellLeft { background-position: 0 -66px; }
+.RadComboBox_Prompt .rcbDisabled td.rcbInputCellRight { background-position: 100% -66px; }
+.RadComboBox_Prompt .rcbDisabled td.rcbArrowCellLeft { background-position: -126px -88px; }
+.RadComboBox_Prompt .rcbDisabled td.rcbArrowCellRight { background-position: -108px -88px; }
+.RadComboBox_Prompt .rcbDisabled .rcbReadOnly td.rcbArrowCellRight { background-position: -110px -88px; }
+.RadComboBox_Prompt table.rcbDisabled td.rcbArrowCellHidden,
+.RadComboBox_Prompt .rcbDisabled .rcbReadOnly td.rcbArrowCellHidden { background-position: -123px -88px; }
+
+.RadComboBoxDropDown_Prompt .rcbLoading
+{
+	background: #f0f0f0;
+}
+
+.RadComboBoxDropDown_Prompt .rcbMoreResults
+{
+	border-top-color: #e0e0e0;
+	background: #fff;
+	color: #4c607a;
+}
+
+.RadComboBoxDropDown_Prompt .rcbMoreResults a
+{
+	background-position: -157px -94px;
+}
+
+.RadComboBoxDropDown_Prompt .rcbMoreResults a:hover
+{
+	background-position: -188px -94px;
+}

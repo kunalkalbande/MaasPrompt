@@ -1,0 +1,227 @@
+﻿<%@ Page Language="vb" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<%@ Import Namespace="System.Data.SqlClient" %> 
+<%@ Import Namespace="System.Web.Services" %>
+<%@ Import Namespace="Prompt" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<script runat="server">
+   
+    'This entire search functionality is driven by entries in a database table (Searches table)
+    '   this includes the permissions system (i.e. available queries), the search itself, and the search and navigation target.
+    'The db fields in the Searches table are as follows:
+    '   QueryID - PrimaryKey
+    '   Query - the RESULTS of the query automatically populate the search window
+    '       the first field of the query results must be named TargetID, and must be the primary key of the "Target" (see below)
+    '       item.  For example, if Target is 'Contract', then the first field of the query result must be named TargetID and 
+    '       it must contain the ContractID.
+    '       the second field must be the ProjectID and must be named ProjectID
+    '       the third field must be the ContractID and must be named ContractID
+    '       These first three fields (TargetID, ProjectID, and ContractID) are not displayed in the Search Results, 
+    '       however all the other fields are displayed in order
+    '       and with the names returned from the query itself.
+    '       Example: 'Select ContractID as ID, ContractID, ProjectID, Description as Contract From Contracts Where ...'
+    '       @Dist is replaced with DistrictID
+    '       @Criteria is replace with the search text
+    '   Display Text - this is the text that will be displayed in the dropdown
+    '       Only the appropriate queries will be displayed depending on the permissions (described below)
+    '   Target - this is where the link takes you to (can be Contract, Transaction, ChangeOrder, etc.)
+    '   Permissions - this is overridden for TechUsers (i.e. all queries are shown for TechUsers)
+    '       If the field is blank, the default is effectively none (i.e. no users can access this query)
+    '       if the field is 'All', then all users have access to it
+    '       if the field is 'Secured' then the SecurityPermissions tables are used to decide on access,
+    '           in which case the SecuredObjectID (below) is used to determine the access rights
+    '   SecuredObjectID - used to query the SecurityPermissionsRights table to determine access rights
+    
+    <WebMethod()> _
+    Public Shared Function GetResult(ByVal criteria As String, ByVal matchAny As String, ByVal searchType As String, ByVal distID As String) As String
+        Dim sql As String = ""
+        Dim db As New PromptDataHelper
+        
+        Dim target As String = db.ExecuteScalar("Select Target From Searches Where QueryID = " & searchType)
+        sql = db.ExecuteScalar("Select Query From Searches Where QueryID = " & searchType)
+        sql = sql.Replace("@Dist", distID)
+        
+        'first clean the critera string to thwart SQL Injection attacks
+        criteria = Regex.Replace(criteria, "[^a-zA-Z0-9- ]*", "")
+        
+        criteria = IIf(matchAny = "on", "'%" & criteria & "%'", "'" & criteria & "'")
+        sql = sql.Replace("@Criteria", criteria)
+        
+        Dim dt As DataTable
+        Dim dr As DataRow
+        Dim dc As DataColumn
+        
+        dt = db.ExecuteDataTable(sql)
+        
+        Dim resultString As String = "<table><tr>"
+        
+        Dim i As Integer
+        
+        'create table headings (skip the three columns)
+        i = 0
+        For Each dc In dt.Columns
+            i += 1
+            If i < 4 Then
+                Continue For
+            End If
+            resultString += "<th>" + dc.ColumnName + "</th>"
+        Next
+        resultString += "</tr>"
+        
+
+        'create table data (rows)
+        Dim rowCount As Integer = dt.Rows.Count
+        Dim currRow As Integer = 0
+        For Each dr In dt.Rows
+            currRow += 1
+            If currRow > 10 Then
+                Exit For
+            End If
+            resultString += "<tr>"
+            Dim j As Integer = 0
+            For Each dc In dt.Columns
+                j += 1
+                Select Case j
+                    Case Is < 4            'skip the first three columns
+                        Continue For
+                    Case 4              'create a link on the first displayable column
+                        Select Case target     'check to see whether this is a Contract, or Proj, or ...
+                            Case "Contract"
+                                resultString += "<td onclick=""return goThere('Contract'," & dr.Item("ContractID") & ")"" >" + "<u>" + dr(dc) + "</u>"
+                            Case "Transaction"
+                                resultString += "<td onclick=""return goThere('Contract'," & dr.Item("ContractID") & ")"" >" + "<u>" + dr(dc) + "</u>"
+                            Case Else
+                                resultString += "invalid search"
+                        End Select
+                    Case Is > 4
+                        resultString += "<td>" & dr(dc) & "</td>"
+                End Select
+            Next
+            resultString += "</tr>"
+        Next
+        
+        db.Close()
+        resultString += "</table>"
+        If rowCount > 10 Then
+            resultString += "more than 10 matches ..."
+        End If
+  
+        Return resultString
+    End Function
+   
+    
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        
+        If (IsPostBack)
+            Throw New Exception
+        Else
+            Dim dt As DataTable
+            Using db As New PromptDataHelper
+                If HttpContext.Current.Session("UserRole") = "TechSupport" Then
+                    dt = db.ExecuteDataTable("Select QueryID, DisplayText From Searches")
+                Else
+                    dt = db.ExecuteDataTable("Select QueryID, DisplayText From Searches Where Permissions = 'All' or Permissions like '%" & Session("UserName") & "'")
+                End If
+                
+                For Each row As DataRow In dt.Rows
+                    Dim li As New ListItem
+                    li.Text = row("DisplayText")
+                    li.Value = row("QueryID")
+                    ddSearchType.Items.Add(li)
+                    distID.Value = Session("DistrictID")     'need the page to know the DistrictID so it can be picked up by javascript and send to the ajax WebMethod
+                Next
+
+            End Using 'db
+        End if
+         
+    End Sub
+    
+</script>
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head id="Head1" runat="server">
+    <title></title>
+    
+<script type="text/javascript">
+    jQuery(function() {
+        $('#butSearch').bind('click', function() {
+            $('#TBD').html('');  //clear any existing search results
+            var srchType = $('#ddSearchType').val();
+            var crit = $('#txtCriteria').val();
+            var matchAny = $('#cbMatchAny:checked').val() ? 'on' : 'off';
+            var dist = $('#distID').val();
+//            alert($('#distID').val());
+            $.ajax({
+                type: "POST",
+                url: "_searchPage.aspx/GetResult",
+                data: "{'criteria':'" + crit + "','matchAny':'" + matchAny + "','distID':'" + dist + "','searchType':'" + srchType + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function(msg) {
+//                  alert(msg.d);
+                    $('#TBD').html(msg.d);
+                }
+            });
+        });
+    })();
+
+    function goThere(targetType, targetID) {
+        var theTree = parent.getTreeObject();
+        switch (targetType) {
+            case 'Contract':
+                window.open("contract_overview.aspx?view=contract&ContractID=" + targetID, "ctl00_mainBody_contentPane");
+                var theContract = theTree.findNodeByAttribute("ContractID", targetID);
+                ExpandParentNodes(theContract);
+                break;
+            case 'Transaction':
+                window.open("transactions.aspx?view=contract&ContractID=" + targetID, "ctl00_mainBody_contentPane");
+                var theContract = theTree.findNodeByAttribute("ContractID", targetID);
+                ExpandParentNodes(theContract);
+                break;
+            default:
+                alert('Unexpected target type: ' + targetType);
+                break;
+        }
+        
+    }
+
+    // expand the appropriate nodes to focus on the one in question
+    function ExpandParentNodes(node) {
+        if (node) {
+            var theParent = node.get_parent();
+            while (theParent.get_level() != 0) {
+                theParent.expand();
+                theParent = theParent.get_parent();
+            }
+            theParent.expand();
+            node.select();
+            //node.scrollIntoView(); // doesn't work!
+        }
+        else {
+            alert('cannot synchronize left navigation pane, since this is under an inactive project and you have Show "Active Projects Only" turned on.');
+        }
+    }
+
+</script>
+    
+</head>
+<body>
+    <form id="form2" runat="server">
+        <div>Search for:
+            <asp:DropDownList id="ddSearchType" enableviewstate="false" runat="server"> 
+            </asp:DropDownList>
+        </div>
+        <div>with text: 
+            <input id="txtCriteria" type="text" name="criteria" value="--search text--" />
+            <input id="cbMatchAny" type="checkbox" name="matchAny" checked="checked" />Match Any
+        </div>
+        <div><input id="butSearch" type="button" value="Search"/></div>
+        <div>
+            <asp:HiddenField ID="distID" runat="server"/>
+        </div>
+        <div id="TBD"></div>
+    </form>
+</body>
+</html>

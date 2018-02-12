@@ -1,0 +1,165 @@
+/* RadUpload / Vista skin */
+
+/* <general styles> */
+
+.RadUpload_Prompt,
+.RadUpload_Prompt a,
+.RadUpload_Prompt input,
+.RadUploadProgressArea_Prompt,
+.RadUploadProgressArea_Prompt input
+{
+    font: normal 11px/10px "Segoe UI", Arial, sans-serif;
+}
+
+/* </general styles> */
+
+/* <file inputs> */
+
+.RadUpload_Prompt .ruStyled .ruFileInput
+{
+    border-color: #abadb3;
+}
+
+.RadUpload_Prompt .ruFakeInput
+{
+    border-color: #abadb3 #dbdfe6 #e3e9ef #e2e3ea;
+    color: #000;
+}
+* html .RadUpload_Prompt .ruFileWrap .ruInputHover { border-color: #abadb3; }
+*+html .RadUpload_Prompt .ruFileWrap .ruInputHover { border-color: #abadb3; }
+
+.RadUpload_Prompt .ruReadOnly .ruFakeInput
+{
+	background: #f3f3f3;
+}
+
+/* </file inputs> */
+
+/* <buttons> */
+
+.RadUpload_Prompt .ruButton,
+.RadUploadProgressArea_Prompt .ruButton
+{
+    background-image: url('Upload/ruSprite.png');
+    color: #1e395b;
+}
+
+* html .RadUpload_Prompt .ruButton,
+* html .RadUploadProgressArea_Prompt .ruButton
+{
+    background-image: url('Upload/ruSpriteIE6.png');
+}
+
+.RadUpload_Prompt .ruRemove
+{
+	color: #5a6779;
+}
+
+div.RadUpload_Prompt .ruInputs .ruButtonHover,
+div.RadUpload_Prompt .ruActions .ruButtonHover,
+div.RadUploadProgressArea_Prompt .ruActions .ruButtonHover
+{
+    background-position: 100% -23px;
+}
+
+div.RadUpload_Prompt .ruFileWrap .ruButtonHover
+{
+    background-position: 100% 0;
+}
+
+/* </buttons> */
+
+/* <submit button> */
+/* (use this class to style a single button for uploads) */
+
+.RadUploadSubmit
+{
+    background-image: url('Upload/ruSprite.png');
+    color: #000;
+}
+
+* html .RadUploadSubmit
+{
+    background-image: url('Upload/ruSpriteIE6.png');
+}
+
+/* </submit button> */
+
+/* <progress area> */
+
+.RadUploadProgressArea_Prompt .ruProgress
+{
+    border-color: #a5b3c5;
+    background-image: url('Upload/ruProgressArea.png');
+    background-color: #fff;
+}
+
+.RadUploadProgressArea_Prompt ul.ruProgress
+{
+    background-position: 100% 0;
+}
+
+.RadUploadProgressArea_Prompt .ruProgress li
+{
+    color: #4c607a;
+}
+
+.RadUploadProgressArea_Prompt .ruProgress li.ruCurrentFile span
+{
+    color: #06c;
+}
+
+.RadUploadProgressArea_Prompt .ruProgress .ruBar
+{
+    border-color: #abc1de;
+    background-image: url('Upload/ruSprite.png');
+}
+ 
+* html .RadUploadProgressArea_Prompt .ruProgress .ruBar
+{
+    background-image: url('Upload/ruSpriteIE6.png');
+}
+ 
+.RadUploadProgressArea_Prompt .ruProgress .ruBar div
+{
+    background-image: url('Upload/ruProgress.gif');
+	border-right: 1px solid #FFF;
+}
+
+.RadUploadProgressArea_Prompt_rtl .ruProgress .ruBar div
+{
+	border-right: 0;
+	border-left: 1px solid #FFF;
+    background-image: url('Upload/ruProgress.gif');
+}
+ 
+.RadUploadProgressArea_Prompt .ruProgress .ruActions
+{
+	border-top-color: #dfdfdf;
+	background: #F1F5FB url('Upload/ruSprite.png') repeat-x 0 -112px;
+}
+
+* html .RadUploadProgressArea_Prompt .ruProgress .ruActions
+{
+	background: #F1F5FB url('Upload/ruSpriteIE6.png') repeat-x 0 -112px;
+}
+
+/* </progress area> */
+
+
+ div.RadUpload_Prompt .ruFakeInput {
+	border-color: rgb(221, 221, 221);
+	color: rgb(41, 41, 41);
+}
+ div.RadUpload_Prompt .ruButton {
+	color: rgb(41, 41, 41);
+}
+ div.RadUploadProgressArea_Prompt .ruButton {
+	color: rgb(41, 41, 41);
+}
+ div.RadUpload_Prompt div.RadUploadSubmit {
+	color: rgb(41, 41, 41);
+}
+ div.RadUploadProgressArea_Prompt .ruProgress {
+	background-image: none;
+}

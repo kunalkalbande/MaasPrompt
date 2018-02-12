@@ -1,0 +1,186 @@
+<%@ Page Language="VB" MasterPageFile="~/prompt.master" %>
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
+<%@ Import Namespace="Prompt" %>
+
+<script runat="server">
+    
+
+    Private sNavFilter As String = ""
+
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+        Session("PageID") = "Main"
+
+        'Handle change of District if needed
+        If Request.QueryString("DistrictID") <> "" Then
+            Session("DistrictID") = Request.QueryString("DistrictID")
+            Session("DistrictName") = Request.QueryString("District")
+            Session("ClientID") = Request.QueryString("ClientID")
+            Using db As New NavMenu
+                db.SetLastViewedDistrict()
+            End Using
+            
+            Dim mm As MasterPage = Page.Master
+            Dim menu As RadMenu = mm.FindControl("RadMenu1")
+            Dim menuDistrict As RadMenuItem = menu.FindItemByValue("District")
+            menuDistrict.Text = Session("DistrictName")
+            
+            Dim menuAppLogo As RadMenuItem = menu.FindItemByValue("AppLogo")
+            Dim sLocale As String = ProcLib.GetLocale()
+            With menuAppLogo
+                If sLocale = "Production" Then
+                    If Session("UsePromptName") = 1 Then
+                        .ImageUrl = "images/Prompt_local.gif"
+                    Else
+                        .ImageUrl = "images/logo.png"
+                    End If
+                    .Width = Unit.Pixel(200)
+                    Page.Header.Title = "Welcome to Prompt"
+                    
+                ElseIf sLocale = "Beta" Or sLocale = "VMBeta" Then
+                    .Value = "AppLogo"
+                    
+                    If Session("UsePromptName") = 1 Then
+                        .ImageUrl = "images/logo_beta.png"
+                    Else
+                        .ImageUrl = "images/logo.png"
+                    End If
+                    .Width = Unit.Pixel(200)
+                    Page.Header.Title = "Prompt Beta"
+                Else
+                    .Value = "AppLogo"
+                    If Session("UsePromptName") = 1 Then
+                        .ImageUrl = "images/Prompt_local.gif"
+                    Else
+                        .ImageUrl = "images/logo.png"
+                    End If
+                    .Width = Unit.Pixel(195)
+                    .CssClass = "logoheader"
+                    Page.Header.Title = "Prompt Local"
+                End If
+            End With
+        End If
+            
+        radcboFilterTree.Visible = True
+
+                
+        If Not IsPostBack Then
+
+            If Session("DirectCallCount") > 0 Then
+                'NOTE: For some reason this page is called twice on direct calls, so we need to count and only apply 
+                'settings on last call
+                
+                radcboFilterTree.SelectedIndex = 1    'Always All Projects in drop down when Direct Call for simplicy
+                'radcboFilterTree.Text = "All Projects"   'All Projects
+                
+                If Session("DirectCallCount") = 1 Then
+                    Session("DirectCallCount") = 2
+                Else
+                    BuildNavMenu()
+                    contentPane.ContentUrl = Session("DirectCallURL")
+                    Session("RefreshNav") = False
+                    Session("nodeid") = ""
+                    Session("DirectCallCount") = 0
+                    Session("DirectCallURL") = ""
+                End If
+                
+                          
+            Else
+                If Session("RefreshNav") = True Then     'this is call back after edit so set filter to all projects
+                    radcboFilterTree.SelectedIndex = 1
+                End If
+                sNavFilter = radcboFilterTree.SelectedValue
+                BuildNavMenu()
+                Dim sPage As String = Session("DashboardPageName")
+                If Session("RefreshNav") = False And sPage <> " " Then     'we are not coming back from edit so set to dashboard if appropriate
+                    contentPane.ContentUrl = sPage
+                End If
+           
+                Session("RefreshNav") = False
+                Session("nodeid") = ""
+            End If
+        End If
+
+    End Sub
+    
+    Private Sub BuildNavMenu()
+        
+        Using db As New NavMenu
+            db.BuildProjectsMenu(tree1, sNavFilter)
+        End Using
+        
+        'Set the targets to the content pane for all the nav items
+        For Each node As RadTreeNode In tree1.GetAllNodes
+            If node.Target = "mainFrame" Then
+                node.Target = contentPane.ClientID
+            End If
+            
+            'Update the Nav tree in the parent framework if needed.
+            If node.Value = Session("nodeid") Then
+                If Session("RefreshNav") Then    'need to update the node in the nav tree 
+                    node.Selected = True
+                    'Expand all nodes to this one
+                    Dim nodeParent As RadTreeNode
+                    nodeParent = node.ParentNode
+                    While nodeParent IsNot Nothing
+                        nodeParent.Expanded = True
+                        nodeParent = nodeParent.ParentNode
+                    End While
+                    contentPane.ContentUrl = node.NavigateUrl
+                End If
+            End If
+        Next
+ 
+    End Sub
+
+    Protected Sub radcboFilterTree_SelectedIndexChanged(ByVal o As Object, ByVal e As Telerik.Web.UI.RadComboBoxSelectedIndexChangedEventArgs) Handles radcboFilterTree.SelectedIndexChanged
+
+        sNavFilter = o.SelectedValue
+        BuildNavMenu()
+        
+    End Sub
+</script>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="mainBody" runat="Server">
+    <telerik:RadSplitter ID="RadSplitter1" runat="server" Skin="Sitefinity" Width="100%" Height="95%" SplitBarsSize="8" >
+        <telerik:RadPane ID="navPane" runat="server" Width="280"  EnableViewState="true" >
+        <div class="leftnavcss">
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <telerik:RadComboBox ID="radcboFilterTree" runat="server" Skin="Default" Text="Filter" Width="200"
+                AutoPostBack="True">
+                <Items>
+                    <telerik:RadComboBoxItem runat="server" Text="Active Projects Only" Value="ActiveProjectsOnly" />
+                    <telerik:RadComboBoxItem runat="server" Text="All Projects" Value="AllProjects" />
+                </Items>
+            </telerik:RadComboBox>
+             <br />
+            <br />
+            <telerik:RadTreeView ID="tree1" runat="server" EnableViewState="False" ShowLineImages="True"
+                OnClientNodeClicked="ClientNodeClicked" ExpandDelay="0" EnableEmbeddedSkins="false" Skin="Leftnav">
+            </telerik:RadTreeView>
+        </div>
+        </telerik:RadPane>
+        <%--<telerik:RadSplitBar ID="RadSplitBar1" runat="server" CollapseMode="None" />--%> 
+        <telerik:RadPane ID="contentPane" runat="server" Scrolling="Both"  EnableViewState="true" ContentUrl="about:blank">content pane</telerik:RadPane>
+    </telerik:RadSplitter>
+
+
+    <script type="text/javascript" language="javascript">
+
+        function refreshParentPage() {     //called from child pages when reloaded after edit and when nav needs updating
+            document.location.href = 'main.aspx';
+        }
+
+        function ClientNodeClicked(sender, eventArgs) {
+            var node = eventArgs.get_node();
+            node.toggle();
+        }
+
+        function getTreeObject() {
+            window.treeView = $find("<%=tree1.ClientID%>");
+            return window.treeView;
+        }
+
+    </script>
+</asp:Content>

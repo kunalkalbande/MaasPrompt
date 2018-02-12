@@ -1,0 +1,271 @@
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+  <Author>MaasIT</Author>
+  <LastAuthor>MaasIT</LastAuthor>
+  <LastPrinted>2014-03-27T15:48:47Z</LastPrinted>
+  <Created>2014-03-27T15:07:30Z</Created>
+  <LastSaved>2014-04-07T17:23:27Z</LastSaved>
+  <Company>Microsoft</Company>
+  <Version>14.00</Version>
+ </DocumentProperties>
+ <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
+  <AllowPNG/>
+ </OfficeDocumentSettings>
+ <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
+  <WindowHeight>7995</WindowHeight>
+  <WindowWidth>20115</WindowWidth>
+  <WindowTopX>240</WindowTopX>
+  <WindowTopY>75</WindowTopY>
+  <ProtectStructure>False</ProtectStructure>
+  <ProtectWindows>False</ProtectWindows>
+ </ExcelWorkbook>
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="11" ss:Color="#000000"/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="m82239648">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"/>
+   </Borders>
+   <Font ss:FontName="Arial" x:Family="Swiss" ss:Size="20" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s16">
+   <Borders/>
+  </Style>
+  <Style ss:ID="s22">
+   <Alignment ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font ss:FontName="Arial" x:Family="Swiss" ss:Size="11" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s24">
+   <Borders>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+  </Style>
+  <Style ss:ID="s25">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"/>
+   </Borders>
+  </Style>
+  <Style ss:ID="s27">
+   <Alignment ss:Vertical="Bottom"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"/>
+   </Borders>
+  </Style>
+  <Style ss:ID="s28">
+   <Alignment ss:Vertical="Bottom"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"/>
+   </Borders>
+   <Font ss:FontName="Arial" x:Family="Swiss" ss:Size="11" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s30">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/>
+   </Borders>
+   <Interior ss:Color="#F2F2F2" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s30b">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/>
+   </Borders>
+  </Style>  
+  <Style ss:ID="s31">
+   <Alignment ss:Vertical="Top"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+   <Font ss:FontName="Arial" x:Family="Swiss" ss:Size="10" ss:Color="#000000"
+    ss:Bold="0"/>
+  </Style>
+  <Style ss:ID="s34">
+   <Interior ss:Color="#F2F2F2" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s35">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Top" ss:WrapText="1"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+   <Font ss:FontName="Arial" x:Family="Swiss" ss:Size="11" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="s36">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Top" ss:WrapText="1"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+  </Style>
+  <Style ss:ID="s37">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font ss:FontName="Arial" x:Family="Swiss" ss:Size="11" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s38">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
+   <Borders/>
+  </Style>
+  <Style ss:ID="s39">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Bottom"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"/>
+   </Borders>
+   <Font ss:FontName="Arial" x:Family="Swiss" ss:Size="11" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s41">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font ss:FontName="Arial" x:Family="Swiss" ss:Size="11" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s42">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font ss:FontName="Arial" x:Family="Swiss" ss:Size="11" ss:Color="#000000"
+    ss:Bold="1"/>
+   <!--<NumberFormat ss:Format="Short Date"/>-->
+  </Style>
+  <Style ss:ID="s43">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"/>
+   </Borders>
+   <Font ss:FontName="Arial" x:Family="Swiss" ss:Size="11" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="Sheet1">
+  <Table ss:ExpandedColumnCount="14" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultRowHeight="15">
+   <Column ss:Index="4" ss:AutoFitWidth="0" ss:Width="43.5" ss:Span="2"/>
+   <Column ss:Index="7" ss:AutoFitWidth="0" ss:Width="31.5"/>
+   <Column ss:AutoFitWidth="0" ss:Width="50.25"/>
+   <Column ss:AutoFitWidth="0" ss:Width="43.5" ss:Span="1"/>
+   <Row>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="19.5">
+    <Cell ss:MergeAcross="2" ss:StyleID="s37"><Data ss:Type="String">ABC Community College District</Data></Cell><Cell ss:StyleID='s16'/><Cell ss:StyleID='s16'/><Cell ss:StyleID='s16'/><Cell ss:StyleID='s16'/><Cell ss:StyleID='s16'/><Cell ss:StyleID='s16'/><Cell ss:StyleID='s16'/><Cell ss:MergeAcross='3' ss:StyleID='s41'><Data ss:Type='String' > Library Upgrades</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="19.5">
+    <Cell ss:MergeAcross="2" ss:StyleID="s38"/>
+    <Cell ss:MergeAcross="6" ss:MergeDown="1" ss:StyleID="m82239648"><Data
+      ss:Type="String">Request and Response Log</Data></Cell>
+    <Cell ss:StyleID="s16"/>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">Date:</Data></Cell>
+    <Cell ss:MergeAcross="1" ss:StyleID="s42"><Data ss:Type="String">10/22/2014</Data></Cell></Row><Row ss:AutoFitHeight='0' ss:Height='19.5'><Cell ss:MergeAcross='2' ss:StyleID='s39'><Data ss:Type='String'>Project No: 1546</Data></Cell>
+    <Cell ss:Index="11" ss:StyleID="s27"/>
+    <Cell ss:StyleID="s28"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:MergeAcross="1" ss:StyleID="s43"><Data ss:Type="String"></Data></Cell>
+   </Row>
+
+<Row ss:AutoFitHeight='0' ss:Height='19.5'><Cell ss:MergeAcross='2' ss:StyleID='s39'><Data ss:Type='String'>Contract Number:17545</Data></Cell><Cell ss:MergeAcross='2' ss:StyleID='s30'><Data ss:Type='String'>Install energy efficient windows. </Data></Cell><Cell ss:StyleID='s25'/><Cell ss:StyleID='s30' ss:MergeAcross='2'><Data ss:Type='String'>Brothers Construction</Data></Cell><Cell ss:StyleID='s30' ss:MergeAcross='2'><Data ss:Type='String'> : </Data></Cell><Cell ss:StyleID='s27'/></Row>
+ <Row ss:AutoFitHeight='0' ss:Height='18'><Cell ss:StyleID='s30'><Data ss:Type='String' >RFI-17545-001</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30b'><Data ss:Type='String' >Status: Rev-2:Orig Response Provided         Originator: Vladi Putin</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Issue:</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 6/17/2014 - Required By: 10/28/2014 ] &#10;Original request for information</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) No Response For This Request</Data></Cell></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Rev - 1</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 6/17/2014Required By: 7/7/2014 ] &#10;This is revision #1</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) No Response For This Request</Data></Cell></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Rev - 2</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 6/17/2014Required By: 7/7/2014 ] &#10;This is revision #2</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) [ Responded On 7/1/2014 ]&#10; [ Mac McGinnis ]&#10;Original response to revision #2</Data></Cell></Row> <Row ss:AutoFitHeight='0' ss:Height='18'><Cell ss:StyleID='s30'><Data ss:Type='String' >RFI-17545-002</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30b'><Data ss:Type='String' >Status: Pending         Originator: Thomas Jefferson</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Issue:</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 6/23/2014 - Required By: 10/28/2014 ] &#10;Original question</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) No Response For This Request</Data></Cell></Row> <Row ss:AutoFitHeight='0' ss:Height='18'><Cell ss:StyleID='s30'><Data ss:Type='String' >RFI-17545-003</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30b'><Data ss:Type='String' >Status: Orig Response Provided         Originator: Joe Nameth</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Issue:</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 6/28/2014 - Required By: 10/28/2014 ] &#10;This is an original question</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) [ Responded On 7/1/2014 ]&#10; [ Scott McKown ]&#10;This is the original response</Data></Cell></Row>
+<Row ss:AutoFitHeight='0' ss:Height='19.5'><Cell ss:MergeAcross='2' ss:StyleID='s39'><Data ss:Type='String'>Contract Number:17546</Data></Cell><Cell ss:MergeAcross='2' ss:StyleID='s30'><Data ss:Type='String'>Run water pipe into the atrium for plant watering. </Data></Cell><Cell ss:StyleID='s25'/><Cell ss:StyleID='s30' ss:MergeAcross='2'><Data ss:Type='String'>Joe's Plumbing</Data></Cell><Cell ss:StyleID='s30' ss:MergeAcross='2'><Data ss:Type='String'> : </Data></Cell><Cell ss:StyleID='s27'/></Row>
+ <Row ss:AutoFitHeight='0' ss:Height='18'><Cell ss:StyleID='s30'><Data ss:Type='String' >RFI-17546-001</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30b'><Data ss:Type='String' >Status: Pending         Originator: Jerry Garcia</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Issue:</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 6/18/2014 - Required By: 10/28/2014 ] &#10;original question</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) No Response For This Request</Data></Cell></Row> <Row ss:AutoFitHeight='0' ss:Height='18'><Cell ss:StyleID='s30'><Data ss:Type='String' >RFI-17546-002</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30b'><Data ss:Type='String' >Status: Closed         Originator: Scott McKool</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Issue:</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 10/13/2014 - Required By: 10/22/2014 ] &#10;This is an original question</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) [ Responded On 10/13/2014 ]&#10; [ Mac McGinnis ]&#10;This is a response to the original question</Data></Cell></Row> <Row ss:AutoFitHeight='0' ss:Height='18'><Cell ss:StyleID='s30'><Data ss:Type='String' >RFI-17546-003</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30b'><Data ss:Type='String' >Status: Unassigned         Originator: Scott McKool</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Issue:</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 10/15/2014 - Required By: 10/20/2014 ] &#10;This is a new RFI to see if this stuff works. This will be a clairification situation.</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) No Response For This Request</Data></Cell></Row> <Row ss:AutoFitHeight='0' ss:Height='18'><Cell ss:StyleID='s30'><Data ss:Type='String' >RFI-17546-004</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30b'><Data ss:Type='String' >Status: Closed         Originator: Scott McKool</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Issue:</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 10/22/2014 - Required By: 10/28/2014 ] &#10;What is the difference between a bird?</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) [ Responded On 10/22/2014 ]&#10; [ Ryan Lamb ]&#10;This is stupid. Try asking in a new RFI.</Data></Cell></Row>
+<Row ss:AutoFitHeight='0' ss:Height='19.5'><Cell ss:MergeAcross='2' ss:StyleID='s39'><Data ss:Type='String'>Contract Number:17547</Data></Cell><Cell ss:MergeAcross='2' ss:StyleID='s30'><Data ss:Type='String'>Tile main entry way and counter walkway. </Data></Cell><Cell ss:StyleID='s25'/><Cell ss:StyleID='s30' ss:MergeAcross='2'><Data ss:Type='String'>Mini Me Tile</Data></Cell><Cell ss:StyleID='s30' ss:MergeAcross='2'><Data ss:Type='String'> : </Data></Cell><Cell ss:StyleID='s27'/></Row>
+ <Row ss:AutoFitHeight='0' ss:Height='18'><Cell ss:StyleID='s30'><Data ss:Type='String' >RFI-17547-001</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30b'><Data ss:Type='String' >Status: Rev-1:Orig Response Provided         Originator: Mary  Barry</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Issue:</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 6/18/2014 - Required By: 10/28/2014 ] &#10;Original request</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) No Response For This Request</Data></Cell></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Rev - 1</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 6/18/2014Required By: 6/23/2014 ] &#10;revision #1 request</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) [ Responded On 6/24/2014 ]&#10; [ Mac McGinnis ]&#10;Response for revision #1</Data></Cell></Row> <Row ss:AutoFitHeight='0' ss:Height='18'><Cell ss:StyleID='s30'><Data ss:Type='String' >RFI-17547-002</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30b'><Data ss:Type='String' >Status: Pending         Originator: Mary  Barry</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Issue:</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 6/20/2014 - Required By: 10/26/2014 ] &#10;Original question or request</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) No Response For This Request</Data></Cell></Row>
+<Row ss:AutoFitHeight='0' ss:Height='19.5'><Cell ss:MergeAcross='2' ss:StyleID='s39'><Data ss:Type='String'>Contract Number:17548</Data></Cell><Cell ss:MergeAcross='2' ss:StyleID='s30'><Data ss:Type='String'>Remove old walkway and prep for new cement walkway. </Data></Cell><Cell ss:StyleID='s25'/><Cell ss:StyleID='s30' ss:MergeAcross='2'><Data ss:Type='String'>Lyon Construction</Data></Cell><Cell ss:StyleID='s30' ss:MergeAcross='2'><Data ss:Type='String'> : </Data></Cell><Cell ss:StyleID='s27'/></Row>
+ <Row ss:AutoFitHeight='0' ss:Height='18'><Cell ss:StyleID='s30'><Data ss:Type='String' >RFI-17548-001</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30b'><Data ss:Type='String' >Status: Orig Response Provided         Originator: Jessie James</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Issue:</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 6/18/2014 - Required By: 10/28/2014 ] &#10;Original request for information</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) [ Responded On 6/20/2014 ]&#10; [ Jerry Garcia ]&#10;This is an original response from a GC</Data></Cell></Row>
+<Row ss:AutoFitHeight='0' ss:Height='19.5'><Cell ss:MergeAcross='2' ss:StyleID='s39'><Data ss:Type='String'>Contract Number:17549</Data></Cell><Cell ss:MergeAcross='2' ss:StyleID='s30'><Data ss:Type='String'>basic plumbing install in bathroom refinish. </Data></Cell><Cell ss:StyleID='s25'/><Cell ss:StyleID='s30' ss:MergeAcross='2'><Data ss:Type='String'>Joe's Plumbing</Data></Cell><Cell ss:StyleID='s30' ss:MergeAcross='2'><Data ss:Type='String'> : </Data></Cell><Cell ss:StyleID='s27'/></Row>
+ <Row ss:AutoFitHeight='0' ss:Height='18'><Cell ss:StyleID='s30'><Data ss:Type='String' >RFI-17549-001</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30b'><Data ss:Type='String' >Status: Unassigned         Originator: Jerry Garcia</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Issue:</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 6/18/2014 - Required By: 10/28/2014 ] &#10;this is an original question</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) No Response For This Request</Data></Cell></Row> <Row ss:AutoFitHeight='0' ss:Height='18'><Cell ss:StyleID='s30'><Data ss:Type='String' >RFI-17549-002</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30b'><Data ss:Type='String' >Status: Orig Response Provided         Originator: Scott McKool</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Issue:</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 10/14/2014 - Required By: 10/21/2014 ] &#10;This is an original question for example #2.</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) [ Responded On 10/16/2014 ]&#10; [ Scott McKown ]&#10;Answer</Data></Cell></Row>
+<Row ss:AutoFitHeight='0' ss:Height='19.5'><Cell ss:MergeAcross='2' ss:StyleID='s39'><Data ss:Type='String'>Contract Number:17550</Data></Cell><Cell ss:MergeAcross='2' ss:StyleID='s30'><Data ss:Type='String'>Buildout room divider on the ground floor </Data></Cell><Cell ss:StyleID='s25'/><Cell ss:StyleID='s30' ss:MergeAcross='2'><Data ss:Type='String'>Brothers Construction</Data></Cell><Cell ss:StyleID='s30' ss:MergeAcross='2'><Data ss:Type='String'> : </Data></Cell><Cell ss:StyleID='s27'/></Row>
+ <Row ss:AutoFitHeight='0' ss:Height='18'><Cell ss:StyleID='s30'><Data ss:Type='String' >RFI-17550-001</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30b'><Data ss:Type='String' >Status: Pending         Originator: Thomas Jefferson</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Issue:</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 6/23/2014 - Required By: 10/28/2014 ] &#10;Original question</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) No Response For This Request</Data></Cell></Row> <Row ss:AutoFitHeight='0' ss:Height='18'><Cell ss:StyleID='s30'><Data ss:Type='String' >RFI-17550-002</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30b'><Data ss:Type='String' >Status: Unassigned         Originator: Thomas Jefferson</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Issue:</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 6/23/2014 - Required By: 10/28/2014 ] &#10;New RFI with an original question</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) No Response For This Request</Data></Cell></Row> <Row ss:AutoFitHeight='0' ss:Height='18'><Cell ss:StyleID='s30'><Data ss:Type='String' >RFI-17550-003</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30b'><Data ss:Type='String' >Status: Unassigned         Originator: Vladi Putin</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Issue:</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 6/23/2014 - Required By: 10/26/2014 ] &#10;New RFI original question</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) No Response For This Request</Data></Cell></Row>
+
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Layout x:Orientation="Landscape"/>
+    <Header x:Margin="0.3"/>
+    <Footer x:Margin="0.3"/>
+    <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+   </PageSetup>
+   <Print>
+    <ValidPrinterInfo/>
+    <HorizontalResolution>600</HorizontalResolution>
+    <VerticalResolution>600</VerticalResolution>
+   </Print>
+   <Selected/>
+   <Panes>
+    <Pane>
+     <Number>3</Number>
+     <ActiveRow>8</ActiveRow>
+     <ActiveCol>1</ActiveCol>
+     <RangeSelection>R9C2:R9C7</RangeSelection>
+    </Pane>
+   </Panes>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+</Workbook>

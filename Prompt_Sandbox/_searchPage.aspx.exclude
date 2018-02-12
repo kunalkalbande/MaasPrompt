@@ -1,0 +1,682 @@
+<%@ Page Language="VB" EnableViewState="true" %>
+
+<%@ Import Namespace="System.Data.SqlClient" %>
+<%@ Import Namespace="System.Web.Services" %>
+<%@ Import Namespace="Prompt" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
+<script runat="server">
+   
+    Private bReadOnly As Boolean = True
+    Private nProjectID As Integer = 0
+    Private nCollegeID As Integer = 0
+    Private nContractID As Integer = 0
+    Private nCriteria As String = ""
+    Private collegeSearchID As String = ""
+    Private xUserID As Integer = 0
+    Private nWildCard As Boolean = False
+
+    
+    Protected Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs)
+        Using db As New promptUserPrefs
+            db.SaveGridSettings(RadGrid1, "SearchGridSettings", "ProjectID", nProjectID)
+        End Using
+    End Sub
+    
+    Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs)
+        nProjectID = Request.QueryString("ProjectID")
+        'set security
+        Using dbsec As New EISSecurity
+            dbsec.ProjectID = nProjectID
+            If dbsec.FindUserPermission("EnableSearch", "write") Then
+                bReadOnly = False
+            Else
+                bReadOnly = True
+            End If
+        End Using
+        
+    End Sub
+    
+    
+   
+    
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        
+
+        ProcLib.CheckSession(Page)
+
+        'set up help button
+        Session("PageID") = "EnableSearch"
+
+        Using dbsa As New promptForms
+            Dim xLoginID As String = Trim(HttpContext.Current.Session("LoginID"))
+            xUserID = dbsa.getUserID(xLoginID)
+        End Using
+
+            
+        nCriteria = searchBox.Text
+
+        searchBox.ShowDropDownOnTextboxClick = False
+        'Set Grid Properties
+        With RadGrid1
+            .EnableEmbeddedSkins = False
+            .Skin = "Prompt"
+            .GroupingEnabled = True
+            .AllowSorting = True
+
+            .ClientSettings.AllowColumnsReorder = True
+            .ClientSettings.ColumnsReorderMethod = GridClientSettings.GridColumnsReorderMethod.Reorder
+            .ClientSettings.Scrolling.AllowScroll = True
+            .ClientSettings.Scrolling.ScrollHeight = Unit.Percentage(50)
+            .ClientSettings.Scrolling.UseStaticHeaders = True
+            .ClientSettings.Resizing.AllowColumnResize = True
+
+            .MasterTableView.EnableHeaderContextMenu = True
+            .MasterTableView.TableLayout = GridTableLayout.Fixed
+            .MasterTableView.AllowMultiColumnSorting = False
+
+            .Height = Unit.Pixel(425)
+            .ExportSettings.FileName = "PromptCompaniesListExport"
+            .ExportSettings.OpenInNewWindow = True
+            .ExportSettings.Pdf.PageTitle = "PROMPT Search List"
+            
+        End With
+        Me.form2.Controls.Add(RadGrid1) 'added to prevent viewstate loading error
+        
+        BuildMenu()
+        
+        If searchBox.Text = "" Then
+            RadGrid1.DataSource = String.Empty
+        End If
+        
+        
+        
+        If Not IsPostBack Then
+            RadGrid1.DataSource = String.Empty
+            RadGrid1.MasterTableView.NoMasterRecordsText = "<blockquote style='font-size:14px;'><br> Please enter a search phrase, or switch to Wildcard to search by keywords. Press enter to begin your search.</blockquote>"
+        End If
+        
+    End Sub
+    
+
+    Protected Sub RadGrid1_NeedDataSource(sender As Object, ByVal e As Telerik.Web.UI.GridNeedDataSourceEventArgs) Handles RadGrid1.NeedDataSource
+        'loads the grid whenever it needs data (sorting, rebinding, etc...)
+        If tglWildCard.Checked = True Then
+            nWildCard = True
+        Else
+            nWildCard = False
+        End If
+        nCriteria = searchBox.Text
+      
+        If searchBox.Text <> String.Empty Then
+            Using db As New promptSearch
+                TryCast(sender, RadGrid).DataSource = db.GetSearchList(nCriteria, Session("DistrictID"), xUserID, nWildCard)
+            End Using
+            
+        End If
+        If RadGrid1.MasterTableView.NoMasterRecordsText <> String.Empty Then
+            If nWildCard = True Then
+                RadGrid1.MasterTableView.NoMasterRecordsText = "<blockquote style='font-size:14px;'><br> No results found for <strong>" & nCriteria & "</strong>, please check your keyword(s) and try again. Or try  <span style='color:Red;font-weight:bold;'>Search by Phrase</span> to narrow your results</blockquote>"
+                
+            Else
+                RadGrid1.MasterTableView.NoMasterRecordsText = "<blockquote style='font-size:14px;'><br>No results found for <strong>" & nCriteria & "</strong>, please check your Search by Phrase and try again.  Or try a <span style='color:Red;font-weight:bold;'>Wildcard Search</span>  to expand your search by keywords.</blockquote>"
+            End If
+        End If
+
+    End Sub
+    
+    Protected Sub RadGrid1_ItemCreated(ByVal sender As Object, ByVal e As Telerik.Web.UI.GridItemEventArgs) Handles RadGrid1.ItemCreated
+        'This event allows us to customize the cell contents - fired before databound
+        Dim file As String = ""
+        Dim location As String = ""
+        Dim mFilePath As String = ""
+        If (TypeOf e.Item Is GridDataItem) Then
+            Dim item As GridDataItem = CType(e.Item, GridDataItem)
+            Dim nTargetID As Integer = item.OwnerTableView.DataKeyValues(item.ItemIndex)("TargetID")
+            'David D 8/14/17 added below to pull the FormFileName
+            Dim mData As DataTable
+            Using db As New promptSearch
+                mData = db.GetSearchList(nCriteria, Session("DistrictID"), xUserID, nWildCard)
+                file = mData.Rows(0).Item("FileName")
+                'location = mData.Rows(0).Item("Location")
+                'mFilePath = mData.Rows(0).Item("FilePath")
+            End Using
+            
+            Dim sFileName As String = ProcLib.CheckNullDBField(item.OwnerTableView.DataKeyValues(item.ItemIndex)("FileName"))
+            Dim sDocumentDate As String = ProcLib.CheckNullDBField(item.OwnerTableView.DataKeyValues(item.ItemIndex)("LastUpdateOn"))
+            Dim sLocation As String = ProcLib.CheckNullDBField(item.OwnerTableView.DataKeyValues(item.ItemIndex)("Location"))
+            Dim sFilePath As String = ProcLib.CheckNullDBField(item.OwnerTableView.DataKeyValues(item.ItemIndex)("FilePath"))
+            nContractID = ProcLib.CheckNullDBField(item.OwnerTableView.DataKeyValues(item.ItemIndex)("ContractID"))
+            nProjectID = ProcLib.CheckNullDBField(item.OwnerTableView.DataKeyValues(item.ItemIndex)("ProjectID"))
+            nCollegeID = ProcLib.CheckNullDBField(item.OwnerTableView.DataKeyValues(item.ItemIndex)("CollegeID"))
+            Dim nTargetType As String = ProcLib.CheckNullDBField(item.OwnerTableView.DataKeyValues(item.ItemIndex)("ContentType"))
+            
+            'update the link button to open form edit window
+            Dim linkButton As HyperLink
+            If bReadOnly Then
+                item("Location").Controls.Clear()
+                item("Location").Text = location 'no link to edit
+            Else
+                linkButton = CType(item("Location").Controls(0), HyperLink)
+                linkButton.Attributes("onclick") = "return goThere('" & nTargetType.ToLower & "'," & nContractID & "," & nProjectID & "," & nCollegeID & ");"
+            End If
+            If file <> String.Empty Then
+                'Note: These do not use rad windows as they are external opens
+                Dim curUl As String = (HttpContext.Current.Request.Url.Host).ToString()
+                Dim port As String = (HttpContext.Current.Request.Url.Port).ToString()
+                Dim protocal As String = ConfigurationManager.AppSettings("Protocol")
+        
+                Dim sFolderPath As String = ProcLib.GetCurrentRelativeAttachmentPath() & sFilePath
+        
+                Dim path As String
+                If protocal = "https://" Then
+                    path = "<a target='blank' href='https://" & curUl & "/" & sFolderPath
+                Else
+                    If port = "" Then
+                        curUl = curUl & "/"
+                    Else
+                        curUl = curUl & ":" & port & "/"
+                    End If
+                    path = "<a target='blank' href='http://" & curUl & sFolderPath
+                End If
+            
+            
+                Dim linkButton2 As HyperLink = CType(item("FileName").Controls(0), HyperLink)
+                linkButton2.ToolTip = "Show Current Files."
+                linkButton2.NavigateUrl = sFolderPath & sFileName
+                linkButton2.Target = "_new"
+               
+            Else            'remove the hyperlink and just display none
+                item("FileName").Controls.Clear()
+                item("FileName").Text = file
+            End If
+        End If
+        
+        'If TypeOf e.Item Is GridPagerItem Then
+        '    Dim pager As GridPagerItem = DirectCast(e.Item, GridPagerItem)
+        '    TryCast(TryCast(e.Item, GridPagerItem).FindControl("PageSizeComboBox"), RadComboBox).Skin = "Metro"
+        '    TryCast(TryCast(e.Item, GridPagerItem).FindControl("PageSizeComboBox"), RadComboBox).EnableEmbeddedSkins = "True"
+        'End If
+ 
+        'If TypeOf e.Item Is GridPagerItem Then
+        '    Dim pager As GridPagerItem = DirectCast(e.Item, GridPagerItem)
+        '    Dim PageSizeComboBox As RadComboBox = DirectCast(pager.FindControl("PageSizeComboBox"), RadComboBox)
+        '    PageSizeComboBox.OnClientDropDownOpening = "changePagerComboBoxColor"
+        'End If
+            
+        
+    End Sub
+    
+    Private Sub BuildMenu()
+        
+        If Not IsPostBack Then          'Configure Tool Bar
+            
+            With RadMenu1
+                .EnableEmbeddedSkins = False
+                .Skin = "Prompt"
+                .Width = Unit.Percentage(100)
+                .EnableOverlay = False
+                .OnClientItemClicking = "OnClientItemClicking"
+                .CollapseAnimation.Duration = "300"
+                .CollapseAnimation.Type = AnimationType.InOutExpo
+                .ExpandAnimation.Duration = "300"
+                .ExpandAnimation.Type = AnimationType.InOutExpo
+                If searchBox.Visible = True Then
+                    .Style.Add("width", "105px")
+                End If
+            End With
+            'build buttons
+            Dim but As RadMenuItem
+                
+            but = New RadMenuItem
+            With but
+
+                .PostBack = False
+                If bReadOnly = True Then
+                    .Visible = False
+                    .Enabled = False
+                Else
+                    .Visible = True
+                    .Text = "Search"
+                    .ImageUrl = "images/view.png"
+                    .Attributes("OnItemClick") = "searchButton_Click"
+                    .ToolTip = "Search Prompt."
+                    .Enabled = False
+                    .Visible = False
+                End If
+            End With
+            RadMenu1.Items.Add(but)
+            
+            Dim butDropDown As New RadMenuItem
+            With butDropDown
+                .Text = "Export"
+                .ImageUrl = "images/data_down.png"
+                .PostBack = False
+            End With
+            
+            'Add sub items
+            Dim butSub As New RadMenuItem
+            With butSub
+                .Text = "Export To Excel"
+                .Value = "ExportExcel"
+                .Attributes("CancelAjax") = "Y"   'NOTE: This is needed to cancel ajax call and do regular postback as grid export to pdf/execl does not work with ajax
+                .ImageUrl = "images/excel.gif"
+                .PostBack = True
+            End With
+            butDropDown.Items.Add(butSub)
+            
+            butSub = New RadMenuItem
+            With butSub
+                .Text = "Export To PDF"
+                .Value = "ExportPDF"
+                .Attributes("CancelAjax") = "Y"   'NOTE: This is needed to cancel ajax call and do regular postback as grid export to pdf/execl does not work with ajax
+                .ImageUrl = "images/prompt_pdf.gif"
+                .PostBack = True
+            End With
+            butDropDown.Items.Add(butSub)
+            'RadMenu1.Items.Add(butDropDown)
+ 
+            butDropDown = New RadMenuItem
+            With butDropDown
+                .Text = "Print"
+                .ImageUrl = "images/printer.png"
+                .PostBack = False
+            End With
+                           
+            but = New RadMenuItem
+            but.IsSeparator = True
+            RadMenu1.Items.Add(but)
+            
+            'Add grid configurator       
+            Dim butConfig As New RadMenuItem
+            With butConfig
+                .Text = "Preferences"
+                .ImageUrl = "images/gear.png"
+                .PostBack = False
+            End With
+            RadMenu1.Items.Add(butConfig)
+            
+            'Add sub items
+            Dim butConfigSub As New RadMenuItem
+            With butConfigSub
+                .Text = "Visible Columns"
+                .ImageUrl = "images/column_preferences.png"
+                .PostBack = False
+            End With
+            
+            'Load the avaialble columns as checkbox items
+            For Each col As GridColumn In RadGrid1.Columns
+             
+                Dim butCol As New RadMenuItem
+                With butCol
+                    .Text = col.HeaderText
+                    .Value = "ColumnVisibility"
+                    If col.Visible = True Then
+                        .ImageUrl = "images/check2.png"
+                        .Attributes("Visibility") = "On"
+                    Else
+                        .ImageUrl = ""
+                        .Attributes("Visibility") = "Off"
+                    End If
+                        
+                    .Attributes("ID") = col.UniqueName
+                End With
+                butConfigSub.Items.Add(butCol)
+             
+ 
+            Next
+            butConfig.Items.Add(butConfigSub)
+            
+            'Add sub items
+            butConfigSub = New RadMenuItem
+            With butConfigSub
+                .Text = "Restore Default Settings"
+                .Value = "RestoreDefaultSettings"
+                .ImageUrl = "images/gear_refresh.png"
+            End With
+            butConfig.Items.Add(butConfigSub)
+        End If
+
+    End Sub
+    
+    Protected Sub RadMenu1_ItemClick(ByVal sender As Object, ByVal e As Telerik.Web.UI.RadMenuEventArgs)
+       
+        Dim btn As RadMenuItem = e.Item
+        
+        Select Case btn.Value
+            
+            Case "ExportExcel"
+                'RadGrid1.Columns.FindByUniqueName("Attachments").Visible = False
+                RadGrid1.MasterTableView.ExportToExcel()
+                
+            Case "ExportPDF"
+                'RadGrid1.Columns.FindByUniqueName("Attachments").Visible = False
+                For Each item As GridItem In RadGrid1.MasterTableView.Items
+                    If TypeOf item Is GridDataItem Then
+                        Dim dataItem As GridDataItem = CType(item, GridDataItem)
+                        Dim lnk As HyperLink = CType(dataItem("FileName").Controls(0), HyperLink)
+                        lnk.NavigateUrl = ""
+                    End If
+                Next
+                RadGrid1.MasterTableView.ExportToPdf()
+            
+            Case "ColumnVisibility"
+                If btn.Attributes("Visibility") = "Off" Then
+                    btn.ImageUrl = "images/check2.png"
+                    btn.Attributes("Visibility") = "On"
+                    RadGrid1.Columns.FindByUniqueName(btn.Attributes("ID")).Visible = True
+                Else
+                    btn.ImageUrl = ""
+                    btn.Attributes("Visibility") = "Off"
+                    RadGrid1.Columns.FindByUniqueName(btn.Attributes("ID")).Visible = False
+                End If
+                Using db As New promptUserPrefs
+                    db.SaveGridColumnVisibility("SearchGridColumns", btn.Attributes("ID"), btn.Attributes("Visibility"), "ProjectID", nProjectID)
+                End Using
+                RadGrid1.Rebind()
+                
+            Case "RestoreDefaultSettings"
+                
+                Using db As New promptUserPrefs
+                    db.RemoveUserSavedSettings("SearchGridSettings", "ProjectID", nProjectID)
+                    db.RemoveUserSavedSettings("SearchGridColumns", "ProjectID", nProjectID)
+                End Using
+                Response.Redirect(Page.Request.RawUrl)
+
+        End Select
+    End Sub
+    
+    
+    Protected Sub searchButton_Click(ByVal sender As Object, ByVal e As EventArgs)
+        
+        If (String.IsNullOrEmpty(searchBox.Text)) Then
+            
+            'RadGrid1.DataSource = New String() {}
+            Response.Redirect(Page.Request.RawUrl)
+            If nWildCard = True Then
+                RadGrid1.MasterTableView.NoMasterRecordsText = "<blockquote style='color:Red;font-size:14px;'><br>Please enter keywords for Wildcard Search and click Enter.</blockquote>"
+                
+            Else
+                RadGrid1.MasterTableView.NoMasterRecordsText = "<blockquote style='color:Red;font-size:14px;'><br> Please enter a Phrase to search and click Enter.</blockquote>"
+            End If
+            
+            
+        Else
+            
+            nCriteria = searchBox.Text
+            If tglMatchPhrase.Checked = True Then
+                nWildCard = False
+            Else
+                nWildCard = True
+            End If
+            
+            
+            RadGrid1.Rebind()
+            
+        End If
+        
+    End Sub
+</script>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <title>Search</title>
+    <script type="text/javascript">
+    
+        function changePagerComboBoxColor(sender, eventArgs) {
+            var dropDownDiv = sender.get_dropDownElement();
+            dropDownDiv.style.backgroundColor = "white";
+        }
+
+        function goThere(targetType, targetID, ProjectID, CollegeID) {
+            var theTree = parent.getTreeObject();
+            switch (targetType) {
+                case 'attachments':
+                case 'transactions':
+                    if (targetID != 0) {
+                        var theNode = theTree.findNodeByAttribute("ContractID", targetID);
+                        ExpandParentNodes(theNode);
+                        window.open(targetType + ".aspx?view=contract&ContractID=" + targetID + "&ProjectID=" + ProjectID + "&CollegeID=" + CollegeID + "&t=y", "ctl00_mainBody_contentPane");
+                        break;
+                    } else if (ProjectID != 0) {
+                        var theNode = theTree.findNodeByAttribute("ProjectID", ProjectID);
+                        ExpandParentNodes(theNode);
+                        if (theNode.get_level() > 0) {
+                            theNode.expand();
+                        }
+                        window.open(targetType + ".aspx?view=project&ProjectID=" + ProjectID + "&CollegeID=" + CollegeID + "&t=y", "ctl00_mainBody_contentPane");
+                        break;
+                    } else if (CollegeID != 0) {
+                        var theNode = theTree.findNodeByAttribute("CollegeID", CollegeID);
+
+                        if (theNode.get_level() == 0) {
+                            theNode.expand();
+                        }
+
+                        window.open(targetType + ".aspx?view=college&CollegeID=" + CollegeID + "&t=y", "ctl00_mainBody_contentPane");
+
+                        break;
+                    }
+
+                default:
+                    alert('Unexpected target type: ' + targetType);
+                    break;
+            }
+        }
+
+
+        // expand the appropriate nodes to focus on the one in question
+        function ExpandParentNodes(node) {
+            if (node) {
+                var theParent = node.get_parent();
+                while (theParent.get_level() != 0) {
+                    theParent.expand();
+                    theParent = theParent.get_parent();
+                }
+                theParent.expand();
+                node.select();
+                //node.scrollIntoView(); // doesn't work!
+            }
+            else {
+                alert('Unable to navigate to the requested location. Please try your search again');
+            }
+        }
+
+        function HandleKeyPress(sender, e) {
+
+            if (e.get_domEvent().keyCode == 13) {
+                AddNewItem();
+            }
+        }
+    </script>
+    <link href="Styles.css" type="text/css" rel="stylesheet" />
+    <link href="styles_prompt_nav.css" rel="stylesheet" type="text/css" />
+    <link href="skins/Prompt/Grid.Prompt.css" rel="stylesheet" type="text/css" />
+    <link href="skins/Prompt/Menu.Prompt.css" rel="stylesheet" type="text/css" />
+    <link href="skins/Leftnav/TreeView.Leftnav.css" rel="stylesheet" type="text/css" />
+    <link href="skins/Leftnav/Menu.Leftnav.css" rel="stylesheet" type="text/css" />
+    <link href="skins/Topnav/Menu.Topnav.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .search_lbl
+        {
+            display: inline-block;
+            float: left;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+            padding: 12px 0 0 10px;
+            position: relative;
+            top: 3px;
+            width: 80%;
+            height: 36px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        .RadGrid1 .rgHoveredRow
+        {
+            background-color: Yellow !important;
+        }
+        
+        .RadComboBoxDropDown_Prompt
+       {
+           background-color: White !important;
+       }
+       .RadComboBoxDropDown_Prompt .rcbHovered
+       {
+           background-color: #ffff80 !important;
+       }
+
+    </style>
+</head>
+<body>
+    <form id="form2" runat="server">
+    <telerik:RadScriptManager ID="RadScriptManager1" runat="server" />
+    <telerik:RadWindowManager ID="contentPopup" runat="server" />
+    <telerik:RadSkinManager ID="RadSkinManager1" runat="server" ShowChooser="false" />
+    <telerik:RadAjaxManager ID="RadAjaxManager1" runat="server" Visible=true>
+        <AjaxSettings>
+            <telerik:AjaxSetting AjaxControlID="RadGrid1">
+                <UpdatedControls>
+                    <telerik:AjaxUpdatedControl UpdatePanelRenderMode="Block" ControlID="RadGrid1" LoadingPanelID="RadAjaxLoadingPanel1"
+                        UpdatePanelHeight="100px" />
+                </UpdatedControls>
+            </telerik:AjaxSetting>
+            <telerik:AjaxSetting AjaxControlID="searchButton">
+                <UpdatedControls>
+                    <telerik:AjaxUpdatedControl UpdatePanelRenderMode="Block" ControlID="RadGrid1" LoadingPanelID="RadAjaxLoadingPanel1" />
+                </UpdatedControls>
+            </telerik:AjaxSetting>
+        </AjaxSettings>
+    </telerik:RadAjaxManager>
+    <telerik:RadAjaxLoadingPanel ID="RadAjaxLoadingPanel1" InitialDelayTime="0" MinDisplayTime="1000"
+        Skin="Sitefinity" runat="server" EnableSkinTransparency="true" Transparency="0"
+        BackgroundPosition="center">
+        <img alt="Searching Prompt..." style="position: absolute; border: 0px; color: #000;
+            font-weight: bolder; margin-top: 180px; margin-left: -100px; font-size: 18px;
+            font-family: arial black" />
+    </telerik:RadAjaxLoadingPanel>
+    <div id="divTitle" class="title" runat="server">
+        <div id="divInnerTube" class="innertube" runat="server">
+            <asp:Label ID="lblPageTitle" runat="server" CssClass="search_lbl">Search</asp:Label>
+            <telerik:RadMenu ID="RadMenu1" runat="server" OnItemClick="RadMenu1_ItemClick" Style="display: inline-block;
+                z-index: 10; clear: both; float: right; position: sticky; width: 195px; right: -1px;
+                margin-top: -30px;" />
+            <br />
+            <br class="clear" />
+            <!--Start Search Box and Search Button-->
+            <div id="searchControls" runat="server" style="z-index: 980; position: absolute;
+                float: left; margin-left: 30%; width: 400px; height: 10px; margin-top: -5px">
+                <telerik:RadComboBox ID="searchBox" Skin="Metro" runat="server" ShowToggleImage="false"
+                    Height="100%" Width="250" DropDownWidth="300" ShowMoreResultsBox="false" EmptyMessage="Search Prompt"
+                    BackColor="White" EnableAjaxSkinRendering="true" MaxLength="30" HighlightTemplatedItems="false"
+                    EnableLoadOnDemand="false" Filter="StartsWith" OnClientKeyPressing="HandleKeyPress"
+                    Style="z-index: 1002; position: absolute; float: left; margin-top: -30px;">
+                </telerik:RadComboBox>
+                <telerik:RadButton runat="server" Skin="Metro" ID="searchButton" AutoPostBack="true"
+                    Text="" RenderMode="Lightweight" OnClick="searchButton_Click" Style="z-index: 1003;
+                    position: absolute; float: left; margin-top: -29px; margin-left: 54%; padding: 0px;
+                    height: 0px; width: 0px; border: none;">
+                    <Icon PrimaryIconCssClass="rbSearch" PrimaryIconHeight="17px" />
+                </telerik:RadButton>
+                <telerik:RadButton RenderMode="Lightweight" ID="tglMatchPhrase" runat="server" Skin="Metro"
+                    ButtonType="ToggleButton" ToggleType="Radio" Checked="true" AutoPostBack="false"
+                    BorderWidth="0" BackColor="transparent" GroupName="Radio" Text="Search by Phrase"
+                    Style="z-index: 1004; position: absolute; float: left; margin-top: -30px; margin-left: 65%;
+                    width: 100px; height: 10px;">
+                </telerik:RadButton>
+                <telerik:RadButton RenderMode="Lightweight" ID="tglWildCard" runat="server" Skin="Metro"
+                    ButtonType="ToggleButton" ToggleType="Radio" AutoPostBack="false" BorderWidth="0"
+                    BackColor="transparent" GroupName="Radio" Text="Wildcard Search" Checked="false"
+                    Style="z-index: 1004; position: absolute; float: left; margin-top: -30px; margin-left: 95%;
+                    width: 100px; height: 10px;">
+                </telerik:RadButton>
+            </div>
+            <!--end Search Box and Search Button-->
+            
+        </div>
+    </div>
+    <telerik:RadGrid ID="RadGrid1" RenderMode="Lightweight" runat="server" AllowSorting="True" AutoGenerateColumns="false" OnNeedDataSource="RadGrid1_NeedDataSource"
+                GridLines="none" Width="99.5%" EnableAJAX="True" EnableAjaxSkinRendering="true">
+                <ClientSettings EnableRowHoverStyle="true">
+                    <Selecting AllowRowSelect="True" />
+                    <Scrolling AllowScroll="True" UseStaticHeaders="True" ScrollHeight="50%" SaveScrollPosition="true" />
+                </ClientSettings>
+                <MasterTableView runat="server" RenderMode="Lightweight" EnableViewState=false AllowPaging="true" PageSize="10" PagerStyle-Position="Bottom" PagerStyle-Mode=NextPrevAndNumeric
+                    PagerStyle-AlwaysVisible="true" Width="100%" HeaderStyle-Height="10px" HeaderStyle-Font-Size="Small"
+                    Height="10px" DataKeyNames="TargetID,CollegeID,ProjectID,ContractID,FilePath,FileName,LastUpdateOn,Location,FileType,ContentType,linked"
+                    NoMasterRecordsText="No results found for your search, please check your keyword(s) and try again.">
+                    <Columns>
+                        <telerik:GridHyperLinkColumn UniqueName="FileName" HeaderText="File Name" DataTextField="FileName"
+                            HeaderStyle-Font-Size="11px">
+                            <ItemStyle HorizontalAlign="Left" Width="30%" VerticalAlign="Top" Wrap="true" />
+                            <HeaderStyle HorizontalAlign="Left" Width="30%" />
+                        </telerik:GridHyperLinkColumn>
+                        <telerik:GridBoundColumn UniqueName="LastUpdateOn" HeaderText="Date Modified" DataField="LastUpdateOn"
+                            AllowSorting="true">
+                            <ItemStyle HorizontalAlign="Left" Width="15%" VerticalAlign="Top" Wrap="true" />
+                            <HeaderStyle HorizontalAlign="Left" Width="15%" Wrap="true" />
+                        </telerik:GridBoundColumn>
+                        <telerik:GridHyperLinkColumn UniqueName="Location" HeaderText="Location" DataTextField="Location"
+                            HeaderStyle-Font-Size="11px">
+                            <ItemStyle HorizontalAlign="Left" Width="35%" VerticalAlign="Top" Wrap="true" />
+                            <HeaderStyle HorizontalAlign="Left" Width="35%" />
+                        </telerik:GridHyperLinkColumn>
+                        <telerik:GridBoundColumn UniqueName="FileType" HeaderText="File Type" DataField="FileType"
+                            AllowSorting="true">
+                            <ItemStyle HorizontalAlign="Left" Width="15%" VerticalAlign="Top" Wrap="true" />
+                            <HeaderStyle HorizontalAlign="Left" Width="15%" Wrap="true" />
+                        </telerik:GridBoundColumn>
+                        <telerik:GridBoundColumn UniqueName="ContentType" HeaderText="Content Type" DataField="ContentType"
+                            AllowSorting="true">
+                            <ItemStyle HorizontalAlign="Left" Width="15%" VerticalAlign="Top" Wrap="true" />
+                            <HeaderStyle HorizontalAlign="Left" Width="15%" Wrap="true" />
+                        </telerik:GridBoundColumn>
+                    </Columns>
+                </MasterTableView>
+            </telerik:RadGrid>
+            <telerik:RadScriptBlock ID="RadScriptBlock1" runat="server">
+                <script type="text/javascript" language="javascript">
+                    function GetRadWindow() {
+                        var oWindow = null;
+                        if (window.RadWindow) oWindow = window.RadWindow;
+                        else if (window.frameElement.radWindow) oWindow = window.frameElement.radWindow;
+                        return oWindow;
+                    }
+
+                    // Begin ******************* Menu Handlers ***********************
+
+                    var sCancelAjax;    // flag to disable ajax for grid export functions
+
+                    function ajaxRequestStart(sender, args) {
+                        //Called when ajax request starts so we can disable for grid export controls.
+                        if (sCancelAjax == 'Y') {
+                            args.set_enableAjax(false);
+                        }
+                    }
+
+                    function ajaxRequestEnd(sender, args) {
+                        //Called when ajax request Ends.
+                        args.set_enableAjax(true);
+                    }
+
+                    function OnClientItemClicking(sender, args) {
+                        // set this var so that we can cancel ajax for grid export function
+                        var button = args.get_item();
+                        sCancelAjax = button.get_attributes().getAttribute("CancelAjax");
+                    }
+
+
+                    // End ******************* Menu Handlers ***********************
+
+
+
+                    /*David D 8/21/17 added this to refresh parent page if user clicks the red close button at the top right of pop-up radwindow*/
+                    function OnClientClose(sender, args) {
+                        //window.location.reload();//- will reload the page (equal to pressing F5)  
+                        window.location.href = window.location.href; // - will refresh the page by reloading the URL   
+                    }
+
+                </script>
+            </telerik:RadScriptBlock>
+    </form>
+</body>
+</html>

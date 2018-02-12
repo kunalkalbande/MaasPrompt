@@ -1,0 +1,11 @@
+</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Span="6"/>
+   <Row ss:Index="27" ss:AutoFitHeight="0" ss:Height="21.75">
+    <Cell ss:MergeAcross="3" ss:StyleID="s107"><Data ss:Type="String">CONTRACTOR's PROPOSED RESOLUTION:</Data></Cell>
+    <Cell ss:StyleID="s109"/>
+    <Cell ss:StyleID="s109"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:MergeAcross="5" ss:MergeDown="6" ss:StyleID="m40701440"><Data
+      ss:Type="String">

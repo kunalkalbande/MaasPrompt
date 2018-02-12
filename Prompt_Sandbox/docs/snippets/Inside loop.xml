@@ -1,0 +1,22 @@
+   <Row ss:AutoFitHeight="0" ss:Height="18">
+    <Cell ss:StyleID="s30"><Data ss:Type="String">RFI-6758-001</Data></Cell>
+    <Cell ss:StyleID="s30"/>
+    <Cell ss:StyleID="s30"/>
+    <Cell ss:StyleID="s30"/>
+    <Cell ss:StyleID="s30"/>
+    <Cell ss:StyleID="s30"/>
+    <Cell ss:StyleID="s30"/>
+    <Cell ss:StyleID="s30"/>
+    <Cell ss:StyleID="s30"/>
+    <Cell ss:StyleID="s30"/>
+    <Cell ss:StyleID="s30"/>
+    <Cell ss:StyleID="s30"/>
+    <Cell ss:StyleID="s30"/>
+    <Cell ss:StyleID="s30"/>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="111">
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Issue:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s36"><Data ss:Type="String">What is up with the paint? Check plan #34 at the 2nd level for required specifications and other information. Should we change the color on the walls or repaint the ceiling? Let us know if the scrubber machine is working properly.</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Answer:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) Answer #1:  This is the original answer that is stored in the RFIs table on the sql server right next to the other thing that rocks.&#10;&#10;2.)This is answer # 2 which we have to blab on because we have to see what this looks like in a multi-line environment.&#10;&#10;&#10;</Data></Cell>
+   </Row>

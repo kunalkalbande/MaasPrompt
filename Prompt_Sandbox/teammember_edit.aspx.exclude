@@ -1,0 +1,177 @@
+<%@ Page Language="vb" %>
+
+<%@ Import Namespace="Prompt" %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<script runat="server">
+    Public nTeamMemberID As Integer = 0
+    Public nProjectID As Integer = 0
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+        ProcLib.CheckSession(Page)
+
+        ProcLib.LoadPopupJscript(Page)
+
+        'set up help button
+        Session("PageID") = "ProjectTeamMemberEdit"
+        butHelp.Attributes.Add("onclick", "openPopup('help_view.aspx','pophelp',550,450,'yes');")
+        butHelp.NavigateUrl = "#"
+
+
+        nTeamMemberID = Request.QueryString("TeamMemberID")
+        nProjectID = Request.QueryString("ProjectID")
+        
+        
+        If Not IsPostBack Then   'only do the following post back
+            Using rs As New TeamMember
+                If nTeamMemberID = 0 Then    'add the new record
+                    butDelete.Visible = False
+                Else
+                    With rs
+                        .CallingPage = Page
+                        .GetTeamMemberForEdit(nTeamMemberID)
+                    End With
+
+                End If
+            End Using
+
+        End If
+        
+
+    End Sub
+
+
+    Private Sub butSave_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles butSave.Click
+        
+        Using rs As New TeamMember
+            With rs
+                .CallingPage = Page
+                .SaveTeamMember(nTeamMemberID, nProjectID)
+            End With
+        End Using
+        
+
+        ProcLib.CloseAndRefreshRAD(Page)
+    End Sub
+
+    Private Sub butDelete_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles butDelete.Click
+
+        'Dim msg As String = ""
+        'Using db As New ProjectManager
+        '    msg = db.DeletePM(nTeamMemberID)
+        'End Using
+        'If msg <> "" Then
+        '    Response.Redirect("delete_error.aspx?msg=" & msg)
+        'Else
+        '    Session("RtnFromEdit") = True
+        '    ProcLib.CloseAndRefreshRAD(Page)
+        'End If
+        
+        
+    End Sub
+
+</script>
+
+<html>
+<head>
+    <title>Team Member Edit</title>
+    <link href="Styles.css" type="text/css" rel="stylesheet" />
+
+    <script type="text/javascript" language="javascript">
+
+        function GetRadWindow() {
+            var oWindow = null;
+            if (window.RadWindow) oWindow = window.RadWindow;
+            else if (window.frameElement.radWindow) oWindow = window.frameElement.radWindow;
+            return oWindow;
+        }
+
+    </script>
+
+</head>
+<body>
+    <form id="Form1" method="post" runat="server">
+    <asp:Label ID="Label1" Style="z-index: 100; left: 11px; position: absolute; top: 10px;
+        height: 14px; width: 17px;" runat="server" EnableViewState="False">ID:</asp:Label>
+    <asp:ImageButton ID="butDelete" Style="z-index: 136; left: 368px; position: absolute;
+        top: 563px; height: 23px;" TabIndex="41" runat="server" 
+        ImageUrl="images/button_delete.gif">
+    </asp:ImageButton>
+    <asp:ImageButton ID="butSave" Style="z-index: 120; left: 38px; position: absolute;
+        top: 562px" TabIndex="40" runat="server" ImageUrl="images/button_save.gif"></asp:ImageButton>
+        
+        <asp:HyperLink ID="butHelp" runat="server" Style="z-index: 120; left: 423px; position: absolute;
+        top: 11px; height: 15px; bottom: 878px;" ImageUrl="images/button_help.gif">HyperLink</asp:HyperLink>
+        
+   
+    <asp:Label ID="Label15" Style="z-index: 117; left: 40px; position: absolute; top: 467px;
+        height: 19px;" runat="server" EnableViewState="False">Email:</asp:Label>
+    <asp:TextBox ID="txtEmail" Style="z-index: 131; left: 93px; position: absolute; top: 466px"
+        TabIndex="17" runat="server" Width="192px" CssClass="EditDataDisplay"></asp:TextBox>
+    <asp:TextBox ID="txtComments" Style="z-index: 130; left: 94px; position: absolute;
+        top: 501px; height: 48px; width: 365px;" TabIndex="19" runat="server" MaxLength="500"
+        TextMode="MultiLine" CssClass="EditDataDisplay"></asp:TextBox>
+    <asp:TextBox ID="txtFax" Style="z-index: 129; left: 95px; position: absolute; top: 432px"
+        TabIndex="16" runat="server" Width="120px" CssClass="EditDataDisplay"></asp:TextBox>
+    <asp:TextBox ID="txtExt" Style="z-index: 127; left: 279px; position: absolute; top: 325px;
+        width: 39px;" TabIndex="14" runat="server" CssClass="EditDataDisplay"></asp:TextBox>
+    <asp:TextBox ID="txtCell" Style="z-index: 127; left: 90px; position: absolute; top: 361px;
+        right: 1397px;" TabIndex="14" runat="server" Width="120px" CssClass="EditDataDisplay"></asp:TextBox>
+    <asp:TextBox ID="txtPhone1" Style="z-index: 127; left: 92px; position: absolute;
+        top: 325px; right: 1395px;" TabIndex="14" runat="server" Width="120px" CssClass="EditDataDisplay"></asp:TextBox>
+    <asp:TextBox ID="txtContact" Style="z-index: 126; left: 92px; position: absolute;
+        top: 290px" TabIndex="13" runat="server" Width="144px" 
+        CssClass="EditDataDisplay"></asp:TextBox>
+    <asp:TextBox ID="txtZip" Style="z-index: 125; left: 91px; position: absolute; top: 256px"
+        TabIndex="12" runat="server" Width="96px" CssClass="EditDataDisplay"></asp:TextBox>
+    <asp:TextBox ID="txtState" Style="z-index: 124; left: 94px; position: absolute; top: 218px"
+        TabIndex="11" runat="server" Width="64px" CssClass="EditDataDisplay"></asp:TextBox>
+    <asp:TextBox ID="txtCity" Style="z-index: 123; left: 93px; position: absolute; top: 187px"
+        TabIndex="9" runat="server" Width="144px" CssClass="EditDataDisplay"></asp:TextBox>
+    <asp:TextBox ID="txtAddress2" Style="z-index: 121; left: 92px; position: absolute;
+        top: 150px" TabIndex="8" runat="server" Width="248px" 
+        CssClass="EditDataDisplay"></asp:TextBox>
+    <asp:TextBox ID="txtAddress1" Style="z-index: 119; left: 95px; position: absolute;
+        top: 111px" TabIndex="7" runat="server" Width="248px" 
+        CssClass="EditDataDisplay"></asp:TextBox>
+    <asp:Label ID="Label14" Style="z-index: 118; left: 12px; position: absolute; top: 503px"
+        runat="server" EnableViewState="False">Comments:</asp:Label>
+    <asp:Label ID="Label12" Style="z-index: 115; left: 46px; position: absolute; top: 438px;
+        width: 16px;" runat="server" EnableViewState="False">Fax:</asp:Label>
+    <asp:Label ID="Label11" Style="z-index: 114; left: 32px; position: absolute; top: 403px;
+        height: 19px;" runat="server" EnableViewState="False">Phone2:</asp:Label>
+    <asp:Label ID="Label20" Style="z-index: 113; left: 27px; position: absolute; top: 332px;
+        right: 1537px;" runat="server" EnableViewState="False">Phone1:</asp:Label>
+    <asp:Label ID="Label19" Style="z-index: 113; left: 43px; position: absolute; top: 367px"
+        runat="server" EnableViewState="False">Cell:</asp:Label>
+    <asp:Label ID="Label10" Style="z-index: 113; left: 240px; position: absolute; top: 328px"
+        runat="server" EnableViewState="False">Ext:</asp:Label>
+    <asp:Label ID="Label9" Style="z-index: 112; left: 27px; position: absolute; top: 293px; height: 7px; right: 1535px;"
+        runat="server" EnableViewState="False">Contact:</asp:Label>
+    <asp:Label ID="Label8" Style="z-index: 111; left: 24px; position: absolute; top: 260px; height: 10px;"
+        runat="server" EnableViewState="False">ZipCode:</asp:Label>
+    <asp:Label ID="Label18" Style="z-index: 110; left: 38px; position: absolute; top: 224px;
+        height: 21px;" runat="server" EnableViewState="False">State:</asp:Label>
+    <asp:Label ID="Label6" Style="z-index: 109; left: 38px; position: absolute; top: 187px"
+        runat="server" EnableViewState="False">City:</asp:Label>
+    <asp:Label ID="Label5" Style="z-index: 108; left: 19px; position: absolute; top: 153px"
+        runat="server" EnableViewState="False">Address2:</asp:Label>
+    <asp:Label ID="Label4" Style="z-index: 107; left: 21px; position: absolute; top: 116px"
+        runat="server" EnableViewState="False">Address1:</asp:Label>
+    <asp:Label ID="Label21" Style="z-index: 105; left: 25px; position: absolute; top: 41px;
+        bottom: 848px;" runat="server" EnableViewState="False">Name:</asp:Label>
+    <asp:Label ID="Label2" Style="z-index: 105; left: 29px; position: absolute; top: 81px"
+        runat="server" EnableViewState="False">Title:</asp:Label>
+    <asp:Label ID="lblTeamMemberID" Style="z-index: 104; left: 46px; position: absolute; top: 11px"
+        runat="server">9999</asp:Label>
+    <asp:TextBox ID="txtTitle" Style="z-index: 102; left: 94px; position: absolute; top: 77px;
+        width: 182px;" runat="server" CssClass="EditDataDisplay"></asp:TextBox>
+    <asp:TextBox ID="txtName" Style="z-index: 102; left: 94px; position: absolute; top: 40px"
+        runat="server" Width="248px" CssClass="EditDataDisplay"></asp:TextBox>
+    <p>
+        <asp:TextBox ID="txtPhone2" Style="z-index: 128; left: 95px; position: absolute;
+            top: 398px" TabIndex="15" runat="server" Width="120px" CssClass="EditDataDisplay"></asp:TextBox>
+    </p>
+    </form>
+</body>
+</html>

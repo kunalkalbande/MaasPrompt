@@ -1,0 +1,38 @@
+<%@ Page Language="VB" MasterPageFile="~/prompt.master" Title="Welcome to Prompt" %>
+
+<%@ Register Assembly="Microsoft.ReportViewer.WebForms, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+    Namespace="Microsoft.Reporting.WebForms" TagPrefix="rsweb" %>
+
+
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
+<%@ Import Namespace="Prompt" %>
+
+<script runat="server">
+   
+   
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+
+     
+    End Sub
+    
+
+</script>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="mainBody" runat="Server">
+        
+    <rsweb:ReportViewer ID="ReportViewer1" runat="server" Font-Names="Verdana" 
+        Font-Size="8pt" Height="400px" Width="400px">
+        <LocalReport ReportPath="Report1.rdlc">
+            <DataSources>
+                <rsweb:ReportDataSource DataSourceId="ObjectDataSource1" 
+                    Name="ObjectsForSSRS" />
+            </DataSources>
+        </LocalReport>
+    </rsweb:ReportViewer>   
+         
+    <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" 
+        SelectMethod="GetPmBudgetItemObjects" TypeName="Prompt.x">
+    </asp:ObjectDataSource>
+         
+</asp:Content>

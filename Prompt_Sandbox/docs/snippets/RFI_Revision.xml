@@ -1,0 +1,32 @@
+ <Row ss:AutoFitHeight="0" ss:Span="5"/>
+   <Row ss:Index="43" ss:AutoFitHeight="0" ss:Height="21">
+    <Cell ss:StyleID="s115"><Data ss:Type="String">REVISION #1:</Data></Cell>
+    <Cell ss:StyleID="s109"/>
+    <Cell ss:StyleID="s116"><Data ss:Type="String">DATE:</Data></Cell>
+    <Cell ss:StyleID="s118"><Data ss:Type="DateTime">2014-03-24T00:00:00.000</Data></Cell>
+    <Cell ss:StyleID="s101"><Data ss:Type="String">Attachments:</Data></Cell>
+    <Cell ss:StyleID="s102"><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:MergeAcross="5" ss:MergeDown="6" ss:StyleID="m40701480"/>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Span="5"/>
+   <Row ss:Index="51" ss:AutoFitHeight="0" ss:Height="21.75">
+    <Cell ss:MergeAcross="3" ss:StyleID="s107"><Data ss:Type="String">PROPOSED RESOLUTION:</Data></Cell>
+    <Cell ss:StyleID="s109"/>
+    <Cell ss:StyleID="s109"/>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:MergeAcross="5" ss:MergeDown="6" ss:StyleID="s112"/>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Span="5"/>
+   <Row ss:Index="59" ss:AutoFitHeight="0" ss:Height="20.25">
+    <Cell ss:MergeAcross="1" ss:StyleID="s107"><Data ss:Type="String">RESPONSE:</Data></Cell>
+    <Cell ss:StyleID="s116"><Data ss:Type="String">DATE:</Data></Cell>
+    <Cell ss:StyleID="s118"><Data ss:Type="DateTime">2014-03-24T00:00:00.000</Data></Cell>
+    <Cell ss:StyleID="s121"><Data ss:Type="String">Attachments:</Data></Cell>
+    <Cell ss:StyleID="s122"><Data ss:Type="Number">0</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0">
+    <Cell ss:MergeAcross="5" ss:MergeDown="6" ss:StyleID="s112"/>
+   </Row>

@@ -1,0 +1,53 @@
+.RadTreeView_Leftnav{width:280px;height:100%;}
+.RadTreeView_Leftnav,
+.RadTreeView_Leftnav a.rtIn,
+.RadTreeView_Leftnav .rtEdit .rtIn input
+{color:#fff;display:inline-block;}
+
+.RadTreeView_Leftnav .rtPlus, 
+.RadTreeView_Leftnav .rtMinus
+{
+	background-image: url('TreeView/PlusMinus.png');
+}
+
+.RadTreeView_Leftnav .rtChecked,
+.RadTreeView_Leftnav .rtUnchecked,
+.RadTreeView_Leftnav .rtIndeterminate
+{
+	background-image: url('TreeView/TriState.png');
+}
+
+.RadTreeView_Leftnav .rtSelected .rtIn
+{	color:#fff;
+	font-weight:bold;
+}
+
+.RadTreeView_Leftnav .rtHover .rtIn
+{}
+
+.RadTreeView_Leftnav .rtSelected .rtIn
+{	
+	
+}
+
+.RadTreeView_Leftnav .rtSelected .rtLoadingBefore,
+.RadTreeView_Leftnav .rtSelected .rtLoadingAfter,
+.RadTreeView_Leftnav .rtSelected .rtLoadingBelow
+{
+	color: #1e395b;
+}
+
+.RadTreeView_Leftnav .rtLI .rtEdit .rtIn
+{	font-weight:normal;}
+
+.RadTreeView_Leftnav_disabled .rtIn,
+.RadTreeView_Leftnav .rtDisabled .rtIn
+{
+	color: #ccc;
+}
+
+.RadTreeView_Leftnav ul.rtLines li.rtLI, .RadTreeView_Leftnav ul.rtLines li.rtLI .rtHover{text-transform:uppercase;background:url(../../images/navbg.png) no-repeat 2px 3px;}
+.RadTreeView_Leftnav ul.rtUL li.rtLI ul.rtUL li.rtLI {background:url(../../images/clear.png) repeat;}
+.RadTreeView_Leftnav ul.rtUL li.rtLI ul.rtUL li.rtLI .rtHover{background:#b4d6f2;}
+.RadTreeView_Leftnav ul.rtUL li.rtLI ul.rtUL li.rtLI a{color:#000;!important;}
+.RadTreeView .rtHover .rtIn, .RadTreeView .rtSelected .rtIn{border-style:none;!important;border-width:0px;!important;cursor:pointer;}

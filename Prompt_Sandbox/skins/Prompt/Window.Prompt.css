@@ -1,0 +1,99 @@
+/* RadWindow for ASP.NET AJAX Windows7 Skin */
+
+.RadWindow_Prompt .rwTopLeft,
+.RadWindow_Prompt .rwTopRight,
+.RadWindow_Prompt .rwTitlebar,
+.RadWindow_Prompt .rwFooterLeft,
+.RadWindow_Prompt .rwFooterRight,
+.RadWindow_Prompt .rwFooterCenter,
+.RadWindow_Prompt .rwTopResize,
+.RadWindow_Prompt .rwStatusbar div,
+.RadWindow_Prompt .rwStatusbar,
+.RadWindow_Prompt .rwPopupButton,
+.RadWindow_Prompt .rwPopupButton span,
+.RadWindow_Prompt.rwMinimizedWindow .rwCorner
+{
+    background-image: url('Window/WindowHorizontalSprites.gif');
+}
+
+.RadWindow_Prompt .rwBodyLeft,
+.RadWindow_Prompt .rwBodyRight,
+.RadWindow_Prompt .rwStatusbarRow .rwCorner
+{
+	background-image: url('Window/WindowVerticalSprites.gif');
+}
+
+.RadWindow_Prompt .rwStatusbar input
+{
+    background-color: #f7f3e9;
+}
+
+.RadWindow_Prompt .rwControlButtons a
+{
+    background-image: url('Window/CommandButtonSprites.gif');
+}
+
+.RadWindow_Prompt a.rwIcon
+{
+	background-image: url('Window/WindowHorizontalSprites.gif');
+}
+
+div.RadWindow_Prompt .rwTitlebarControls em
+{
+	color: black;
+}
+
+div.RadWindow_Prompt .rwDialogInput
+{
+	border-top: solid 1px #abadb3;
+	border-right: solid 1px #dbdfe6;
+	border-bottom: solid 1px #e3e9ef;
+	border-left: solid 1px #e2e3ea;
+}
+
+div.RadWindow_Prompt .rwDialogInput:hover
+{
+	border-top: solid 1px #5794bf;
+	border-right: solid 1px #b7d5ea;
+	border-bottom: solid 1px #c7e2f1;
+	border-left: solid 1px #c5daed;
+	color: #565656;
+}
+
+div.RadWindow_Prompt td.rwLoading
+{
+    background-color: #fff;
+}
+
+.RadWindow_Prompt td.rwWindowContent
+{
+    background-color: #fff;
+}
+
+/* Loading Indicators */
+
+/* When ShowContentDuringLoad="true" */
+.RadWindow_Prompt td.rwWindowContent.rwLoading
+{
+    background-image: url('Common/loading.gif');
+}
+
+/* When ShowContentDuringLoad="false" */
+.RadWindow_Prompt input.rwLoading
+{
+    background-image: url('Common/loading_small.gif');
+}
+
+div.RadWindow_Prompt a.rwCancel,
+div.RadWindow_Prompt a.rwCancel span
+{
+    background: none;
+    cursor: pointer;
+    cursor: hand;
+}
+
+div.RadWindow_Prompt a.rwCancel span span
+{
+    color: #000000;
+    text-decoration: underline;
+}

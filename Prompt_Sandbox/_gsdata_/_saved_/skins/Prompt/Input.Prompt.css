@@ -1,0 +1,142 @@
+/*Telerik RadInput Windows7 Skin*/
+
+/*global*/
+
+.RadInput_Prompt,
+.RadInputMgr_Prompt
+{
+	font:12px "segoe ui",arial,sans-serif;
+}
+
+/*textbox states*/
+
+html body .RadInput_Prompt .riTextBox,
+html body .RadInputMgr_Prompt
+{
+	border-color:#b8cbde;
+	background:#fff;
+	color:#000;
+	font:12px "segoe ui",arial,sans-serif;
+}
+
+html body .RadInput_Prompt .riEmpty,
+html body .RadInput_Empty_Prompt
+{
+	color:#a7a7a7;
+}
+
+html body .RadInput_Prompt .riHover,
+html body .RadInput_Hover_Prompt,
+html body .RadInput_Prompt .riFocused,
+html body .RadInput_Focused_Prompt
+{
+	border-color:#c1dbfc;
+}
+
+html body .RadInput_Prompt .riRead,
+html body .RadInput_Read_Prompt
+{
+	border-color:#d9d9d9;
+}
+
+html body .RadInput_Prompt .riDisabled,
+html body .RadInput_Disabled_Prompt
+{
+	border-color:#d9d9d9;
+	color:#a7a7a7;
+	cursor:default;
+}
+
+html body .RadInput_Prompt .riError,
+html body .RadInput_Error_Prompt
+{
+	border-color:#d18185;
+	background:#fff 100% -298px no-repeat url('Input/sprite.gif');
+	color:#b32d34;
+}
+
+.RadForm.rfdTextbox .RadInput_Prompt .riError[type="text"],
+.RadForm.rfdTextbox .RadInput_Error_Prompt[type="text"]
+{
+	border-color:#d18185;
+	background:#fff 100% -298px no-repeat url('Input/sprite.gif');
+	color:#b32d34;
+}
+
+html body .RadInput_Prompt .riNegative,
+html body .RadInput_Negative_Prompt
+{
+	color:#565656;
+}
+
+/*buttons*/
+
+.RadInput_Prompt a
+{
+	background:transparent no-repeat url('Input/sprite.gif');
+}
+
+/*go*/
+
+.RadInput_Prompt .riBtn a
+{
+	width:20px;
+	height:18px;
+	line-height:18px;
+	background-position:3px 5px;
+}
+
+.RadInput_Prompt .riBtn a:hover
+{
+	background-position:3px -45px;
+}
+
+/*spin*/
+
+.RadInput_Prompt .riSpin a
+{
+	width:15px;
+	height:7px;
+	line-height:7px;
+}
+
+.RadInput_Prompt .riUp
+{
+	background-position:4px -98px;
+}
+
+.RadInput_Prompt .riUp:hover
+{
+	background-position:4px -148px;
+}
+
+.RadInput_Prompt a.riDown
+{
+	background-position:4px -199px;
+}
+
+.RadInput_Prompt a.riDown:hover
+{
+	background-position:4px -249px;
+}
+
+/*label*/
+
+.RadInput_Prompt .riLabel
+{
+	color:#000;
+}
+
+ .RadInput_Prompt input.riTextBox {
+	font-size: 11px;
+	line-height: 13px;
+	color: rgb(41, 41, 41);
+}
+ div.RadInput_Prompt .riLabel {
+	font-size: 11px;
+	line-height: 12px;
+	color: rgb(41, 41, 41);
+}
+ .RadInput_Prompt input.riDisabled {
+	background-color: rgb(238, 238, 238);
+}

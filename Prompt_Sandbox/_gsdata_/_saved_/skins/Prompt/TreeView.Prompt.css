@@ -1,0 +1,72 @@
+.RadTreeView_Prompt,
+.RadTreeView_Prompt a.rtIn,
+.RadTreeView_Prompt .rtEdit .rtIn input
+{
+	color: #1a344f;
+	font: 12px/18px "Segoe UI", Arial, sans-serif;
+}
+
+.RadTreeView_Prompt .rtPlus, 
+.RadTreeView_Prompt .rtMinus
+{
+	background-image: url('TreeView/PlusMinus.png');
+}
+
+.RadTreeView_Prompt .rtChecked,
+.RadTreeView_Prompt .rtUnchecked,
+.RadTreeView_Prompt .rtIndeterminate
+{
+	background-image: url('TreeView/TriState.png');
+}
+
+.RadTreeView_Prompt .rtHover .rtIn
+{
+	border: 1px solid #a4bfdb;
+}
+
+.RadTreeView_Prompt .rtSelected .rtIn
+{
+	border: 1px solid #7d9aba;
+}
+
+.RadTreeView_Prompt .rtHover .rtIn
+{
+	background-color: #d1d7de;
+	background-image: url('TreeView/ItemHoveredBg.png');
+}
+
+.RadTreeView_Prompt .rtSelected .rtIn
+{
+	background-color: #adc5de;
+	background-image: url('TreeView/ItemSelectedBg.png');
+}
+
+.RadTreeView_Prompt .rtSelected .rtLoadingBefore,
+.RadTreeView_Prompt .rtSelected .rtLoadingAfter,
+.RadTreeView_Prompt .rtSelected .rtLoadingBelow
+{
+	color: #1a344f;
+}
+
+.RadTreeView_Prompt .rtLI .rtEdit .rtIn
+{
+	border-color: #85b0de;
+	background: #e0e0e0;
+}
+
+.RadTreeView_Prompt_disabled .rtIn,
+.RadTreeView_Prompt .rtDisabled .rtIn
+{
+	color: #b2b2b2;
+}
+
+ div.RadTreeView_Prompt .rtIn {
+	color: rgb(41, 41, 41);
+	font-weight: bold;
+}
+ div.RadTreeView_Prompt .rtHover .rtIn {
+	background-image: none;
+	background-color: transparent;
+	border-color: transparent;
+	text-decoration: underline;
+}

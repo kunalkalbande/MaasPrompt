@@ -1,0 +1,914 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{66271D0B-5859-4DAE-8B98-E2AA7E56A1B7}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Prompt</RootNamespace>
+    <AssemblyName>Prompt</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>Prompt.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>Prompt.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Axosoft.CustomerPortal.Security, Version=10.0.0.8674, Culture=neutral, PublicKeyToken=21e2e88ee444275a, processorArchitecture=MSIL" />
+    <Reference Include="ChilkatDotNet2, Version=9.0.4.0, Culture=neutral, PublicKeyToken=eb5fc1fc52ef09bd, processorArchitecture=x86" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Windows\assembly\GAC_MSIL\Microsoft.ReportViewer.WebForms\9.0.0.0__b03f5f7f11d50a3a\Microsoft.ReportViewer.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Linq, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Extensions.Design, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+    <Reference Include="System.Xml.Linq, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="Telerik.Web.UI, Version=2009.2.701.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Program Files\Telerik\RadControls for ASPNET AJAX Q1 2009\Bin35\Telerik.Web.UI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Collections.Specialized" />
+    <Import Include="System.Configuration" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Text" />
+    <Import Include="System.Text.RegularExpressions" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.Caching" />
+    <Import Include="System.Web.SessionState" />
+    <Import Include="System.Web.Security" />
+    <Import Include="System.Web.Profile" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.WebControls" />
+    <Import Include="System.Web.UI.WebControls.WebParts" />
+    <Import Include="System.Web.UI.HtmlControls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Code\cls_Attachment.vb" />
+    <Compile Include="App_Code\cls_EISSecurity.vb" />
+    <Content Include="attachment_edit.aspx" />
+    <Content Include="attachment_folder_adddel.aspx" />
+    <Content Include="attachment_get.aspx" />
+    <Content Include="attachment_move.aspx" />
+    <Content Include="attachment_upload.aspx" />
+    <Content Include="Web.config" />
+    <Content Include="budgetassumptions_edit.aspx" />
+    <Content Include="budget_item_edit.aspx" />
+    <Content Include="budget_reporting_edit.aspx" />
+    <Content Include="client_edit.aspx" />
+    <Content Include="college_copy.aspx" />
+    <Content Include="college_edit.aspx" />
+    <Content Include="contractor_edit.aspx" />
+    <Content Include="contract_noc_edit.aspx" />
+    <Content Include="delete_record.aspx" />
+    <Content Include="district_edit.aspx" />
+    <Content Include="help_edit.aspx" />
+    <Content Include="help_view.aspx" />
+    <Content Include="images\apprise_logo_button.jpg" />
+    <Content Include="images\apprise_photo.gif" />
+    <Content Include="images\apprise_tab.gif" />
+    <Content Include="images\attachment_addfolder.gif" />
+    <Content Include="images\attachment_delfolder.gif" />
+    <Content Include="images\attachment_movefile.gif" />
+    <Content Include="images\attachment_uploadfile.gif" />
+    <Content Include="images\button_add_contract.gif" />
+    <Content Include="images\button_add_contractammend.gif" />
+    <Content Include="images\button_add_new.gif" />
+    <Content Include="images\button_add_new_contract.gif" />
+    <Content Include="images\button_add_new_project.gif" />
+    <Content Include="images\button_add_note.gif" />
+    <Content Include="images\button_add_project.gif" />
+    <Content Include="images\button_add_retention.gif" />
+    <Content Include="images\button_add_transaction.gif" />
+    <Content Include="images\button_budget_allocation_detail_report.gif" />
+    <Content Include="images\button_close.gif" />
+    <Content Include="images\button_delete.gif" />
+    <Content Include="images\button_delete_small.gif" />
+    <Content Include="images\button_download.gif" />
+    <Content Include="images\button_edit.gif" />
+    <Content Include="images\button_edit_additional_projectdata.gif" />
+    <Content Include="images\button_help.gif" />
+    <Content Include="images\button_login.gif" />
+    <Content Include="images\button_logout.gif" />
+    <Content Include="images\button_recalc.gif" />
+    <Content Include="images\button_save.gif" />
+    <Content Include="images\button_search.gif" />
+    <Content Include="images\button_tasks.gif" />
+    <Content Include="images\button_upload_file.gif" />
+    <Content Include="images\button_upload_photo.gif" />
+    <Content Include="images\document_tools.gif" />
+    <Content Include="images\eis_tab.gif" />
+    <Content Include="images\maas_pageheader.gif" />
+    <Content Include="images\main_menu.gif" />
+    <Content Include="images\menu_home.gif" />
+    <Content Include="images\menu_logoff.gif" />
+    <Content Include="images\menu_reports.gif" />
+    <Content Include="images\menu_search.gif" />
+    <Content Include="images\menu_tasks.gif" />
+    <Content Include="images\none.gif" />
+    <Content Include="images\pagetop_apprise_logo.gif" />
+    <Content Include="images\pagetop_eis_logo.gif" />
+    <Content Include="images\pagetop_prompt_logo.gif" />
+    <Content Include="images\project_menu.gif" />
+    <Content Include="images\prompt_bids.gif" />
+    <Content Include="images\prompt_budget.gif" />
+    <Content Include="images\prompt_college.gif" />
+    <Content Include="images\prompt_contract.gif" />
+    <Content Include="images\prompt_contract_closed.gif" />
+    <Content Include="images\prompt_contract_global_active.gif" />
+    <Content Include="images\prompt_contract_global_closed.gif" />
+    <Content Include="images\prompt_contract_global_pending.gif" />
+    <Content Include="images\prompt_contract_open.gif" />
+    <Content Include="images\prompt_contract_pending.gif" />
+    <Content Include="images\prompt_district.gif" />
+    <Content Include="images\prompt_doc.gif" />
+    <Content Include="images\prompt_help.gif" />
+    <Content Include="images\prompt_note.gif" />
+    <Content Include="images\prompt_page.gif" />
+    <Content Include="images\prompt_pdf.gif" />
+    <Content Include="images\prompt_project.gif" />
+    <Content Include="images\prompt_project_active.gif" />
+    <Content Include="images\prompt_project_cancelled.gif" />
+    <Content Include="images\prompt_project_complete.gif" />
+    <Content Include="images\prompt_project_global_active.gif" />
+    <Content Include="images\prompt_project_global_cancelled.gif" />
+    <Content Include="images\prompt_project_global_complete.gif" />
+    <Content Include="images\prompt_project_global_proposed.gif" />
+    <Content Include="images\prompt_project_global_suspended.gif" />
+    <Content Include="images\prompt_project_proposed.gif" />
+    <Content Include="images\prompt_project_suspended.gif" />
+    <Content Include="images\prompt_savetodisk.gif" />
+    <Content Include="images\prompt_submittals.gif" />
+    <Content Include="images\prompt_task.gif" />
+    <Content Include="images\prompt_transactions.gif" />
+    <Content Include="images\prompt_xls.gif" />
+    <Content Include="images\prompt_zip.gif" />
+    <Content Include="images\tab_attachments.gif" />
+    <Content Include="images\tab_budget.gif" />
+    <Content Include="images\tab_submittals.gif" />
+    <Content Include="images\tree_node_adminitem.gif" />
+    <Content Include="images\tree_node_clients.gif" />
+    <Content Include="images\tree_node_college.gif" />
+    <Content Include="images\tree_node_district.gif" />
+    <Content Include="images\tree_node_districts.gif" />
+    <Content Include="images\tree_node_systemadmin.gif" />
+    <Content Include="index.aspx" />
+    <Content Include="JCAFGenerator.aspx" />
+    <Content Include="list_show.aspx" />
+    <Content Include="lookup_edit.aspx" />
+    <Content Include="note_edit.aspx" />
+    <Content Include="password_change.aspx" />
+    <Content Include="projectmanager_edit.aspx" />
+    <Content Include="project_edit.aspx" />
+    <Content Include="project_edit_additionaldata.aspx" />
+    <Content Include="report_edit.aspx" />
+    <Content Include="report_run.aspx" />
+    <Content Include="retention_edit.aspx" />
+    <Content Include="search.aspx" />
+    <Content Include="Styles.css" />
+    <Content Include="system_utilities.aspx" />
+    <Content Include="tech_support_email_form.aspx" />
+    <Content Include="tech_support_response.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{967B4E0D-AD0C-4609-AB67-0FA40C0206D8}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Code\cls_Budget.vb" />
+    <Compile Include="App_Code\cls_Client.vb" />
+    <Compile Include="App_Code\cls_College.vb" />
+    <Compile Include="App_Code\cls_Contract.vb" />
+    <Compile Include="App_Code\cls_ContractAmmend.vb" />
+    <Compile Include="App_Code\cls_DeleteHelper.vb" />
+    <Compile Include="App_Code\cls_EmailNotify.vb" />
+    <Compile Include="App_Code\cls_EncryptionUtility.vb" />
+    <Compile Include="App_Code\cls_Flag.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Code\cls_Help.vb" />
+    <Compile Include="App_Code\cls_HoverData.vb" />
+    <Compile Include="App_Code\cls_LedgerAccount.vb" />
+    <Compile Include="App_Code\cls_LedgerEntry.vb" />
+    <Compile Include="App_Code\cls_Login.vb" />
+    <Compile Include="App_Code\cls_NavMenu.vb" />
+    <Compile Include="App_Code\cls_ObjectCode.vb" />
+    <Compile Include="App_Code\cls_Project.vb" />
+    <Compile Include="App_Code\cls_PromptDataHelper.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Code\cls_Search.vb" />
+    <Compile Include="App_Code\cls_Transaction.vb" />
+    <Compile Include="App_Code\cls_Workflow.vb" />
+    <Compile Include="App_Code\cls_WorkflowRole.vb" />
+    <Compile Include="App_Code\cls_WorkflowScenerio.vb" />
+    <Compile Include="App_Code\cls_WorkflowTransfer.vb" />
+    <Content Include="attachments_manage_linked.aspx" />
+    <Content Include="attachment_associate_linked.aspx" />
+    <Content Include="attachment_dialog_confirm_delete.aspx" />
+    <Content Include="attachment_get_linked.aspx" />
+    <Content Include="attachment_upload_linked.aspx" />
+    <Content Include="budget_change_batch_edit.aspx" />
+    <Content Include="budget_estimate_to_complete_edit.aspx" />
+    <Content Include="budget_estimate_to_complete_list.aspx" />
+    <Content Include="budget_view_popup.aspx" />
+    <Content Include="confirm_delete_record.aspx" />
+    <Content Include="dashboard_reports_only.aspx" />
+    <Content Include="dashboard_view_attachments.aspx" />
+    <Content Include="dashboard_workflow_integrated.aspx" />
+    <Content Include="flag_edit.aspx" />
+    <Content Include="general_error.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="ledger_account_edit.aspx" />
+    <Content Include="ledger_entry_edit.aspx" />
+    <Content Include="objectcodes_list.aspx" />
+    <Content Include="objectcode_edit.aspx" />
+    <Content Include="P6_budgetdata_import.aspx" />
+    <Content Include="P6_data_exchange.aspx" />
+    <Content Include="project_budget_change_edit.aspx" />
+    <Content Include="reports_createFHDABudgetCostTable.aspx" />
+    <Content Include="report_run_direct_call_public.aspx" />
+    <Content Include="rm_reports_list.aspx" />
+    <Content Include="rm_test.aspx" />
+    <Content Include="show_last_update_info.aspx" />
+    <Content Include="workflow_history_view.aspx" />
+    <Content Include="workflow_roles_list.aspx" />
+    <Content Include="workflow_role_edit.aspx" />
+    <Content Include="workflow_scenerios_list.aspx" />
+    <Content Include="workflow_scenerio_edit.aspx" />
+    <Content Include="workflow_scenerio_owner_edit.aspx" />
+    <Content Include="workflow_transaction_import_log_view.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AnyGantt\AnyChart.js" />
+    <Content Include="AnyGantt\AnyGantt.swf" />
+    <Content Include="AnyGantt\export_apprise_project_template.xml" />
+    <Content Include="AnyGantt\Preloader.swf" />
+    <Compile Include="App_Code\cls_FE_Budgets.vb" />
+    <Compile Include="App_Code\cls_Passthrough.vb" />
+    <Compile Include="App_Code\cls_Procs.vb" />
+    <Compile Include="App_Code\cls_User.vb" />
+    <Compile Include="App_Code\cls_SysUtils.vb" />
+    <Compile Include="App_Code\cls_Apprise.vb" />
+    <Compile Include="App_Code\cls_Report.vb" />
+    <Compile Include="App_Code\cls_ProjectManager.vb" />
+    <Compile Include="App_Code\cls_Lookup.vb" />
+    <Compile Include="App_Code\cls_District.vb" />
+    <Compile Include="App_Code\cls_Contractor.vb" />
+    <Compile Include="App_Code\cls_Photo.vb" />
+    <Compile Include="App_Code\cls_Note.vb" />
+    <Compile Include="App_Code\cls_Schedule.vb" />
+    <Compile Include="App_Code\cls_BondSite.vb" />
+    <Compile Include="App_Code\cls_TeamMember.vb" />
+    <Compile Include="App_Code\cls_RFI.vb" />
+    <Compile Include="App_Code\cls_ProcurementLog.vb" />
+    <Compile Include="App_Code\cls_MeetingMinute.vb" />
+    <Compile Include="App_Code\cls_Contact.vb" />
+    <Compile Include="App_Code\cls_UserPrefs.vb" />
+    <Compile Include="App_Code\cls_Admin.vb" />
+    <Compile Include="App_Code\cls_InfoBulletin.vb" />
+    <Compile Include="App_Code\cls_Transmittal.vb" />
+    <Compile Include="App_Code\cls_Alert.vb" />
+    <Compile Include="App_Code\cls_PMBudget.vb" />
+    <Compile Include="App_Code\cls_Submittal.vb" />
+    <Compile Include="App_Code\cls_ProgressReport.vb" />
+    <Compile Include="App_Code\cls_PMBudgetCashFlow.vb" />
+    <Compile Include="App_Code\cls_ReportTestChild.vb" />
+    <Compile Include="App_Code\cls_ReportTestParent.vb" />
+    <Content Include="bin\ChilkatDotNet2.dll" />
+    <Content Include="bin\Telerik.Web.UI.dll" />
+    <Content Include="bin\Telerik.Web.UI.xml" />
+    <Content Include="apprisepm_attachments_manage.aspx" />
+    <Content Include="apprisepm_attachment_upload.aspx" />
+    <Content Include="admin_users.aspx" />
+    <Content Include="admin_user_edit.aspx" />
+    <Content Include="admin_user_edit_permissions.aspx" />
+    <Content Include="contract_changeorder_edit.aspx" />
+    <Content Include="contract_edit.aspx" />
+    <Content Include="admin_client_maint_list.aspx" />
+    <Content Include="footer.ascx" />
+    <Content Include="main.aspx" />
+    <Content Include="delete_error.aspx" />
+    <Content Include="images\apprise_pagetop.gif" />
+    <Content Include="images\apprise_pagetop.jpg" />
+    <Content Include="images\camera2.png" />
+    <Content Include="images\contacts.png" />
+    <Content Include="images\contacts_16.png" />
+    <Content Include="images\contacts_24.png" />
+    <Content Include="images\home.png" />
+    <Content Include="images\printer3.png" />
+    <Content Include="images\prompt_pagetop.gif" />
+    <Content Include="images\reports_16.png" />
+    <Content Include="images\reports_24.png" />
+    <Content Include="transaction_edit.aspx" />
+    <Content Include="EISToolsFile.xml" />
+    <Content Include="FE_divisions_edit.aspx" />
+    <Content Include="FHDA_Disclaimer_Live.aspx" />
+    <Content Include="FHDA_Disclaimer_Static.aspx" />
+    <Content Include="images\apprisepm_no_attachments.gif" />
+    <Content Include="images\arrow_left_green.png" />
+    <Content Include="images\arrow_up_green.png" />
+    <Content Include="images\bondsite.png" />
+    <Content Include="images\changeorders.png" />
+    <Content Include="images\clipboard.png" />
+    <Content Include="images\gear.png" />
+    <Content Include="images\line-chart.png" />
+    <Content Include="images\meetingminutes.png" />
+    <Content Include="images\money.png" />
+    <Content Include="images\new_project_group.gif" />
+    <Content Include="images\printer.png" />
+    <Content Include="images\procurementlog.png" />
+    <Content Include="images\project_group.png" />
+    <Content Include="images\prompt_nav_sprite.png" />
+    <Content Include="images\schedule.png" />
+    <Content Include="images\submittals.png" />
+    <Content Include="images\teammember_delete.png" />
+    <Content Include="images\transmittallog.png" />
+    <Content Include="images\upload_file_small.gif" />
+    <Content Include="move_objects.aspx" />
+    <Content Include="images\prompt_project_group.gif" />
+    <Content Include="images\edit_button_apprise.gif" />
+    <Content Include="images\Folder.gif" />
+    <Content Include="images\menu_gotoapprise.gif" />
+    <Content Include="images\pagetop_promptPM_logo.gif" />
+    <Content Include="images\prompt_project_consolodated.gif" />
+    <Content Include="images\scheduler_addtask.gif" />
+    <Content Include="images\scheduler_collapseall.gif" />
+    <Content Include="images\scheduler_expandall.gif" />
+    <Content Include="images\scheduler_fitall.gif" />
+    <Content Include="images\scheduler_importproject.gif" />
+    <Content Include="images\scheduler_print.gif" />
+    <Content Include="images\scheduler_save_as_image.gif" />
+    <Content Include="images\scheduler_zoomin.gif" />
+    <Content Include="images\scheduler_zoomout.gif" />
+    <Content Include="images\workflow_colorcode.gif" />
+    <Content Include="show_query_results.aspx" />
+    <Content Include="styles_prompt_nav.css" />
+    <Content Include="user_activity.aspx" />
+    <Content Include="images\button_cancel.gif" />
+    <Content Include="images\button_route.gif" />
+    <Content Include="images\route_selected.png" />
+    <Content Include="workflow_route.aspx" />
+    <Content Include="dashboard_workflow_inbox_FHDA_Signator.aspx" />
+    <Content Include="workflow_route_multiple.aspx" />
+    <Content Include="_run_scheduled_tasks.aspx" />
+    <Content Include="password_change_expired.aspx" />
+    <Content Include="dashboard_workflow_inbox_FHDA_AP.aspx" />
+    <Content Include="images\button_flag.gif" />
+    <Content Include="images\button_folder_view.gif" />
+    <Content Include="images\button_forums.gif" />
+    <Content Include="images\button_remove_checked.gif" />
+    <Content Include="images\change_history.gif" />
+    <Content Include="images\dashboard_menu_logoff.gif" />
+    <Content Include="images\dashboard_menu_paymentbatch_new.gif" />
+    <Content Include="images\dashboard_transaction_goto.png" />
+    <Content Include="images\data_down.png" />
+    <Content Include="images\document_up.png" />
+    <Content Include="images\exit.png" />
+    <Content Include="images\exit_big.png" />
+    <Content Include="images\export_to_excel.png" />
+    <Content Include="images\help.png" />
+    <Content Include="images\help_big.png" />
+    <Content Include="images\inbox_big.png" />
+    <Content Include="images\ledger_account.png" />
+    <Content Include="images\ledger_account_edit.png" />
+    <Content Include="images\ledger_account_export.gif" />
+    <Content Include="images\ledger_allocation_add.png" />
+    <Content Include="images\ledger_entry_add.gif" />
+    <Content Include="images\ledger_interest_account_add.png" />
+    <Content Include="images\logout_big.png" />
+    <Content Include="images\menu_resolve_big.png" />
+    <Content Include="images\menu_save_big.png" />
+    <Content Include="images\paper_clip_small.gif" />
+    <Content Include="images\passthrough.png" />
+    <Content Include="images\passthrough_allocation_add.png" />
+    <Content Include="images\prompt_budget_object_codes.png" />
+    <Content Include="images\prompt_change_history.gif" />
+    <Content Include="images\prompt_change_history.png" />
+    <Content Include="images\route_undo.png" />
+    <Content Include="images\transaction_dashboard_edit.png" />
+    <Content Include="images\trash.gif" />
+    <Content Include="images\workflow_batch_confirm.png" />
+    <Content Include="images\workflow_batch_download.png" />
+    <Content Include="images\workflow_dashboard_small.png" />
+    <Content Include="images\workflow_export_transactions_FRS.gif" />
+    <Content Include="images\workflow_history.png" />
+    <Content Include="images\workflow_history_small.png" />
+    <Content Include="images\workflow_send.png" />
+    <Content Include="images\workflow_transaction_approved_big.png" />
+    <Content Include="images\workflow_transaction_rejected_big.png" />
+    <Content Include="images\workflow_transaction_transfer_big.png" />
+    <Content Include="images\workflow_transaction_transfer_create.png" />
+    <Content Include="passthrough_entry_edit.aspx" />
+    <Content Include="passthrough_entry_add.aspx" />
+    <Content Include="images\add_scenerio_step.gif" />
+    <Content Include="images\alert.gif" />
+    <Content Include="images\associate_attachments.gif" />
+    <Content Include="images\attachment_remove_small.gif" />
+    <Content Include="images\attachment_small.gif" />
+    <Content Include="images\button_add_line.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="administration_main.aspx" />
+    <Content Include="administration_settings.aspx" />
+    <Content Include="bondsite_currentnews_edit.aspx" />
+    <Content Include="bondsite_link_edit.aspx" />
+    <Content Include="bondsite_meetings_upload.aspx" />
+    <Content Include="bondsite_meeting_edit.aspx" />
+    <Content Include="bondsite_projectinfo_edit.aspx" />
+    <Content Include="admin_user_roles.aspx" />
+    <Content Include="admin_user_role_edit.aspx" />
+    <Content Include="admin_budget_pagesettings_edit.aspx" />
+    <Content Include="images\add.png" />
+    <Content Include="images\addgroup.png" />
+    <Content Include="images\addledger.png" />
+    <Content Include="images\clipboard_l.png" />
+    <Content Include="images\edit.png" />
+    <Content Include="images\excel.gif" />
+    <Content Include="images\flag.gif" />
+    <Content Include="images\gear1.png" />
+    <Content Include="images\house.png" />
+    <Content Include="images\loginAs.png" />
+    <Content Include="images\money2.png" />
+    <Content Include="images\none.jpg" />
+    <Content Include="images\note.png" />
+    <Content Include="images\note_add.png" />
+    <Content Include="images\photos.png" />
+    <Content Include="images\projectgroup.png" />
+    <Content Include="images\reports.png" />
+    <Content Include="images\tab_attachments.png" />
+    <Content Include="images\tab_budget.png" />
+    <Content Include="images\users.png" />
+    <Content Include="meetingminutes_edit.aspx" />
+    <Content Include="photo_edit.aspx" />
+    <Content Include="photo_main_upload.aspx" />
+    <Content Include="procurement_edit.aspx" />
+    <Content Include="project_changeorders.ascx" />
+    <Content Include="project_group_edit.aspx" />
+    <Content Include="prompt.master" />
+    <Content Include="reports.aspx" />
+    <Content Include="RFI_edit.aspx" />
+    <Content Include="schedule_edittask.aspx" />
+    <Content Include="schedule_export.aspx" />
+    <Content Include="schedule_import.aspx" />
+    <Content Include="state14d_edit.aspx" />
+    <Content Include="submittal_edit.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AnyGantt\build_gantt.aspx" />
+    <Content Include="content.master" />
+    <Content Include="college_overview.aspx" />
+    <Content Include="attachments.aspx" />
+    <Content Include="budget.aspx" />
+    <Content Include="bondsite_projectinfo.aspx" />
+    <Content Include="contract_overview.aspx" />
+    <Content Include="contract_changeorders.aspx" />
+    <Content Include="contract_noc.aspx" />
+    <Content Include="bondsite_currentnews.aspx" />
+    <Content Include="bondsite_meetings.aspx" />
+    <Content Include="bondsite_links.aspx" />
+    <Content Include="admin_project_overview_pagesettings_edit.aspx" />
+    <Content Include="contacts.aspx" />
+    <Content Include="contact_edit.aspx" />
+    <Content Include="contractors.aspx" />
+    <Content Include="admin_announcements_edit.aspx" />
+    <Content Include="admin_announcements_show.aspx" />
+    <Content Include="contract_line_items.aspx" />
+    <Content Include="Copy of contract_edit.aspx" />
+    <Content Include="contract_lineitem_edit.aspx" />
+    <Content Include="Copy of transaction_edit.aspx" />
+    <Content Include="pmbudgets_cashflow.aspx" />
+    <Content Include="project_progressreport_edit.aspx" />
+    <Content Include="project_progressreports.aspx" />
+    <Content Include="project_phase_edit.aspx" />
+    <Content Include="project_phases_manage.aspx" />
+    <Content Include="pmbudget_version_edit.aspx" />
+    <Content Include="pmbudgets_versions_manage.aspx" />
+    <Content Include="pmbudget_item_edit.aspx" />
+    <Content Include="pmbudget_header_edit.aspx" />
+    <Content Include="pmbudget.aspx" />
+    <Content Include="dashboard_alerts.ascx" />
+    <Content Include="ontimeportal.aspx" />
+    <Content Include="transmittal_edit.aspx" />
+    <Content Include="transmittals.aspx" />
+    <Content Include="images\infobulletins.png" />
+    <Content Include="images\rfis1.png" />
+    <Content Include="procurementlog.aspx" />
+    <Content Include="infobulletin_edit.aspx" />
+    <Content Include="infobulletins.aspx" />
+    <Content Include="dashboard_settings.aspx" />
+    <Content Include="dashboard_pmoverview.ascx" />
+    <Content Include="dashboard_workflow_inbox.ascx" />
+    <Content Include="images\about.png" />
+    <Content Include="images\cashier.png" />
+    <Content Include="images\cod.gif" />
+    <Content Include="images\home2.png" />
+    <Content Include="images\logo.png" />
+    <Content Include="images\message.png" />
+    <Content Include="images\navbg.jpg" />
+    <Content Include="images\prompt_beta.gif" />
+    <Content Include="images\prompt_local.gif" />
+    <Content Include="images\status_gray.png" />
+    <Content Include="images\status_green.png" />
+    <Content Include="images\status_red.png" />
+    <Content Include="images\status_yellow.png" />
+    <Content Include="images\warning.png" />
+    <Content Include="images\zoom_in.png" />
+    <Content Include="images\zoom_out.png" />
+    <Content Include="projectmanagers.aspx" />
+    <Content Include="dashboard.aspx" />
+    <Content Include="images\book_red.png" />
+    <Content Include="images\check2.png" />
+    <Content Include="images\column_preferences.png" />
+    <Content Include="images\contract1.png" />
+    <Content Include="images\cube_blue.png" />
+    <Content Include="images\cube_green.png" />
+    <Content Include="images\cube_yellow.png" />
+    <Content Include="images\folders.png" />
+    <Content Include="images\funnel.png" />
+    <Content Include="images\funnel_down.png" />
+    <Content Include="images\gear_refresh.png" />
+    <Content Include="images\house2.png" />
+    <Content Include="images\loading.gif" />
+    <Content Include="images\navrowbg.gif" />
+    <Content Include="images\pie-chart.png" />
+    <Content Include="images\pin.png" />
+    <Content Include="images\titlebg.gif" />
+    <Content Include="images\user_16x.png" />
+    <Content Include="images\view.png" />
+    <Content Include="print.css" />
+    <Content Include="teammember_edit.aspx" />
+    <Content Include="teammembers_manage.aspx" />
+    <Content Include="project_group.aspx" />
+    <Content Include="ledger_entries.aspx" />
+    <Content Include="skins\Prompt\Calendar.Prompt.css" />
+    <Content Include="skins\Prompt\Calendar\Prompt.gif" />
+    <Content Include="skins\Prompt\Calendar\sprite.gif" />
+    <Content Include="skins\Prompt\Calendar\_vti_cnf\sprite.gif" />
+    <Content Include="skins\Prompt\ColorPicker.Prompt.css" />
+    <Content Include="skins\Prompt\ColorPicker\ColorPickerSprites.gif" />
+    <Content Include="skins\Prompt\ColorPicker\Prompt.gif" />
+    <Content Include="skins\Prompt\ColorPicker\_vti_cnf\ColorPickerSprites.gif" />
+    <Content Include="skins\Prompt\ComboBox.Prompt.css" />
+    <Content Include="skins\Prompt\ComboBox\Prompt.gif" />
+    <Content Include="skins\Prompt\ComboBox\rcbSprite.png" />
+    <Content Include="skins\Prompt\ComboBox\rcbSpriteIE6.png" />
+    <Content Include="skins\Prompt\ComboBox\_vti_cnf\rcbSprite.png" />
+    <Content Include="skins\Prompt\ComboBox\_vti_cnf\rcbSpriteIE6.png" />
+    <Content Include="skins\Prompt\Dock.Prompt.css" />
+    <Content Include="skins\Prompt\Dock\CommandSprite.gif" />
+    <Content Include="skins\Prompt\Dock\HorizontalSprite.gif" />
+    <Content Include="skins\Prompt\Dock\Prompt.gif" />
+    <Content Include="skins\Prompt\Dock\VerticalSprite.gif" />
+    <Content Include="skins\Prompt\Dock\_vti_cnf\CommandSprite.gif" />
+    <Content Include="skins\Prompt\Dock\_vti_cnf\HorizontalSprite.gif" />
+    <Content Include="skins\Prompt\Dock\_vti_cnf\VerticalSprite.gif" />
+    <Content Include="skins\Prompt\Editor.Prompt.css" />
+    <Content Include="skins\Prompt\Editor\CommandSpritesLight.png" />
+    <Content Include="skins\Prompt\Editor\CommandSpritesLightIE6.gif" />
+    <Content Include="skins\Prompt\Editor\CommonIcons.gif" />
+    <Content Include="skins\Prompt\Editor\Prompt.gif" />
+    <Content Include="skins\Prompt\Editor\ToolbarSprites.gif" />
+    <Content Include="skins\Prompt\Editor\ToolbarVerticalSprites.gif" />
+    <Content Include="skins\Prompt\Editor\_vti_cnf\CommandSpritesLight.png" />
+    <Content Include="skins\Prompt\Editor\_vti_cnf\CommandSpritesLightIE6.gif" />
+    <Content Include="skins\Prompt\Editor\_vti_cnf\CommonIcons.gif" />
+    <Content Include="skins\Prompt\Editor\_vti_cnf\ToolbarSprites.gif" />
+    <Content Include="skins\Prompt\Editor\_vti_cnf\ToolbarVerticalSprites.gif" />
+    <Content Include="skins\Prompt\FormDecorator.Prompt.css" />
+    <Content Include="skins\Prompt\FormDecorator\ButtonSprites.gif" />
+    <Content Include="skins\Prompt\FormDecorator\CheckBoxSprites.gif" />
+    <Content Include="skins\Prompt\FormDecorator\ComboSprites.gif" />
+    <Content Include="skins\Prompt\FormDecorator\FieldsetBgr.png" />
+    <Content Include="skins\Prompt\FormDecorator\Prompt.gif" />
+    <Content Include="skins\Prompt\FormDecorator\RadioButtonSprites.gif" />
+    <Content Include="skins\Prompt\FormDecorator\RadioButtonSprites.png" />
+    <Content Include="skins\Prompt\FormDecorator\_vti_cnf\ButtonSprites.gif" />
+    <Content Include="skins\Prompt\FormDecorator\_vti_cnf\CheckBoxSprites.gif" />
+    <Content Include="skins\Prompt\FormDecorator\_vti_cnf\ComboSprites.gif" />
+    <Content Include="skins\Prompt\FormDecorator\_vti_cnf\FieldsetBgr.png" />
+    <Content Include="skins\Prompt\FormDecorator\_vti_cnf\RadioButtonSprites.gif" />
+    <Content Include="skins\Prompt\FormDecorator\_vti_cnf\RadioButtonSprites.png" />
+    <Content Include="skins\Prompt\Grid.Prompt.css" />
+    <Content Include="skins\Prompt\Grid\export.gif" />
+    <Content Include="skins\Prompt\Grid\loading_small.gif" />
+    <Content Include="skins\Prompt\Grid\Prompt.gif" />
+    <Content Include="skins\Prompt\Grid\sprite.gif" />
+    <Content Include="skins\Prompt\Grid\_vti_cnf\export.gif" />
+    <Content Include="skins\Prompt\Grid\_vti_cnf\sprite.gif" />
+    <Content Include="skins\Prompt\Input.Prompt.css" />
+    <Content Include="skins\Prompt\Input\Prompt.gif" />
+    <Content Include="skins\Prompt\Input\sprite.gif" />
+    <Content Include="skins\Prompt\Input\_vti_cnf\sprite.gif" />
+    <Content Include="skins\Prompt\ListBox.Prompt.css" />
+    <Content Include="skins\Prompt\ListBox\Prompt.gif" />
+    <Content Include="skins\Prompt\ListBox\rlbButtonDisabled.png" />
+    <Content Include="skins\Prompt\ListBox\rlbButtonDisabledIE6.png" />
+    <Content Include="skins\Prompt\ListBox\rlbButtonHover.png" />
+    <Content Include="skins\Prompt\ListBox\rlbButtonHoverIE6.png" />
+    <Content Include="skins\Prompt\ListBox\rlbButtonNormal.png" />
+    <Content Include="skins\Prompt\ListBox\rlbButtonNormalIE6.png" />
+    <Content Include="skins\Prompt\ListBox\rlbDropClue.png" />
+    <Content Include="skins\Prompt\ListBox\rlbSprite.png" />
+    <Content Include="skins\Prompt\ListBox\_vti_cnf\rlbButtonDisabled.png" />
+    <Content Include="skins\Prompt\ListBox\_vti_cnf\rlbButtonDisabledIE6.png" />
+    <Content Include="skins\Prompt\ListBox\_vti_cnf\rlbButtonHover.png" />
+    <Content Include="skins\Prompt\ListBox\_vti_cnf\rlbButtonHoverIE6.png" />
+    <Content Include="skins\Prompt\ListBox\_vti_cnf\rlbButtonNormal.png" />
+    <Content Include="skins\Prompt\ListBox\_vti_cnf\rlbButtonNormalIE6.png" />
+    <Content Include="skins\Prompt\ListBox\_vti_cnf\rlbDropClue.png" />
+    <Content Include="skins\Prompt\ListBox\_vti_cnf\rlbSprite.png" />
+    <Content Include="skins\Prompt\ListView.Prompt.css" />
+    <Content Include="skins\Prompt\ListView\CheckBoxSprites.gif" />
+    <Content Include="skins\Prompt\ListView\Prompt.gif" />
+    <Content Include="skins\Prompt\ListView\sprite.gif" />
+    <Content Include="skins\Prompt\Menu.Prompt.css" />
+    <Content Include="skins\Prompt\Menu\Prompt.gif" />
+    <Content Include="skins\Prompt\Menu\rmSprite.png" />
+    <Content Include="skins\Prompt\Menu\rmVSprite.png" />
+    <Content Include="skins\Prompt\Menu\_vti_cnf\rmSprite.png" />
+    <Content Include="skins\Prompt\Menu\_vti_cnf\rmVSprite.png" />
+    <Content Include="skins\Prompt\PanelBar.Prompt.css" />
+    <Content Include="skins\Prompt\PanelBar\Expandable.png" />
+    <Content Include="skins\Prompt\PanelBar\Prompt.gif" />
+    <Content Include="skins\Prompt\PanelBar\RootItemBg.png" />
+    <Content Include="skins\Prompt\PanelBar\SubItemStates.png" />
+    <Content Include="skins\Prompt\PanelBar\_vti_cnf\Expandable.png" />
+    <Content Include="skins\Prompt\PanelBar\_vti_cnf\RootItemBg.png" />
+    <Content Include="skins\Prompt\PanelBar\_vti_cnf\SubItemStates.png" />
+    <Content Include="skins\Prompt\Rating.Prompt.css" />
+    <Content Include="skins\Prompt\Rating\Prompt.gif" />
+    <Content Include="skins\Prompt\Rating\Sprite.gif" />
+    <Content Include="skins\Prompt\Rating\Sprite.png" />
+    <Content Include="skins\Prompt\Rating\_vti_cnf\Sprite.gif" />
+    <Content Include="skins\Prompt\Rating\_vti_cnf\Sprite.png" />
+    <Content Include="skins\Prompt\Rotator.Prompt.css" />
+    <Content Include="skins\Prompt\Rotator\Prompt.gif" />
+    <Content Include="skins\Prompt\Rotator\RotatorButtons.gif" />
+    <Content Include="skins\Prompt\Rotator\_vti_cnf\RotatorButtons.gif" />
+    <Content Include="skins\Prompt\Scheduler.Prompt.css" />
+    <Content Include="skins\Prompt\Scheduler\Prompt.gif" />
+    <Content Include="skins\Prompt\Scheduler\rsAppointmentBg.png" />
+    <Content Include="skins\Prompt\Scheduler\rsInlineEditHSprite.png" />
+    <Content Include="skins\Prompt\Scheduler\rsInlineEditVSprite.png" />
+    <Content Include="skins\Prompt\Scheduler\rsModalOuterBg.png" />
+    <Content Include="skins\Prompt\Scheduler\rsModalOuterBgIE6.png" />
+    <Content Include="skins\Prompt\Scheduler\rsSprites.png" />
+    <Content Include="skins\Prompt\Scheduler\rsSpritesIE6.png" />
+    <Content Include="skins\Prompt\Scheduler\sprite.gif" />
+    <Content Include="skins\Prompt\Scheduler\_vti_cnf\rsAppointmentBg.png" />
+    <Content Include="skins\Prompt\Scheduler\_vti_cnf\rsInlineEditHSprite.png" />
+    <Content Include="skins\Prompt\Scheduler\_vti_cnf\rsInlineEditVSprite.png" />
+    <Content Include="skins\Prompt\Scheduler\_vti_cnf\rsModalOuterBg.png" />
+    <Content Include="skins\Prompt\Scheduler\_vti_cnf\rsModalOuterBgIE6.png" />
+    <Content Include="skins\Prompt\Scheduler\_vti_cnf\rsSprites.png" />
+    <Content Include="skins\Prompt\Scheduler\_vti_cnf\rsSpritesIE6.png" />
+    <Content Include="skins\Prompt\SiteMap.Prompt.css" />
+    <Content Include="skins\Prompt\SiteMap\Prompt.gif" />
+    <Content Include="skins\Prompt\SiteMap\rsmHover.png" />
+    <Content Include="skins\Prompt\SiteMap\_vti_cnf\rsmHover.png" />
+    <Content Include="skins\Prompt\Slider.Prompt.css" />
+    <Content Include="skins\Prompt\Slider\DragHandle.gif" />
+    <Content Include="skins\Prompt\Slider\DragVerticalHandle.gif" />
+    <Content Include="skins\Prompt\Slider\Handles.gif" />
+    <Content Include="skins\Prompt\Slider\HandlesVertical.gif" />
+    <Content Include="skins\Prompt\Slider\ItemHorizontalBgr.gif" />
+    <Content Include="skins\Prompt\Slider\ItemVerticalBgr.gif" />
+    <Content Include="skins\Prompt\Slider\LargeChangeHorizontal.gif" />
+    <Content Include="skins\Prompt\Slider\LargeChangeMiddleHorizontal.gif" />
+    <Content Include="skins\Prompt\Slider\LargelChangeCenterVertical.gif" />
+    <Content Include="skins\Prompt\Slider\LargelChangeVertical.gif" />
+    <Content Include="skins\Prompt\Slider\Prompt.gif" />
+    <Content Include="skins\Prompt\Slider\SelectedRegionHorizontalBgr.gif" />
+    <Content Include="skins\Prompt\Slider\SelectedRegionVerticalBgr.gif" />
+    <Content Include="skins\Prompt\Slider\SmallChangeCenterVertical.gif" />
+    <Content Include="skins\Prompt\Slider\SmallChangeHorizontal.gif" />
+    <Content Include="skins\Prompt\Slider\SmallChangeMiddleHorizontal.gif" />
+    <Content Include="skins\Prompt\Slider\SmallChangeVertical.gif" />
+    <Content Include="skins\Prompt\Slider\TrackBgr.gif" />
+    <Content Include="skins\Prompt\Slider\TrackVerticalBgr.gif" />
+    <Content Include="skins\Prompt\Slider\_vti_cnf\DragHandle.gif" />
+    <Content Include="skins\Prompt\Slider\_vti_cnf\DragVerticalHandle.gif" />
+    <Content Include="skins\Prompt\Slider\_vti_cnf\Handles.gif" />
+    <Content Include="skins\Prompt\Slider\_vti_cnf\HandlesVertical.gif" />
+    <Content Include="skins\Prompt\Slider\_vti_cnf\ItemHorizontalBgr.gif" />
+    <Content Include="skins\Prompt\Slider\_vti_cnf\ItemVerticalBgr.gif" />
+    <Content Include="skins\Prompt\Slider\_vti_cnf\LargeChangeHorizontal.gif" />
+    <Content Include="skins\Prompt\Slider\_vti_cnf\LargeChangeMiddleHorizontal.gif" />
+    <Content Include="skins\Prompt\Slider\_vti_cnf\LargelChangeCenterVertical.gif" />
+    <Content Include="skins\Prompt\Slider\_vti_cnf\LargelChangeVertical.gif" />
+    <Content Include="skins\Prompt\Slider\_vti_cnf\SelectedRegionHorizontalBgr.gif" />
+    <Content Include="skins\Prompt\Slider\_vti_cnf\SelectedRegionVerticalBgr.gif" />
+    <Content Include="skins\Prompt\Slider\_vti_cnf\SmallChangeCenterVertical.gif" />
+    <Content Include="skins\Prompt\Slider\_vti_cnf\SmallChangeHorizontal.gif" />
+    <Content Include="skins\Prompt\Slider\_vti_cnf\SmallChangeMiddleHorizontal.gif" />
+    <Content Include="skins\Prompt\Slider\_vti_cnf\SmallChangeVertical.gif" />
+    <Content Include="skins\Prompt\Slider\_vti_cnf\TrackBgr.gif" />
+    <Content Include="skins\Prompt\Slider\_vti_cnf\TrackVerticalBgr.gif" />
+    <Content Include="skins\Prompt\Splitter.Prompt.css" />
+    <Content Include="skins\Prompt\Splitter\ExpandCollapseBarsCommands.gif" />
+    <Content Include="skins\Prompt\Splitter\Prompt.gif" />
+    <Content Include="skins\Prompt\Splitter\ResizeBarHorizontalSprites.gif" />
+    <Content Include="skins\Prompt\Splitter\ResizeBarVerticalSprites.gif" />
+    <Content Include="skins\Prompt\Splitter\slideTitleContainerBgr.gif" />
+    <Content Include="skins\Prompt\Splitter\_vti_cnf\ExpandCollapseBarsCommands.gif" />
+    <Content Include="skins\Prompt\Splitter\_vti_cnf\ResizeBarHorizontalSprites.gif" />
+    <Content Include="skins\Prompt\Splitter\_vti_cnf\ResizeBarVerticalSprites.gif" />
+    <Content Include="skins\Prompt\Splitter\_vti_cnf\slideTitleContainerBgr.gif" />
+    <Content Include="skins\Prompt\TabStrip.Prompt.css" />
+    <Content Include="skins\Prompt\TabStrip\Level2Bg.png" />
+    <Content Include="skins\Prompt\TabStrip\Prompt.gif" />
+    <Content Include="skins\Prompt\TabStrip\TabStripStates.png" />
+    <Content Include="skins\Prompt\TabStrip\TabStripVStates.png" />
+    <Content Include="skins\Prompt\TabStrip\_vti_cnf\Level2Bg.png" />
+    <Content Include="skins\Prompt\TabStrip\_vti_cnf\TabStripStates.png" />
+    <Content Include="skins\Prompt\TabStrip\_vti_cnf\TabStripVStates.png" />
+    <Content Include="skins\Prompt\ToolBar.Prompt.css" />
+    <Content Include="skins\Prompt\ToolBar\Prompt.gif" />
+    <Content Include="skins\Prompt\ToolBar\rtbActiveBg.png" />
+    <Content Include="skins\Prompt\ToolBar\rtbClickedDropArrows.png" />
+    <Content Include="skins\Prompt\ToolBar\rtbClickedUpArrows.png" />
+    <Content Include="skins\Prompt\ToolBar\rtbControlBg.png" />
+    <Content Include="skins\Prompt\ToolBar\rtbDropArrows.png" />
+    <Content Include="skins\Prompt\ToolBar\rtbDropDownBg.png" />
+    <Content Include="skins\Prompt\ToolBar\rtbDropDownHover.png" />
+    <Content Include="skins\Prompt\ToolBar\rtbHoverBg.png" />
+    <Content Include="skins\Prompt\ToolBar\rtbUpArrows.png" />
+    <Content Include="skins\Prompt\ToolBar\rtbVerticalControlBg.png" />
+    <Content Include="skins\Prompt\ToolBar\_vti_cnf\rtbActiveBg.png" />
+    <Content Include="skins\Prompt\ToolBar\_vti_cnf\rtbClickedDropArrows.png" />
+    <Content Include="skins\Prompt\ToolBar\_vti_cnf\rtbClickedUpArrows.png" />
+    <Content Include="skins\Prompt\ToolBar\_vti_cnf\rtbControlBg.png" />
+    <Content Include="skins\Prompt\ToolBar\_vti_cnf\rtbDropArrows.png" />
+    <Content Include="skins\Prompt\ToolBar\_vti_cnf\rtbDropDownBg.png" />
+    <Content Include="skins\Prompt\ToolBar\_vti_cnf\rtbDropDownHover.png" />
+    <Content Include="skins\Prompt\ToolBar\_vti_cnf\rtbHoverBg.png" />
+    <Content Include="skins\Prompt\ToolBar\_vti_cnf\rtbUpArrows.png" />
+    <Content Include="skins\Prompt\ToolBar\_vti_cnf\rtbVerticalControlBg.png" />
+    <Content Include="skins\Prompt\ToolTip.Prompt.css" />
+    <Content Include="skins\Prompt\ToolTip\Callouts.gif" />
+    <Content Include="skins\Prompt\ToolTip\Loading.gif" />
+    <Content Include="skins\Prompt\ToolTip\Prompt.gif" />
+    <Content Include="skins\Prompt\ToolTip\ToolTipSprites.gif" />
+    <Content Include="skins\Prompt\ToolTip\ToolTipVerticalSprites.gif" />
+    <Content Include="skins\Prompt\ToolTip\_vti_cnf\Callouts.gif" />
+    <Content Include="skins\Prompt\ToolTip\_vti_cnf\Loading.gif" />
+    <Content Include="skins\Prompt\ToolTip\_vti_cnf\ToolTipSprites.gif" />
+    <Content Include="skins\Prompt\ToolTip\_vti_cnf\ToolTipVerticalSprites.gif" />
+    <Content Include="skins\Prompt\TreeView.Prompt.css" />
+    <Content Include="skins\Prompt\TreeView\ItemHoveredBg.png" />
+    <Content Include="skins\Prompt\TreeView\ItemSelectedBg.png" />
+    <Content Include="skins\Prompt\TreeView\PlusMinus.png" />
+    <Content Include="skins\Prompt\TreeView\Prompt.gif" />
+    <Content Include="skins\Prompt\TreeView\TriState.png" />
+    <Content Include="skins\Prompt\TreeView\_vti_cnf\ItemHoveredBg.png" />
+    <Content Include="skins\Prompt\TreeView\_vti_cnf\ItemSelectedBg.png" />
+    <Content Include="skins\Prompt\TreeView\_vti_cnf\PlusMinus.png" />
+    <Content Include="skins\Prompt\TreeView\_vti_cnf\TriState.png" />
+    <Content Include="skins\Prompt\Upload.Prompt.css" />
+    <Content Include="skins\Prompt\Upload\Prompt.gif" />
+    <Content Include="skins\Prompt\Upload\ruProgress.gif" />
+    <Content Include="skins\Prompt\Upload\ruProgressArea.png" />
+    <Content Include="skins\Prompt\Upload\ruSprite.png" />
+    <Content Include="skins\Prompt\Upload\ruSpriteIE6.png" />
+    <Content Include="skins\Prompt\Upload\_vti_cnf\ruProgress.gif" />
+    <Content Include="skins\Prompt\Upload\_vti_cnf\ruProgressArea.png" />
+    <Content Include="skins\Prompt\Upload\_vti_cnf\ruSprite.png" />
+    <Content Include="skins\Prompt\Upload\_vti_cnf\ruSpriteIE6.png" />
+    <Content Include="skins\Prompt\Window.Prompt.css" />
+    <Content Include="skins\Prompt\Window\CommandButtonSprites.gif" />
+    <Content Include="skins\Prompt\Window\loading.gif" />
+    <Content Include="skins\Prompt\Window\loading_small.gif" />
+    <Content Include="skins\Prompt\Window\Prompt.gif" />
+    <Content Include="skins\Prompt\Window\WindowHorizontalSprites.gif" />
+    <Content Include="skins\Prompt\Window\WindowVerticalSprites.gif" />
+    <Content Include="skins\Prompt\Window\_vti_cnf\CommandButtonSprites.gif" />
+    <Content Include="skins\Prompt\Window\_vti_cnf\WindowHorizontalSprites.gif" />
+    <Content Include="skins\Prompt\Window\_vti_cnf\WindowVerticalSprites.gif" />
+    <Content Include="skins\Prompt\_vti_cnf\Calendar.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\ColorPicker.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\ComboBox.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\Dock.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\Editor.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\FormDecorator.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\Grid.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\Input.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\ListBox.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\ListView.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\Menu.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\PanelBar.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\Rating.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\Rotator.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\Scheduler.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\SiteMap.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\Slider.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\Splitter.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\TabStrip.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\ToolBar.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\ToolTip.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\TreeView.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\Upload.Prompt.css" />
+    <Content Include="skins\Prompt\_vti_cnf\Window.Prompt.css" />
+    <Content Include="transactions.aspx" />
+    <Content Include="state14ds.aspx" />
+    <Content Include="photos.aspx" />
+    <Content Include="passthrough_entries_view.aspx" />
+    <Content Include="schedule.aspx" />
+    <Content Include="submittals.aspx" />
+    <Content Include="meetingminutes.aspx" />
+    <Content Include="notes.aspx" />
+    <Content Include="project_overview.aspx" />
+    <Content Include="RFIs.aspx" />
+    <Content Include="_report_view.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Report1.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="My Project\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>49357</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/Prompt</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

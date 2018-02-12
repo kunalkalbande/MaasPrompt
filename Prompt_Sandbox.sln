@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Prompt_Sandbox", "http://localhost:8090/Prompt_Sandbox/Prompt_Sandbox", "{1B3D7140-D01B-4157-B033-2838EB3A0091}"
+	ProjectSection(WebsiteProperties) = preProject
+		UseIISExpress = "false"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
+		Debug.AspNetCompiler.VirtualPath = "/Prompt_Sandbox"
+		Debug.AspNetCompiler.PhysicalPath = "..\..\..\..\..\..\Websites\Prompt_Sandbox\Prompt_Sandbox\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\Prompt_Sandbox\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/Prompt_Sandbox"
+		Release.AspNetCompiler.PhysicalPath = "..\..\..\..\..\..\Websites\Prompt_Sandbox\Prompt_Sandbox\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\Prompt_Sandbox\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		SlnRelativePath = "..\..\..\..\..\..\Websites\Prompt_Sandbox\Prompt_Sandbox\"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1B3D7140-D01B-4157-B033-2838EB3A0091}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B3D7140-D01B-4157-B033-2838EB3A0091}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B3D7140-D01B-4157-B033-2838EB3A0091}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1B3D7140-D01B-4157-B033-2838EB3A0091}.Debug|x64.Build.0 = Debug|Any CPU
+		{1B3D7140-D01B-4157-B033-2838EB3A0091}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B3D7140-D01B-4157-B033-2838EB3A0091}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{1B3D7140-D01B-4157-B033-2838EB3A0091}.Release|x64.ActiveCfg = Debug|Any CPU
+		{1B3D7140-D01B-4157-B033-2838EB3A0091}.Release|x64.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

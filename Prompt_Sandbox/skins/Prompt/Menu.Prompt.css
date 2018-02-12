@@ -1,0 +1,312 @@
+/* <RadMenu / Vista> */
+
+.RadMenu_Prompt .rmRootGroup,
+.RadMenu_Prompt .rmFirst,
+.RadMenu_Prompt .rmLink,
+.RadMenu_Prompt .rmText,
+.RadMenu_Prompt .rmLeftArrow,
+.RadMenu_Prompt .rmRightArrow,
+.RadMenu_Prompt .rmTopArrow,
+.RadMenu_Prompt .rmBottomArrow
+{
+	background-image: url('Menu/rmSprite.png');
+	background-color: transparent;
+}
+
+.RadMenu_Prompt .rmRootGroup
+{	
+	position:relative;top:-3px;left:0;height:31px;background:url(../../images/navrowbg.gif) #fbfdff repeat-x;
+}
+
+.RadMenu_Prompt .rmFirst
+{
+	background-position: 0 -24px;
+}
+
+.RadMenu_Prompt .rmVertical .rmFirst,
+.RadMenu_Prompt .rmVertical .rmLast
+{
+	background: none;
+	padding: 0;
+}
+
+/* <Root items> */
+
+.RadMenu_Prompt,
+.RadMenu_Prompt .rmLink
+{
+	font: normal 12px/23px "Segoe UI", Arial, sans-serif;
+	color:#0066cc;
+	text-decoration: underline;
+	margin-top:3px;
+}
+
+.RadMenu_Prompt .rmLink,
+.RadMenu_Prompt .rmText
+{
+	background-position: 0 1050px;
+	background-repeat: no-repeat;
+	cursor:pointer;
+}
+
+.RadMenu_Prompt .rmLink:hover,
+.RadMenu_Prompt .rmFocused,
+.RadMenu_Prompt .rmSelected
+{
+	
+	cursor:pointer;
+}
+
+.RadMenu_Prompt .rmLink:hover .rmText,
+.RadMenu_Prompt .rmFocused .rmText,
+.RadMenu_Prompt .rmSelected .rmText
+{
+	color:#292929;
+	text-decoration: underline;
+	cursor:pointer;
+}
+
+.RadMenu_Prompt .rmExpanded,
+.RadMenu_Prompt .rmExpanded:hover
+{
+	
+	cursor:pointer;
+}
+
+.RadMenu_Prompt .rmExpanded .rmText,
+.RadMenu_Prompt .rmExpanded:hover .rmText
+{
+	
+	cursor:pointer;
+}
+
+.RadMenu_Prompt .rmDisabled,
+.RadMenu_Prompt .rmDisabled:hover
+{
+	color: #a7a7a7;
+}
+
+.RadMenu_Prompt .rmDisabled:hover,
+.RadMenu_Prompt .rmDisabled:hover .rmText
+{
+	background: none;
+}
+
+/* </Root items> */
+
+
+/* <Submenu items> */
+
+.RadMenu_Prompt .rmGroup,
+.RadMenu_Prompt .rmMultiColumn,
+.RadMenu_Prompt .rmGroup .rmVertical
+{
+	border: 1px solid #a5b3c5;
+	background: #fff url('Menu/rmVSprite.png') repeat-y -1px 0;
+}
+
+.RadMenu_Prompt .rmSlide .rmScrollWrap
+{
+	background-image: none;
+}
+
+.RadMenu_Prompt_rtl .rmGroup,
+.RadMenu_Prompt_rtl .rmMultiColumn,
+.RadMenu_Prompt_rtl .rmGroup .rmVertical
+{
+	background-position: 101% 0;
+}
+
+.RadMenu_Prompt .rmRootGroup .rmHorizontal
+{
+	background-image: none;
+}
+
+.RadMenu_Prompt .rmScrollWrap .rmVertical
+{
+	border: 0;
+}
+
+.RadMenu_Prompt .rmGroup .rmFirst,
+.RadMenu_Prompt .rmGroup .rmLast
+{
+	background: none;
+}
+
+.RadMenu_Prompt .rmGroup .rmLast
+{
+	padding-bottom: 1px;
+}
+
+.RadMenu_Prompt .rmGroup .rmLink .rmText,
+{
+	color:#0066cc;
+}
+
+.RadMenu_Prompt .rmGroup .rmLink:hover,
+.RadMenu_Prompt .rmGroup .rmFocused,
+.RadMenu_Prompt .rmGroup .rmSelected,
+.RadMenu_Prompt .rmGroup .rmExpanded
+{	
+	background:#dee8f4;
+}
+
+.RadMenu_Prompt .rmGroup .rmLink:hover .rmText,
+.RadMenu_Prompt .rmGroup .rmFocused .rmText,
+.RadMenu_Prompt .rmGroup .rmSelected .rmText,
+.RadMenu_Prompt .rmGroup .rmExpanded .rmText
+{
+	color:#292929;
+	background:#dee8f4;
+	text-decoration:underline;
+}
+
+/* <expand arrows> */
+
+.RadMenu_Prompt .rmGroup .rmExpandRight,
+.RadMenu_Prompt .rmGroup .rmExpandDown
+{
+	background-position: 100% -216px;
+}
+
+.RadMenu_Prompt .rmGroup .rmLink:hover .rmExpandRight,
+.RadMenu_Prompt .rmGroup .rmFocused .rmExpandRight,
+.RadMenu_Prompt .rmGroup .rmSelected .rmExpandRight,
+.RadMenu_Prompt .rmGroup .rmExpanded .rmExpandRight,
+.RadMenu_Prompt .rmGroup .rmLink:hover .rmExpandDown,
+.RadMenu_Prompt .rmGroup .rmFocused .rmExpandDown,
+.RadMenu_Prompt .rmGroup .rmSelected .rmExpandDown,
+.RadMenu_Prompt .rmGroup .rmExpanded .rmExpandDown
+{
+	background-position: 100% -240px;
+}
+
+.RadMenu_Prompt .rmGroup .rmDisabled:hover .rmExpandRight,
+.RadMenu_Prompt .rmGroup .rmDisabled:hover .rmExpandDown
+{
+	background-image: url('Menu/rmSprite.png');
+	background-position: 100% -216px;
+}
+
+/* </expand arrows> */
+
+/* <rtl> */
+
+.RadMenu_Prompt_rtl .rmGroup .rmLink:hover,
+.RadMenu_Prompt_rtl .rmGroup .rmFocused,
+.RadMenu_Prompt_rtl .rmGroup .rmSelected,
+.RadMenu_Prompt_rtl .rmGroup .rmExpanded
+{
+	background-position: 100% -264px;
+}
+
+.RadMenu_Prompt_rtl .rmGroup .rmLink:hover .rmText,
+.RadMenu_Prompt_rtl .rmGroup .rmFocused .rmText,
+.RadMenu_Prompt_rtl .rmGroup .rmSelected .rmText,
+.RadMenu_Prompt_rtl .rmGroup .rmExpanded .rmText
+{
+	background-position: 0 -288px;
+}
+
+.RadMenu_Prompt_rtl .rmGroup .rmExpandLeft
+{
+	background-position: 0 -312px;
+}
+
+.RadMenu_Prompt_rtl .rmGroup .rmLink:hover .rmExpandLeft,
+.RadMenu_Prompt_rtl .rmGroup .rmFocused .rmExpandLeft,
+.RadMenu_Prompt_rtl .rmGroup .rmSelected .rmExpandLeft,
+.RadMenu_Prompt_rtl .rmGroup .rmExpanded .rmExpandLeft
+{
+	background-position: 0 -336px;
+}
+
+/* </rtl> */
+
+/* </Submenu items> */
+
+/* <Submenu offsets (Vista - specific, overlapping submenus)> */
+
+.RadMenu_Prompt .rmSlide
+{
+	margin: -3px 0 0 1px;
+}
+
+.RadMenu_Prompt .rmVertical .rmSlide,
+.RadMenu_Prompt .rmSlide .rmSlide,
+.RadMenu_Prompt_Context .rmGroup .rmSlide
+{
+	margin: 0 0 0 -5px;
+}
+
+.RadMenu_Prompt_rtl .rmSlide
+{
+	margin: -3px 0 0 -1px;
+}
+
+.RadMenu_Prompt_rtl .rmVertical .rmSlide,
+.RadMenu_Prompt_rtl .rmSlide .rmSlide,
+.RadMenu_Prompt_Context_rtl .rmGroup .rmSlide
+{
+	margin: 0 0 0 5px;
+}
+
+/* </Submenu offsets> */
+
+/* <Scrolling arrows> */
+
+.RadMenu_Prompt .rmLeftArrow,
+.RadMenu_Prompt .rmRightArrow
+{
+	background-color: #E0E5F5;
+}
+
+.RadMenu_Prompt .rmLeftArrow { background-position: -8px -312px; border-right: 1px solid #B7BDCD; }
+.RadMenu_Prompt .rmRightArrow { background-position: -482px -216px; border-left: 1px solid #B7BDCD; }
+
+.RadMenu_Prompt .rmTopArrow,
+.RadMenu_Prompt .rmBottomArrow,
+.RadMenu_Prompt .rmGroup .rmLeftArrow,
+.RadMenu_Prompt .rmGroup .rmRightArrow
+{
+	background-color: #f0f0f0;
+}
+
+.RadMenu_Prompt .rmTopArrow { background-position: 50% -367px; border-bottom: 1px solid #B7BDCD; }
+.RadMenu_Prompt .rmBottomArrow { background-position: 50% -391px; border-top: 1px solid #B7BDCD; }
+
+/* </Scrolling arrows> */
+
+/* <Separators> */
+
+.RadMenu_Prompt .rmVertical .rmSeparator .rmText,
+.RadMenu_Prompt .rmHorizontal .rmVertical .rmSeparator .rmText
+{
+	background-position: 0 -406px;
+}
+
+.RadMenu_Prompt .rmHorizontal .rmSeparator .rmText,
+.RadMenu_Prompt .rmVertical .rmHorizontal .rmSeparator .rmText
+{
+	background-position: 0 -386px;
+}
+
+/* </Separators> */
+
+/* </RadMenu / Vista> */
+
+
+ div.RadMenu_Prompt .rmRootGroup {
+
+	border-color: transparent;
+
+}
+
+ div.RadMenu_Prompt .rmItem .rmLink {
+
+	color:#0066cc;
+
+	font-size: 11px;
+
+}
+

@@ -1,0 +1,255 @@
+﻿/* -= Common styles =- */
+.spIcon
+{
+    background-image: url('images/prompt_nav_sprite.png');
+    background-repeat: no-repeat;
+}
+
+
+.sprite-ledger_account
+{
+    background-position: 0 0;
+}
+.sprite-prompt_college
+{
+    background-position: 0 -66px;
+}
+.sprite-prompt_contract
+{
+    background-position: 0 -132px;
+}
+.sprite-prompt_contract_closed
+{
+    background-position: 0 -198px;
+}
+.sprite-prompt_contract_global_active
+{
+    background-position: 0 -264px;
+}
+.sprite-prompt_contract_global_closed
+{
+    background-position: 0 -330px;
+}
+.sprite-prompt_contract_global_pending
+{
+    background-position: 0 -396px;
+}
+.sprite-prompt_contract_open
+{
+    background-position: 0 -462px;
+}
+.sprite-prompt_contract_pending
+{
+    background-position: 0 -528px;
+}
+.sprite-prompt_district
+{
+    background-position: 0 -594px;
+}
+.sprite-prompt_project
+{
+    background-position: 0 -660px;
+}
+.sprite-prompt_project_active
+{
+    background-position: 0 -724px;
+}
+.sprite-prompt_project_cancelled
+{
+    background-position: 0 -794px;
+}
+.sprite-prompt_project_complete
+{
+    background-position: 0 -864px;
+}
+.sprite-prompt_project_consolodated
+{
+    background-position: 0 -930px;
+}
+.sprite-prompt_project_global_active
+{
+    background-position: 0 -1000px;
+}
+.sprite-prompt_project_global_cancelled
+{
+    background-position: 0 -1066px;
+}
+.sprite-prompt_project_global_complete
+{
+    background-position: 0 -1136px;
+}
+.sprite-prompt_project_global_proposed
+{
+    background-position: 0 -1202px;
+}
+.sprite-prompt_project_global_suspended
+{
+    background-position: 0 -1272px;
+}
+.sprite-prompt_project_proposed
+{
+    background-position: 0 -1342px;
+}
+.sprite-prompt_project_suspended
+{
+    background-position: 0 -1408px;
+}
+.sprite-tree_node_adminitem
+{
+    background-position: 0 -1478px;
+}
+.sprite-tree_node_clients
+{
+    background-position: 0 -1544px;
+}
+.sprite-tree_node_college
+{
+    background-position: 0 -1610px;
+}
+.sprite-tree_node_district
+{
+    background-position: 0 -1676px;
+}
+.sprite-tree_node_districts
+{
+    background-position: 0 -1742px;
+}
+.sprite-tree_node_systemadmin
+{
+    background-position: 0 -1808px;
+}
+
+
+/* -= RadTreeView styles =- */
+
+.RadTreeView .rtLI .spIcon
+{
+    padding-left: 21px; /* 20px for the image, 2px offset, 5px inherited */
+    padding-top: 3px;
+
+}
+
+.RadTreeView .rtLI .rtHover .spIcon, .RadTreeView .rtLI .rtSelected .spIcon
+{
+    border: 0; /* override borders, for simplification */
+    padding-left: 21px;
+    padding-top: 2px;
+    background-image: url('images/prompt_nav_sprite.png');
+    background-repeat: no-repeat;
+}
+
+/* those need more specifity */
+
+
+.RadTreeView .rtUL .rtLI .sprite-ledger_account
+{
+    background-position: 0 0;
+}
+.RadTreeView .rtUL .rtLI .sprite-prompt_college
+{
+    background-position: 0 -66px;
+}
+.RadTreeView .rtUL .rtLI .sprite-prompt_contract
+{
+    background-position: 0 -132px;
+}
+.RadTreeView .rtUL .rtLI .sprite-prompt_contract_closed
+{
+    background-position: 0 -198px;
+}
+.RadTreeView .rtUL .rtLI .sprite-prompt_contract_global_active
+{
+    background-position: 0 -264px;
+}
+.RadTreeView .rtUL .rtLI .sprite-prompt_contract_global_closed
+{
+    background-position: 0 -330px;
+}
+.RadTreeView .rtUL .rtLI .sprite-prompt_contract_global_pending
+{
+    background-position: 0 -396px;
+}
+.RadTreeView .rtUL .rtLI .sprite-prompt_contract_open
+{
+    background-position: 0 -462px;
+}
+.RadTreeView .rtUL .rtLI .sprite-prompt_contract_pending
+{
+    background-position: 0 -528px;
+}
+.RadTreeView .rtUL .rtLI .sprite-prompt_district
+{
+    background-position: 0 -594px;
+}
+.RadTreeView .rtUL .rtLI .sprite-prompt_project
+{
+    background-position: 0 -660px;
+}
+.RadTreeView .rtUL .rtLI .sprite-prompt_project_active
+{
+    background-position: 0 -724px;
+}
+.RadTreeView .rtUL .rtLI .sprite-prompt_project_cancelled
+{
+    background-position: 0 -794px;
+}
+.RadTreeView .rtUL .rtLI .sprite-prompt_project_complete
+{
+    background-position: 0 -864px;
+}
+.RadTreeView .rtUL .rtLI .sprite-prompt_project_consolodated
+{
+    background-position: 0 -930px;
+}
+.RadTreeView .rtUL .rtLI .sprite-prompt_project_global_active
+{
+    background-position: 0 -1000px;
+}
+.RadTreeView .rtUL .rtLI .sprite-prompt_project_global_cancelled
+{
+    background-position: 0 -1066px;
+}
+.RadTreeView .rtUL .rtLI .sprite-prompt_project_global_complete
+{
+    background-position: 0 -1136px;
+}
+.RadTreeView .rtUL .rtLI .sprite-prompt_project_global_proposed
+{
+    background-position: 0 -1202px;
+}
+.RadTreeView .rtUL .rtLI .sprite-prompt_project_global_suspended
+{
+    background-position: 0 -1272px;
+}
+.RadTreeView .rtUL .rtLI .sprite-prompt_project_proposed
+{
+    background-position: 0 -1342px;
+}
+.RadTreeView .rtUL .rtLI .sprite-prompt_project_suspended
+{
+    background-position: 0 -1408px;
+}
+.RadTreeView .rtUL .rtLI .sprite-tree_node_adminitem
+{
+    background-position: 0 -1478px;
+}
+.RadTreeView .rtUL .rtLI .sprite-tree_node_clients
+{
+    background-position: 0 -1544px;
+}
+.RadTreeView .rtUL .rtLI .sprite-tree_node_college
+{
+    background-position: 0 -1610px;
+}
+.RadTreeView .rtUL .rtLI .sprite-tree_node_district
+{
+    background-position: 0 -1676px;
+}
+.RadTreeView .rtUL .rtLI .sprite-tree_node_districts
+{
+    background-position: 0 -1742px;
+}
+.RadTreeView .rtUL .rtLI .sprite-tree_node_systemadmin
+{
+    background-position: 0 -1808px;
+}

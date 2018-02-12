@@ -1,0 +1,544 @@
+body{margin:0px;padding:0px;font-size:12px;color:#292929;font-family: "Segoe UI", Arial, sans-serif;background:#e7e9ed;}
+.edit_screen{margin:0px;padding:0px;font-size:12px;color:#292929;font-family:Segoe UI, Arial, sans-serif;background:#ecf2f9;}
+body, a, div, span, object, table, tr, td, img, table table, table table table{outline:none;}
+
+/* General CSS Classes */
+.left{float:left;}
+.right{float:right;}
+.clear{clear:both;}
+.txtleft{text-align:left;}
+.txtright{text-align:right;}
+.green{color:#009c04;font-weight:bold;}
+.blue{color:#3190c4;font-weight:bold;}
+.red{color:#ca0000;font-weight:bold;}
+.orange{color:#f90;font-weight:bold;}
+.bold{font-weight:bold;}
+.bgyellow{background:#fffd60;}
+table{font-size:11px;outline:none;}
+input, select, textarea{font-family:Segoe UI, Arial, sans-serif; color:#054b90;}
+a{color:#0066cc;outline:none;cursor:pointer;}
+a:hover{color:#292929;outline:none;}
+h2{margin:0;padding:0;font-size:18px;color:#292929;}
+.txtprint{display:none;}
+.hdprint{display:none;}
+.college_lbl{display:inline-block;background:url(images/house2.png) no-repeat 0px 12px;float:left;font-size:24px;font-weight:bold;margin:0;padding:12px 0 0 38px;position:relative;top:3px;left:9px;width:80%;height:36px;overflow:hidden;}
+.project_lbl{display:inline-block;background:url(images/clipboard_l.png) no-repeat 0px 12px;float:left;font-size:24px;font-weight:bold;margin:0;padding:12px 0 0 38px;position:relative;top:3px;left:9px;width:80%;height:36px;overflow:hidden;}
+.ledger_lbl{display:inline-block;display:inline-block;background:url(images/book_red.png) no-repeat 0px 12px;float:left;font-size:24px;font-weight:bold;margin:0;padding:12px 0 0 38px;position:relative;top:3px;left:9px;width:80%;height:36px;overflow:hidden;}
+.projectgroup_lbl{display:inline-block;display:inline-block;background:url(images/folders.png) no-repeat 0px 12px;float:left;font-size:24px;font-weight:bold;margin:0;padding:12px 0 0 38px;position:relative;top:3px;left:9px;width:80%;height:36px;overflow:hidden;}
+.contract_lbl{display:inline-block;display:inline-block;background:url(images/contract1.png) no-repeat 0px 12px;float:left;font-size:24px;font-weight:bold;margin:0;padding:12px 0 0 38px;position:relative;top:3px;left:9px;width:80%;height:36px;overflow:hidden;}
+.admin_lbl{display:inline-block;background:url(images/gear1.png) no-repeat 0px 12px;float:left;font-size:24px;font-weight:bold;margin:0;padding:12px 0 0 38px;position:relative;top:3px;left:9px;width:80%;height:36px;overflow:hidden;}
+.contacts_lbl{display:inline-block;background:url(images/contacts_24.png) no-repeat 0px 12px;float:left;font-size:24px;font-weight:bold;margin:0;padding:12px 0 0 38px;position:relative;top:3px;left:9px;width:80%;height:36px;overflow:hidden;}
+.projectlogs_lbl{display:inline-block;background:url(images/prompt_task.gif) no-repeat 0px 12px;float:left;font-size:24px;font-weight:bold;margin:0;padding:12px 0 0 38px;position:relative;top:3px;left:9px;width:80%;height:36px;overflow:hidden;}
+.companies_lbl{display:inline-block;background:url(images/company_big.png) no-repeat 0px 12px;float:left;font-size:24px;font-weight:bold;margin:0;padding:12px 0 0 38px;position:relative;top:3px;left:9px;width:80%;height:36px;overflow:hidden;}
+.reports_lbl{display:inline-block;background:url(images/reports.png) no-repeat 0px 12px;float:left;font-size:24px;font-weight:bold;margin:0;padding:12px 0 0 38px;position:relative;top:3px;left:9px;width:80%;height:36px;overflow:hidden;}
+/*David D 8-3-17 added .forms_lbl class on the forms.aspx file*/
+.forms_lbl{display:inline-block;background:url(images/prompt_forms_new.gif) no-repeat 5px 14px;float:left;font-size:24px;font-weight:bold;margin:0;padding:12px 0 0 50px;position:relative;top:3px;left:10px;width:80%;height:36px;overflow:hidden; margin-bottom:10px;}
+
+/*David D 8-3-17 added below for red book image on top menu in prompt.master radmenuitem "images/book_red.png"*/
+.book_red img{max-width:20px;height:auto;}
+/*David D 8-9-17 added control for prompt_forms_light image "images/prompt_budget_light.gif"*/
+.rmItem .prompt_forms_light img{margin-top:6px;margin-right:3px;}
+
+/* Log In CSS */
+.login{margin:0px;padding:0px;font-size:13px;color:#000;font-family: "Segoe UI", Arial, sans-serif;background:url(images/loginbg.jpg) repeat-x #106ed4;}
+.login h1{width:401px;height:60px;margin:90px auto 0 auto;padding:0px;text-indent:-9999px;background:url(images/PROMPTed_Logo_3_B.png) no-repeat 27px 0px;}
+.login h2{font-size:24px;color:#000;letter-spacing:-1px;margin:0 0 15px;padding:0;}
+.login h3{font-size:14px;color:#000;margin:15px 0 0 0;padding:0;}
+.login_input {width:300px;-moz-border-radius:5px;-webkit-border-radius:5px;background:url("../img/form/input-bg.gif") repeat-x scroll 0 0 #FFFFFF;border:1px solid #C0C0C0;color:#000000;font-family:"Lucida Sans Unicode","Lucida Grande","Arial",sans-serif;font-size:14px;padding:7px;}
+.login_btn{display:inline-block;font-size:14px;color:#fff;font-weight:bold;background:#54a1ea;-moz-border-radius:5px;-webkit-border-radius:5px;padding:5px 21px;text-decoration:none;}
+.login_btn:hover{background:#106fd4;color:#fff;}
+.login_msg{display:block;width:95%;font-size:12px;color:#F00;background:#fff5f5;border:1px red solid;padding:5px;}
+.login_ok{display:block;width:95%;font-size:12px;color:green;background:#fff5f5;border:1px green solid;padding:5px;}
+.login_sm{font-size:11px;}
+
+.flag_dashboard_background{background-color:#99ffff;}
+.logo{position:relative;top:-2px;left:0px;}
+.college_logo{float:right;margin:0 5px;}
+
+.scheduletitle
+{
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #0066cc;
+    height: 65px;
+}
+
+.pmbudget_grid_footer
+{
+    border-top-style: solid !important;
+    border-top-width: thin !important;
+    border-top-color: #000000 !important;
+    font-weight: bold !important;
+    border-bottom-style: solid !important;
+    border-bottom-width: thin !important;
+    border-bottom-color: #000000 !important;
+}
+
+/* Containers */
+.title{background:url(images/titlebg.png) repeat-x;}
+.leftnavcss{height:100%;background:url(images/leftnav.jpg) no-repeat top left #4e8abe;width:280px;overflow-x:hidden;overflow-y:scroll;}
+#contentwrapper{float:left;width:100%;}
+#contentcolumn{min-height:500px;height:auto !important;height:500px;background:#e7e9ed;}
+#navrow{width:100%;border-bottom:1px #e3e3e3 solid;height:31px;background:url(images/navrowbg.gif) #fbfdff repeat-x;margin:0;padding:0;}
+#pagecontextmenu{background-position: #f7f7f7;border-bottom: 1px #d3d3d3 dotted;background: #f7f7f7;float: right;}  /* for context menu on pages */
+.innertube{margin:5px;}
+.innertube div, .innertube div div{border:none;}
+
+/* Dock Zones */
+.raddockzone{width:48%;float:left;border:none;position:absolute;}
+.raddockzone div, .raddockzone div div, .raddockzone div table{border:none;}
+.raddock a span{}
+.dockbar{width:100px;height:20px;border:1px red solid;overflow:hidden;}
+
+
+/* Nav Row Classes */
+#navrow a{font-size:12px;margin:5px 10px 0;display:inline-block;padding:5px 2px 5px 20px;float:left;text-decoration:underline;}
+.addnew{background:url(images/add.png) no-repeat center left;}
+.edit{background:url(images/edit.png) no-repeat center left;}
+.printbtn{background:url(images/printer.png) no-repeat center left;}
+.users{background:url(images/users.png) no-repeat center left;}
+.addnewledger{background:url(images/addledger.png) no-repeat center left;}
+.addnewgroup{background:url(images/addgroup.png) no-repeat center left;}
+.excel{background:url(images/excel.gif) no-repeat center left;}
+.pdf{background:url(images/prompt_pdf.gif) no-repeat center left;}
+.jcaf{background:url(images/tab_budget.png) no-repeat center left;}
+.budget{background:url(images/money2.png) no-repeat center left;}
+.report{background:url(images/printer.png) no-repeat center left;}
+.upload{background:url(images/arrow_up_green.png) no-repeat center left;}
+.flag{background:url(images/flag.gif) no-repeat center left;}
+.help{background:url(images/help.png) no-repeat center left;}
+.gear{background:url(images/gear.png) no-repeat center left;}
+.changeordertotal{float:right;color:#292929;margin:3px 10px 0 10px;display:inline-block;}
+
+/* Buttons */
+.editbtn{display:inline-block;text-align:left;padding-left:20px;width:30px;height:18px;background:url(images/edit.png) no-repeat center left;float:right;text-transform:lowercase;font-style:italic;font-weight:normal;margin-left:-30px;}
+.addbtn{display:inline-block;text-align:left;padding-left:20px;width:30px;height:18px;background:url(images/add.png) no-repeat center left;float:right;text-transform:lowercase;font-style:italic;font-weight:normal;margin-left:-30px;}
+.uploadbtn{font-size:12px;margin:5px 10px 0 10px;display:inline-block;padding:2px 2px 2px 20px;float:left;background:url(images/arrow_up_green.png) no-repeat center left;}
+.managebtn{display:inline-block;text-align:left;padding-left:20px;width:50px;height:18px;background:url(images/gear.png) no-repeat center left;float:right;text-transform:lowercase;font-style:italic;font-weight:normal;margin-left:-50px;}
+.addnewbtn{font-size:12px;margin:5px 10px 0 10px;display:inline-block;padding:2px 2px 2px 20px;float:left;background:url(images/add.png) no-repeat center left;}
+.attachbtn{font-size:12px;margin:5px 10px 0 10px;display:inline-block;padding:2px 2px 2px 20px;float:left;background:url(images/tab_attachments.png) no-repeat center left;}
+.excelbtn{margin:1px 0 0 9px;}
+
+/* Widget Styles */
+
+.widgetprojectoverviewtitle
+{	color:#292929;
+    display: inline-block;
+	float:left;
+    width: 50%;
+    height: 18px;
+	padding:7px 0 0 20px;
+    background: url(images/clipboard.png) no-repeat center left;
+    font-weight: bold;
+	text-shadow:#fff 0px 1px 1px;
+	text-transform:capitalize;
+	}
+
+
+
+
+.widgetcontractoverviewtitle
+{
+    display: inline-block;
+    text-align: left;
+    padding-left: 20px;
+    padding-top: 7px;
+    width: 120px;
+    height: 18px;
+    background: url(images/pin.png) no-repeat center left;
+    float: inherit;
+    font-style:normal;
+    font-weight: bold;
+	color:#292929;
+		text-shadow:#fff 0px 1px 1px;
+	text-transform:capitalize;
+}
+
+.widgetbudgetoverviewtitle
+{
+    display: inline-block;
+    text-align: left;
+    padding-left: 20px;
+    padding-top: 7px;
+    width: 120px;
+    height: 18px;
+    background: url(images/tab_budget.png) no-repeat center left;
+    float: inherit;
+    font-style:normal;
+    font-weight: bold;
+	color:#292929;
+		text-shadow:#fff 0px 1px 1px;
+	text-transform:capitalize;
+}
+
+.widgetnotestitle
+{
+    display: inline-block;
+    text-align: left;
+    padding-left: 20px;
+    padding-top: 7px;
+    width: 120px;
+    height: 18px;
+    background: url(images/prompt_note.gif) no-repeat center left;
+    float: inherit;
+    font-style:normal;
+    font-weight: bold;
+	color:#292929;
+    text-shadow:#fff 0px 1px 1px;
+	text-transform:capitalize;
+}
+
+
+.widgetpmoverviewtitle
+{
+    display: inline-block;
+    text-align: left;
+    padding-left: 20px;
+    padding-top: 7px;
+    width: 180px;
+    height: 18px;
+    background: url(images/clipboard.png) no-repeat center left;
+    float: inherit;
+    font-weight: bold;
+    color:#292929;
+    text-shadow:#fff 0px 1px 1px;
+}
+
+.widgetinboxtitle
+{
+    display: inline-block;
+    text-align: left;
+    padding-left: 20px;
+    padding-top: 7px;
+    width: 120px;
+    height: 18px;
+    background: url(images/inbox_small.png) no-repeat center left;
+    float: inherit;
+    font-weight: bold;
+    color:#292929;
+    text-shadow:#fff 0px 1px 1px;
+}
+
+.widgetalertstitle
+{
+    display: inline-block;
+    text-align: left;
+    padding-left: 20px;
+    padding-top: 7px;
+    width: 120px;
+    height: 18px;
+    background: url(images/flag.gif) no-repeat center left;
+    float: inherit;
+    font-weight: bold;
+    	color:#292929;
+    text-shadow:#fff 0px 1px 1px;
+}
+
+.widgetpromptannouncementstitle
+{
+    display: inline-block;
+    text-align: left;
+    padding-left: 20px;
+    padding-top: 5px;
+    width: 130px;
+    height: 18px;
+    background: url(images/message.png) no-repeat center left;
+    float: inherit;
+    font-weight: bold;
+}
+.widgetteammemberstitle
+{
+    display: inline-block;
+    text-align: left;
+    padding-left: 20px;
+    padding-top: 7px;
+    width: 175px;
+    height: 18px;
+    background: url(images/contacts.png) no-repeat center left;
+    float: inherit;
+    font-style:normal;
+    font-weight: bold;
+	color:#292929;
+    text-shadow:#fff 0px 1px 1px;
+	text-transform:capitalize;
+}
+
+
+.widgetcontractchart
+{
+    display: inline-block;
+    text-align: left;
+    padding-left: 20px;
+    padding-top: 7px;
+    width: 120px;
+    height: 18px;
+    background: url(images/pie-chart.png) no-repeat center left;
+    float: inherit;
+    font-style:normal;
+    font-weight: bold;
+	color:#292929;
+		text-shadow:#fff 0px 1px 1px;
+	text-transform:capitalize;
+}
+
+.widgeteditbtn
+{	display: inline-block;
+    width: 20px;
+    height: 18px;
+    background: url(images/edit.png)  no-repeat !important;
+	float: left;
+	text-indent:-9999px;
+	cursor:pointer !important;
+    
+}
+
+.widgetaddbtn
+{
+    display: inline-block;
+    width: 20px;
+    height: 18px;
+    background: url(images/add.png)  no-repeat !important;
+	float: left;
+	text-indent:-9999px;
+	cursor:pointer !important;
+}
+
+/*.rfi_overdue{color:#ca0000;background: url(images/warning.png) no-repeat 50px 50% #ffdfdf;font-size:11px;}*/
+/*.rfi_overdue{color:#000000;background:#ffdfdf;}*/
+
+/*.rfi_overdue:hover td{background-color:#FFFB91;background:#FFFB91;}*/
+/*.rfi_overdue{color:#ffffff;background:#ff0d0d;}*/
+.rfi_overdue{color:#000000;background:#ff2929;}
+.rfi_overdue td{border:1px #000000 solid;border-left:none;border-right:none;padding-left:9px;}
+
+/*.rfi_pending{color:#009c04;background:#d3ffd4;font-size:11px;}*/
+/*.rfi_pending{color:#000000;background:#d3ffd4;font-size:11px;}*/
+.rfi_pending{color:#000000;background:#39c754;font-size:11px;}
+/*.rfi_pending td{border:1px #009c04 solid;border-left:none;border-right:none;padding-left:9px;}*/
+.rfi_pending td{border:1px #000000 solid;border-left:none;border-right:none;padding-left:9px;}
+
+.rfi_unassigned{color:#000000;background:white;font-size:11px;}
+.rfi_unassigned td{border:1px #000000 solid;border-left:none;border-right:none;padding-left:9px;}
+
+/*.rfi_answered{color:#FFFFFF;background:#C4C4C4;font-size:11px;}*/
+.rfi_answered{color:#000000;background:#6da6fb;font-size:11px;}
+/*.rfi_answered td{border:1px #5C545C solid;border-left:none;border-right:none;padding-left:9px;}*/
+.rfi_answered td{border:1px #000000 solid;border-left:none;border-right:none;padding-left:9px;}
+
+/*.rfi_warning{color:#000000;background:#f6ff00;}*/
+.rfi_warning{color:#000000;background:#FFd883;}
+/*.rfi_warning td{border:1px #5C545C solid;border-left:none;border-right:none;padding-left:9px;}*/
+.rfi_warning td{border:1px #000000 solid;border-left:none;border-right:none;padding-left:9px;}
+
+/*.rfi_preparing{color:#ffffff;background:#7570FA;}*/
+.rfi_preparing{color:#000000;background:#bfbfbf;}
+/*.rfi_preparing td{border:1px #5C545C solid;border-left:none;border-right:none;padding-left:9px;}*/
+.rfi_preparing td{border:1px #000000 solid;border-left:none;border-right:none;padding-left:9px;}
+
+.NewWorkflow  td{border:1px #000000 solid;border-left:none;border-right:none;padding-left:9px;}
+.NewWorkflow{font-weight:bold;font-size:12px}
+
+.main_photo{padding:3px;border:1px #d3d3d3 solid;}
+
+.rt_add{display:inline-block;color:#292929;float:right;font-size:13px;font-style:italic;font-weight:normal;padding:0 5px;text-transform:lowercase;text-decoration:none;}
+
+/* Table Widgets */
+.college_ov{margin-right:0px;font-size:11px;width:99%;}
+.college_ov td table tr:hover td, .project_ov tr:hover td{background:#ffa;}
+tr.alt{background:#f7f7f7;}
+.college_ov td table th, .notes_tb th, .tlrk_tb th{background:#dfe9f5;border-bottom:1px #d3d3d3 solid;-moz-border-radius-topright:5px;-webkit-border-top-right-radius:5px;-moz-border-radius-topleft:5px;-webkit-border-top-left-radius:5px;padding:3px;text-shadow:#fff 1px 1px 1px;font-weight:bold;white-space:nowrap;}
+.college_ov td table td, .project_ov td{color:#3f3737;padding:3px 5px;border-bottom:1px #e7e7e7 solid;white-space:nowrap;}
+.college_ov td table td.desc, .project_ov td.desc{white-space:normal;}
+
+.notes_tb{margin-right:20px;font-size:11px;background:#fff;}
+.notes_tb .trsub{background:#fff;font-weight:bold;}
+.notes_tb tr:hover{background:#ffa;}
+.notes_tb td{padding:3px 10px;border-bottom:1px #e7e7e7 solid;}
+
+.college_ov td .tlrk_tb tr td{margin-right:20px;font-size:11px;}
+.college_ov td .tlrk_tb tr:hover td{background:none;}
+.college_ov td .tlrk_tb td{padding:3px 0px;border-bottom:1px #e7e7e7 solid;}
+
+.id_display
+{	color:#999;
+    clear: both;
+    float: right;
+    padding: 5px;
+    font-size: 10px;
+}
+.right_sort{clear:both;float:right;padding:5px;}
+
+
+/* JCAF Table */
+.jcaftable{background: #fff;}
+.jcaftable tr td{border-bottom:1px solid #ccc;white-space:nowrap;}
+.jcaftable th{background:#fafafa;text-shadow:#fff 1px 1px 1px;font-weight:bold;white-space:nowrap;}
+.jcaftable tr td.bgblue{background:#dfe9f5;white-space:nowrap;}
+.jcaftable tr:hover td{background:#fffca5;}
+
+.AlertDataDisplay{font-weight: bold;color: red;font-size: 11px;}
+.BudgetColumnTitles {font-size: 11px;}
+.ReportTypeTitle {font-size: 18px;}
+.tree_CollegeTitle {font-size: 10pt;color:#333333;}
+.tree_ProjectTitle {font-size: 8pt;}
+.tree_ContractsTitle {font-size: 8pt;color: #000099;}
+.tree_ContractDescription {font-size: 8pt;color: #000099;}
+.tree_GlobalContractDescription{font-size: 8pt;color: gray;}
+.tree_RedProjectDescription {background-color: #FF0000;border: 1px solid #999999;font-size: 10px;}
+.tree_BlueProjectDescription {background-color: #CCDDEE;border: 1px solid #999999;font-size: 10px;}
+.tree_GreenProjectDescription {background-color: #00CC66;border: 1px solid #999999;font-size: 10px;}
+
+.ViewDataDisplayRED {color:#FF0000;font-size: 11px;}
+.ViewDataDisplayYELLOW {color:#FFCC00;font-size: 11px;}
+.ViewDataDisplayGREEN {color:#009c04;font-size: 11px;}
+.ReimbR{font-weight: bold;font-size: 10px;color: fuchsia;}
+.CurrencyTextBox{font-size: 12px;color: #3333ff;text-align: right;}
+
+/* Edit Screens and Forms */
+.edit_screen form label {display:block;float:left;width:200px;height:18px;padding:0 5px 0 0;margin:5px 0 0;text-align:right;background:#fafafa;clear:both;}
+.edit_screen form {  /* set width in form, not fieldset (still takes up more room w/ fieldset width */
+  margin: 0;
+  padding: 0;
+  width: 560px; 
+}
+
+.edit_screen form fieldset {
+
+  border-color: #000;
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
+  margin: 0;
+}
+
+.edit_screen form fieldset legend {	font-size:1.1em;font-weight:bold;}
+
+.edit_screen form .txtfield{width:250px;height:18px;margin:5px 5px 0 5px;font-size:12px;}
+.edit_screen form .chkfield{display:block;width:250px;height:18px;margin:5px 5px 0 5px;font-size:12px;}
+
+
+
+/* RAD Tab Control Extra Tags */ 
+.MultiPage{border-right: lightgrey 1px solid;padding-right: 10px;border-top: lightgrey 1px solid;padding-left: 10px;font-size: 8pt;padding-bottom: 10px;border-left: lightgrey 1px solid;padding-top: 10px;border-bottom: lightgrey 1px solid;background-color:White;}
+.LinkCss {FONT-SIZE: 10pt; COLOR: blue}
+.LinkCssNoDecoration
+{
+    font-size: 10pt;
+    color: blue;
+    text-decoration:none !important;
+}
+
+/* ApprisePM Styles */ 
+.InfoTableLabelColumn{width: 155px;height: 20px;font-size: 11px;}
+
+/* Project Title */ 
+.PromptProjectTitle{font-size: 24px;color: #3190c4;}
+
+/* Titles for main menu areas (ie. Conacts, Reports, Adimistration, etc... */
+.MainAreaTitle{margin: 5px;font-size: 16px;color: #808080;font-weight: bold;padding-bottom: 5px;}
+
+.pmBudget_1
+{
+    border-right-style:solid;
+    border-right-width:1px;
+    border-bottom-width:1px;
+    border-right-color:#000000;
+    width:100px;
+    text-align:center;
+    font-family:Segoe UI, Arial, sans-serif;
+    font-size:12px;
+    font-weight:bold;
+    height:25px;
+    background-color:#003767;
+    color:#ffffff;
+}
+.row
+{
+    background-color:#ffffff;
+    color:#000000;
+    height:20px;
+    border-bottom-width:1px;
+    border-bottom-color:#000000;
+    border-bottom-style:solid;
+    font-weight:normal;
+}
+.spacer
+{
+   border-right-color:#FFFFFF;
+}
+.editcell
+{
+    cursor:pointer;
+    text-align:left;
+}
+.section
+{
+     background-color:#003767;
+     text-align:left;
+     font-size:14px;
+     height:25px;
+}
+.doCell
+{
+  width:25px;
+  cursor:pointer;
+  border-right-color:#ffffff;
+  text-align:center;
+  
+}
+.budgHeaD
+{
+    border-bottom-width:1px;
+    height:100%;
+    vertical-align:bottom;
+}
+.pmTableSection
+{
+    height:25px;
+    border-spacing:0px;
+    width:1123px;
+    border-bottom-width:2px;
+    border-bottom-color:#ffffff;
+    border-bottom-style:solid;   
+}
+.subRow
+{
+    background-color:#ededed;
+}
+.subRowSide
+{
+    border-right-color:#ededed;   
+}
+.budgetWrapper
+{
+    width:1200px;
+}
+.setTop_75
+{
+    Top:75px;
+}
+.setTop_16
+{
+    top:30px;
+}
+.setTop_0
+{
+    top:0px;
+}
+.radBoxTitle
+{
+    line-height:27px;
+    vertical-align:middle;
+    font-family:Segoe UI, Arial, sans-serif;
+    font-size:15px;
+    font-weight:bold;
+    letter-spacing:1px;   
+}
+.EditDataDisplay
+{
+    font-family:arial;
+    font-size:13px;
+    resize:none;
+}

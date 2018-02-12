@@ -1,0 +1,271 @@
+/*Telerik RadListView Windows7 Skin*/
+
+/*global*/
+
+.RadListView_Prompt
+{
+	border:1px solid #a5b3c5;
+	background:#fcfcfc;
+	color:#000;
+}
+
+.RadListView_Prompt .rlvI
+{
+	background:#ebeff3;
+}
+
+.RadListView_Prompt .rlvISel
+{
+	background:#d4e7fe;
+}
+
+.RadListView_Prompt .rlvIEdit
+{
+	background:#cadffa;
+}
+
+/*buttons*/
+
+.RadListView_Prompt .rlvBAdd,
+.RadListView_Prompt .rlvBUpdate,
+.RadListView_Prompt .rlvBCancel,
+.RadListView_Prompt .rlvBDel,
+.RadListView_Prompt .rlvBEdit
+{
+	background-image:url('Grid/sprite.gif');
+}
+
+.RadListView_Prompt .rlvBAdd
+{
+	background-position:0 -1650px;
+}
+.RadListView_Prompt .rlvBUpdate
+{
+	background-position:0 -1800px;
+}
+.RadListView_Prompt .rlvBCancel
+{
+	background-position:1px -1849px;
+}
+.RadListView_Prompt .rlvBSel
+{
+	background-image:url('FormDecorator/CheckBoxSprites.gif');
+	background-position:-2px -2px;
+}
+.RadListView_Prompt .rlvISel .rlvBSel
+{
+	background-position:-2px -422px;
+}
+.RadListView_Prompt .rlvBDel
+{
+	background-position:0 -1750px;
+}
+.RadListView_Prompt .rlvBEdit
+{
+	background-position:0 -1700px;
+}
+
+/*flow*/
+
+.RadListView_Prompt div.rlvA,
+.RadListView_Prompt div.rlvIEmpty
+{
+	border-color:#fcfcfc;
+}
+
+.RadListView_Prompt div.rlvI
+{
+	border-color:#ebeff3;
+}
+
+.RadListView_Prompt div.rlvISel
+{
+	border-color:#8daed5;
+}
+
+.RadListView_Prompt div.rlvIEdit
+{
+	border-color:#8daed5;
+}
+
+/*grid*/
+
+.RadListView_Prompt tr.rlvHeader th
+{
+	border:1px solid;
+	border-color:#f1f5fb #f8f9fc #c2cedb #e1eaf3;
+	background:#f1f5fb;
+	color:#4c607a;
+}
+
+.RadListView_Prompt tr.rlvI td,
+.RadListView_Prompt tr.rlvA td,
+.RadListView_Prompt tr.rlvISel td,
+.RadListView_Prompt tr.rlvIEmpty td
+{
+	border:1px solid;
+	border-top:0;
+}
+
+.RadListView_Prompt tr.rlvA td,
+.RadListView_Prompt tr.rlvIEmpty td
+{
+	border-color:#fcfcfc;
+}
+
+.RadListView_Prompt tr.rlvI td
+{
+	border-color:#ebeff3;
+}
+
+.RadListView_Prompt tr.rlvISel td
+{
+	border-color:#8daed5 #d4e7fe;
+}
+
+.RadListView_Prompt tr.rlvIEdit td
+{
+	border-color:#8daed5;
+}
+
+/*single row*/
+
+.RadListView_Prompt td.rlvI,
+.RadListView_Prompt td.rlvA,
+.RadListView_Prompt td.rlvISel,
+.RadListView_Prompt td.rlvIEmpty,
+.RadListView_Prompt td.rlvIEdit
+{
+	border:0;
+	border-right:1px solid #ebeff3;
+}
+
+.RadListView_Prompt td.rlvISel,
+.RadListView_Prompt td.rlvIEdit
+{
+	border-color:#8daed5;
+}
+
+/*floated*/
+
+.RadListView_Prompt .rlvFloated .rlvI,
+.RadListView_Prompt .rlvFloated .rlvA,
+.RadListView_Prompt .rlvFloated .rlvISel,
+.RadListView_Prompt .rlvFloated .rlvIEdit
+{
+	border-color:#a5b3c5;
+}
+
+/*edit*/
+
+.RadListView_Prompt .rlvInput
+{
+	border-color:#b8cbde;
+	background:#fff;
+	color:#000;
+}
+
+/*pager*/
+
+.RadDataPager_Prompt
+{
+	border:1px solid #c2cedb;
+	background:#f1f5fb 0 -5900px repeat-x url('Grid/sprite.gif');
+	color:#000;
+}
+
+.RadDataPager_Prompt .rdpInfoPart
+{
+	color:#5a6779;
+}
+
+.RadDataPager_Prompt .rdpInfoPart strong
+{
+	color:#1e395b;
+}
+
+.RadDataPager_Prompt .rdpPageFirst,
+.RadDataPager_Prompt .rdpPagePrev,
+.RadDataPager_Prompt .rdpPageNext,
+.RadDataPager_Prompt .rdpPageLast
+{
+	background:transparent no-repeat url('Grid/sprite.gif');
+}
+
+.RadDataPager_Prompt .rdpPageFirst
+{
+	background-position:0 -550px;
+}
+.RadDataPager_Prompt .rdpPageFirst:hover
+{
+	background-position:0 -600px;
+}
+.RadDataPager_Prompt .rdpPagePrev
+{
+	background-position:0 -700px;
+}
+.RadDataPager_Prompt .rdpPagePrev:hover
+{
+	background-position:0 -750px;
+}
+.RadDataPager_Prompt .rdpPageNext
+{
+	background-position:0 -850px;
+}
+.RadDataPager_Prompt .rdpPageNext:hover
+{
+	background-position:0 -900px;
+}
+.RadDataPager_Prompt .rdpPageLast
+{
+	background-position:0 -1000px;
+}
+.RadDataPager_Prompt .rdpPageLast:hover
+{
+	background-position:0 -1050px;
+}
+
+.RadDataPager_Prompt .rdpPagerButton
+{
+	border:1px solid #c2cedb;
+	background:#dde8f6 repeat-x 0 -1550px url('Grid/sprite.gif');
+	color:#000;
+	font:12px/12px "segoe ui",arial,sans-serif;
+}
+
+.RadDataPager_Prompt .rdpNumPart a:hover,
+.RadDataPager_Prompt .rdpNumPart a:hover span,
+.RadDataPager_Prompt .rdpNumPart a.rdpCurrentPage,
+.RadDataPager_Prompt .rdpNumPart a.rdpCurrentPage span
+{
+	background:no-repeat url('Grid/sprite.gif');
+}
+
+.RadDataPager_Prompt .rdpNumPart a
+{
+	color:#1e395b;
+}
+
+.RadDataPager_Prompt .rdpNumPart a:hover
+{
+	background-position:100% -1250px;
+	color:#4c607a;
+}
+
+.RadDataPager_Prompt .rdpNumPart a:hover span
+{
+	background-position:0 -1150px;
+}
+
+.RadDataPager_Prompt .rdpNumPart a.rdpCurrentPage,
+.RadDataPager_Prompt .rdpNumPart a.rdpCurrentPage:hover
+{
+	background-position:100% -1450px;
+	color:#4c607a;
+}
+
+.RadDataPager_Prompt .rdpNumPart a.rdpCurrentPage span,
+.RadDataPager_Prompt .rdpNumPart a.rdpCurrentPage:hover span
+{
+	background-position:0 -1350px;
+}

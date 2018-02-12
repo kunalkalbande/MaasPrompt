@@ -1,0 +1,293 @@
+
+
+	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+	<html>
+	<head>
+		<title>form_RFI</title>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8"><link href="style.css" rel="stylesheet" type="text/css">
+		<!-- calendar stuff -->
+		      <link rel="stylesheet" type="text/css" href="calendar/calendar-blue2.css" />
+		      <script type="text/javascript" src="calendar/calendar.js"></script>
+		      <script type="text/javascript" src="calendar/calendar-en.js"></script>
+		      <script type="text/javascript" src="calendar/calendar-setup.js"></script>
+		<!-- END calendar stuff -->
+
+	    <!-- expand/collapse function -->
+	    <SCRIPT type=text/javascript>
+		<!--
+		function collapseElem(obj)
+		{
+			var el = document.getElementById(obj);
+			el.style.display = 'none';
+		}
+
+
+		function expandElem(obj)
+		{
+			var el = document.getElementById(obj);
+			el.style.display = '';
+		}
+
+
+		//-->
+		</SCRIPT>
+		<!-- expand/collapse function -->
+
+
+		<!-- expand/collapse function -->
+		    <SCRIPT type=text/javascript>
+			<!--
+
+			// collapse all elements, except the first one
+			function collapseAll()
+			{
+				var numFormPages = 1;
+
+				for(i=2; i <= numFormPages; i++)
+				{
+					currPageId = ('mainForm_' + i);
+					collapseElem(currPageId);
+				}
+			}
+
+
+			//-->
+			</SCRIPT>
+		<!-- expand/collapse function -->
+
+
+		 <!-- validate -->
+		<SCRIPT type=text/javascript>
+		<!--
+			function validateField(fieldId, fieldBoxId, fieldType, required)
+			{
+				fieldBox = document.getElementById(fieldBoxId);
+				fieldObj = document.getElementById(fieldId);
+
+				if(fieldType == 'text'  ||  fieldType == 'textarea'  ||  fieldType == 'password'  ||  fieldType == 'file'  ||  fieldType == 'phone'  || fieldType == 'website')
+				{	
+					if(required == 1 && fieldObj.value == '')
+					{
+						fieldObj.setAttribute("class","mainFormError");
+						fieldObj.setAttribute("className","mainFormError");
+						fieldObj.focus();
+						return false;					
+					}
+
+				}
+
+
+				else if(fieldType == 'menu'  || fieldType == 'country'  || fieldType == 'state')
+				{	
+					if(required == 1 && fieldObj.selectedIndex == 0)
+					{				
+						fieldObj.setAttribute("class","mainFormError");
+						fieldObj.setAttribute("className","mainFormError");
+						fieldObj.focus();
+						return false;					
+					}
+
+				}
+
+
+				else if(fieldType == 'email')
+				{	
+					if((required == 1 && fieldObj.value=='')  ||  (fieldObj.value!=''  && !validate_email(fieldObj.value)))
+					{				
+						fieldObj.setAttribute("class","mainFormError");
+						fieldObj.setAttribute("className","mainFormError");
+						fieldObj.focus();
+						return false;					
+					}
+
+				}
+
+
+
+			}
+
+			function validate_email(emailStr)
+			{		
+				apos=emailStr.indexOf("@");
+				dotpos=emailStr.lastIndexOf(".");
+
+				if (apos<1||dotpos-apos<2) 
+				{
+					return false;
+				}
+				else
+				{
+					return true;
+				}
+			}
+
+
+			function validateDate(fieldId, fieldBoxId, fieldType, required,  minDateStr, maxDateStr)
+			{
+				retValue = true;
+
+				fieldBox = document.getElementById(fieldBoxId);
+				fieldObj = document.getElementById(fieldId);	
+				dateStr = fieldObj.value;
+
+
+				if(required == 0  && dateStr == '')
+				{
+					return true;
+				}
+
+
+				if(dateStr.charAt(2) != '/'  || dateStr.charAt(5) != '/' || dateStr.length != 10)
+				{
+					retValue = false;
+				}	
+
+				else	// format's okay; check max, min
+				{
+					currDays = parseInt(dateStr.substr(0,2),10) + parseInt(dateStr.substr(3,2),10)*30  + parseInt(dateStr.substr(6,4),10)*365;
+					//alert(currDays);
+
+					if(maxDateStr != '')
+					{
+						maxDays = parseInt(maxDateStr.substr(0,2),10) + parseInt(maxDateStr.substr(3,2),10)*30  + parseInt(maxDateStr.substr(6,4),10)*365;
+						//alert(maxDays);
+						if(currDays > maxDays)
+							retValue = false;
+					}
+
+					if(minDateStr != '')
+					{
+						minDays = parseInt(minDateStr.substr(0,2),10) + parseInt(minDateStr.substr(3,2),10)*30  + parseInt(minDateStr.substr(6,4),10)*365;
+						//alert(minDays);
+						if(currDays < minDays)
+							retValue = false;
+					}
+				}
+
+				if(retValue == false)
+				{
+					fieldObj.setAttribute("class","mainFormError");
+					fieldObj.setAttribute("className","mainFormError");
+					fieldObj.focus();
+					return false;
+				}
+			}
+		//-->
+		</SCRIPT>
+		<!-- end validate -->
+
+
+
+
+	</head>
+
+	<body onLoad="collapseAll()">
+
+	<div id="mainForm">
+
+
+
+
+		<div id="formHeader">
+				<h2 class="formInfo"></h2>
+				<p class="formInfo"></p>
+		</div>
+
+
+		<BR/><!-- begin form -->
+		<form method=post enctype=multipart/form-data action=processor.php onSubmit="return validatePage1();"><ul class=mainForm id="mainForm_1">
+
+				<li class="mainForm" id="fieldBox_1">
+					<label class="formFieldQuestion">RFI Number:&nbsp;*</label><input class=mainForm type=text name=field_1 id=field_1 size='20' value=''></li>
+
+				<li class="mainForm" id="fieldBox_2">
+					<label class="formFieldQuestion">Date of RFI:&nbsp;*</label><input type=text  name=field_2 id=field_2 value=""><button type=reset class=calendarStyle id=fieldDateTrigger_2></button><SCRIPT type='text/javascript'>   Calendar.setup({
+								inputField     :    "field_2",   
+								ifFormat       :    "%m/%d/%Y",   
+								showsTime      :    false,          
+								button         :    "fieldDateTrigger_2",
+								singleClick    :    true,           
+								step           :    1                
+								});</SCRIPT></li>
+
+				<li class="mainForm" id="fieldBox_3">
+					<label class="formFieldQuestion">Project Name/No:&nbsp;*</label><select class=mainForm name=field_3 id=field_3><option value=''></option><option value="Athletics Field">Athletics Field</option><option value="Child Development Center">Child Development Center</option><option value="Stagecraft">Stagecraft</option></select></li>
+
+				<li class="mainForm" id="fieldBox_4">
+					<label class="formFieldQuestion">Contractor Email Address:</label><input class=mainForm type=text name=field_4 id=field_4 size='20' value=''></li>
+
+				<li class="mainForm" id="fieldBox_5">
+					<label class="formFieldQuestion">Question &nbsp;*</label><textarea class=mainForm  name=field_5 id=field_5 rows=20 cols=20></textarea></li>
+
+				<li class="mainForm" id="fieldBox_6">
+					<label class="formFieldQuestion">Response:&nbsp;*</label><textarea class=mainForm  name=field_6 id=field_6 rows=20 cols=20></textarea></li>
+
+				<li class="mainForm" id="fieldBox_7">
+					<label class="formFieldQuestion">Response By (Firm Name)&nbsp;*</label><input class=mainForm type=text name=field_7 id=field_7 size='20' value=''></li>
+
+				<li class="mainForm" id="fieldBox_8">
+					<label class="formFieldQuestion">Signed&nbsp;*</label><input class=mainForm type=text name=field_8 id=field_8 size='20' value=''></li>
+
+				<li class="mainForm" id="fieldBox_9">
+					<label class="formFieldQuestion">Date of RFI Response&nbsp;*</label><input type=text  name=field_9 id=field_9 value=""><button type=reset class=calendarStyle id=fieldDateTrigger_9></button><SCRIPT type='text/javascript'>   Calendar.setup({
+								inputField     :    "field_9",   
+								ifFormat       :    "%m/%d/%Y",   
+								showsTime      :    false,          
+								button         :    "fieldDateTrigger_9",
+								singleClick    :    true,           
+								step           :    1                
+								});</SCRIPT></li>
+		
+		
+		<!-- end of this page -->
+
+		<!-- page validation -->
+		<SCRIPT type=text/javascript>
+		<!--
+			function validatePage1()
+			{
+				retVal = true;
+				if (validateField('field_1','fieldBox_1','text',1) == false)
+ retVal=false;
+if (validateDate('field_2','fieldBox_2','date',1,'','') == false)
+ retVal=false;
+if (validateField('field_3','fieldBox_3','menu',1) == false)
+ retVal=false;
+if (validateField('field_4','fieldBox_4','text',0) == false)
+ retVal=false;
+if (validateField('field_5','fieldBox_5','textarea',1) == false)
+ retVal=false;
+if (validateField('field_6','fieldBox_6','textarea',1) == false)
+ retVal=false;
+if (validateField('field_7','fieldBox_7','text',1) == false)
+ retVal=false;
+if (validateField('field_8','fieldBox_8','text',1) == false)
+ retVal=false;
+if (validateDate('field_9','fieldBox_9','date',1,'','') == false)
+ retVal=false;
+
+				if(retVal == false)
+				{
+					alert('Please correct the errors.  Fields marked with an asterisk (*) are required');
+					return false;
+				}
+				return retVal;
+			}
+		//-->
+		</SCRIPT>
+
+		<!-- end page validaton -->
+
+
+
+		<!-- next page buttons --><li class="mainForm">
+					<input id="saveForm" class="mainForm" type="submit" value="Submit" />
+				</li>
+
+			</form>
+			<!-- end of form -->
+		<!-- close the display stuff for this page -->
+		</ul></div><div id="footer"><p class="footer"><a class=footer href=http://phpformgen.sourceforge.net>Generated by phpFormGenerator</a></p></div>
+
+	</body>
+	</html>

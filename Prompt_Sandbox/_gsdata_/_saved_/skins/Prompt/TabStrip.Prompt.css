@@ -1,0 +1,146 @@
+.RadTabStrip_Prompt{position:relative;top:3px;left:0;}
+.RadTabStrip_Prompt .rtsLI,
+.RadTabStrip_Prompt .rtsLink
+{	
+	color: #292929;
+	font: 12px/26px "Segoe UI", Arial, sans-serif;
+}
+
+.RadTabStrip_Prompt .rtsLevel1 .rtsLI,
+.RadTabStrip_Prompt .rtsLevel1 .rtsLink
+{	
+	color: #385070;
+}
+
+.RadTabStrip_Prompt .rtsLevel .rtsLink:hover,
+.RadTabStrip_Prompt .rtsLevel .rtsSelected,
+.RadTabStrip_Prompt .rtsLevel .rtsSelected:hover
+{
+	text-decoration: underline;
+}
+
+.RadTabStrip_Prompt .rtsLevel1 .rtsLink:hover,
+.RadTabStrip_Prompt .rtsLevel1 .rtsSelected,
+.RadTabStrip_Prompt .rtsLevel1 .rtsSelected:hover,
+.RadTabStrip_Prompt .rtsLevel .rtsDisabled:hover
+{
+	text-decoration: none;
+}
+
+.RadTabStripLeft_Prompt .rtsSeparator,
+.RadTabStripRight_Prompt .rtsSeparator
+{
+	background: #8DB2E3;
+}
+
+/* <disabled tabs> */
+.RadTabStrip_Prompt .rtsLevel .rtsDisabled
+{
+	color: #666;
+}
+/* </disabled tabs> */
+
+/* <scrolling arrows> */
+.RadTabStrip_Prompt .rtsNextArrow,
+.RadTabStrip_Prompt .rtsPrevArrow,
+.RadTabStrip_Prompt .rtsPrevArrowDisabled,
+.RadTabStrip_Prompt .rtsNextArrowDisabled
+{
+	background-image: url('TabStrip/TabStripStates.png');
+}
+/* </scrolling arrows> */
+
+/* <tab backgrounds> */
+
+.RadTabStrip_Prompt .rtsLevel {  }
+
+.RadTabStrip_Prompt .rtsLevel1 {  }
+.RadTabStripTop_Prompt .rtsLevel2 { background: #ccdbee url('TabStrip/Level2Bg.png') repeat-x 0 0; }
+
+.RadTabStripTop_Prompt .rtsLevel .rtsLink,
+.RadTabStripTop_Prompt .rtsLevel .rtsOut { background-image: none; }
+
+.RadTabStripTop_Prompt .rtsLevel1 .rtsLink,
+.RadTabStripTop_Prompt .rtsLevel1 .rtsOut,
+.RadTabStripBottom_Prompt .rtsLevel1 .rtsLink,
+.RadTabStripBottom_Prompt .rtsLevel1 .rtsOut,
+.RadTabStripTop_Prompt .rtsLevel1,
+.RadTabStripBottom_Prompt .rtsLevel1 { background-image: url('TabStrip/TabStripStates.png'); }
+
+.RadTabStripLeft_Prompt .rtsLink,
+.RadTabStripRight_Prompt .rtsLink { background-image: url('TabStrip/TabStripVStates.png'); }
+
+.RadTabStripLeft_Prompt .rtsLast .rtsLink,
+.RadTabStripRight_Prompt .rtsLast .rtsLink
+{
+	border-bottom: 1px solid #898C95;
+}
+
+.RadTabStripRight_Prompt .rtsLink,
+.RadTabStripRight_Prompt .rtsLI .rtsDisabled:hover { background-position: 100% 0; }
+.RadTabStripRight_Prompt .rtsLink:hover { background-position: 100% -200px; }
+.RadTabStripRight_Prompt .rtsSelected,
+.RadTabStripRight_Prompt .rtsLI .rtsSelected:hover { background-position: 100% -400px; }
+/* </tab backgrounds> */
+
+
+/* <background positioning: tabs with hovers> */
+
+/* <orientation: top> */
+
+.RadTabStripTop_Prompt .rtsLevel1 .rtsLink { background-position: 0 0; }
+.RadTabStripTop_Prompt .rtsLevel1 .rtsOut { background-position: 100% 0; }
+
+.RadTabStripTop_Prompt .rtsLevel1 .rtsLink:hover { background-position: 0 -52px; }
+.RadTabStripTop_Prompt .rtsLevel1 .rtsLink:hover .rtsOut { background-position: 100% -52px; }
+
+.RadTabStripTop_Prompt .rtsLevel1 .rtsDisabled:hover { background-position: 0 0; }
+.RadTabStripTop_Prompt .rtsLevel1 .rtsDisabled:hover .rtsOut { background-position: 100% 0; }
+
+.RadTabStripTop_Prompt .rtsLevel1 .rtsSelected,
+.RadTabStripTop_Prompt .rtsLevel1 .rtsSelected:hover { background-position: 0 -26px; }
+.RadTabStripTop_Prompt .rtsLevel1 .rtsSelected .rtsOut,
+.RadTabStripTop_Prompt .rtsLevel1 .rtsSelected:hover .rtsOut { background-position: 100% -26px; }
+
+.RadTabStripTop_Prompt .rtsLevel1 { background-position: 0 100%; background-repeat: repeat-x; }
+
+/* </orientation: top> */
+
+/* <orientation: bottom> */
+
+.RadTabStripBottom_Prompt .rtsLevel1 .rtsLink { background-position: 0 -182px; }
+.RadTabStripBottom_Prompt .rtsLevel1 .rtsOut { background-position: 100% -182px; }
+
+.RadTabStripBottom_Prompt .rtsLevel1 .rtsLink:hover { background-position: 0 -130px; }
+.RadTabStripBottom_Prompt .rtsLevel1 .rtsLink:hover .rtsOut { background-position: 100% -130px; }
+
+.RadTabStripBottom_Prompt .rtsLevel1 .rtsDisabled:hover { background-position: 0 -182px; }
+.RadTabStripBottom_Prompt .rtsLevel1 .rtsDisabled:hover .rtsOut { background-position: 100% -182px; }
+
+.RadTabStripBottom_Prompt .rtsLevel1 .rtsSelected,
+.RadTabStripBottom_Prompt .rtsLevel1 .rtsSelected:hover { background-position: 0 -156px; }
+.RadTabStripBottom_Prompt .rtsLevel1 .rtsSelected .rtsOut,
+.RadTabStripBottom_Prompt .rtsLevel1 .rtsSelected:hover .rtsOut { background-position: 100% -156px; }
+
+.RadTabStripBottom_Prompt .rtsLevel1 { background-position: 0 -599px; background-repeat: repeat-x; }
+
+/* </orientation: bottom> */
+
+/* <orientation: right> */
+
+.RadTabStripRight_Prompt .rtsUL .rtsLink,
+.RadTabStripRight_Prompt .rtsUL .rtsLI .rtsDisabled:hover { background-position: 100% 0; text-align: left; }
+.RadTabStripRight_Prompt .rtsUL .rtsLink:hover { background-position: 100% -200px; }
+.RadTabStripRight_Prompt .rtsUL .rtsSelected,
+.RadTabStripRight_Prompt .rtsUL .rtsLI .rtsSelected:hover { background-position: 100% -400px; }
+
+/* </orientation: right> */
+
+/* </background positioning: tabs with hovers> */
+
+ div.RadTabStrip_Prompt .rtsLevel1 {
+
+	background-color: transparent;
+
+}
+

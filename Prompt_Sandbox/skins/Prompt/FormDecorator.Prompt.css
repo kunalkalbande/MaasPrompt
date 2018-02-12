@@ -1,0 +1,385 @@
+/* RadFormDecorator Windows7 Skin */
+
+/* CSS class for styling the decoration zone or the <html /> tag of the page */
+.RadForm_Prompt.rfdZone
+{
+    
+}
+
+/* Decorate scrollbars */
+.RadForm_Prompt.rfdScrollBars
+{
+	scrollbar-3dlight-color: #ccdaea; 
+	scrollbar-arrow-color: #526680;
+	scrollbar-base-color: #ff6347; 
+	scrollbar-darkshadow-color: #a9bfd6; 
+	scrollbar-face-color: #dce6f4;
+	scrollbar-highlight-color: #f0f0f0; 
+	scrollbar-shadow-color: #dce6f4;
+	scrollbar-track-color: #f6f9fe;
+}
+
+/* Decorate <input type="button | submit | reset" /> and <button type="button | submit | reset" /> - look if there is a secondary .rfdButton class applied to the root element */
+.RadForm_Prompt.rfdButton a.rfdSkinnedButton,
+.RadForm_Prompt.rfdButton input[type="button"].rfdDecorated,
+.RadForm_Prompt.rfdButton input[type="reset"].rfdDecorated,
+.RadForm_Prompt.rfdButton input[type="submit"].rfdDecorated,
+.RadForm_Prompt.rfdButton .rfdSkinnedButton button
+{
+	background-image: url('FormDecorator/ButtonSprites.gif');
+	color: #1e395b;
+}
+
+.RadForm_Prompt.rfdButton a.rfdSkinnedButton,
+.RadForm_Prompt.rfdButton a.rfdSkinnedButton *
+{
+    _background-image: url('FormDecorator/ButtonSprites.gif');
+}
+
+/* OPERA width fix - do not remove (and check if it is still necessary) */
+@media screen and (min-width:1px)  
+{
+	/* 
+       the hack below fixes a strange behavior under Opera - 
+       input and button have a different CSS display when in anchor tag 
+    */
+	.RadForm_Prompt.rfdButton a.rfdSkinnedButton input
+	{
+	    display: block;
+	    float: left;
+	}
+}
+
+/* Decorate <h4|5|6 /> */
+.RadForm_Prompt.rfdHeading h4
+{
+	color: #567db0;	
+	border-bottom: solid 1px #a0a0a0;	
+}
+
+.RadForm_Prompt.rfdHeading h5
+{
+	color: #000000;	
+	border-bottom: solid 1px #a0a0a0;	
+}
+
+.RadForm_Prompt.rfdHeading h6
+{
+	color: #000000;	
+}
+
+/* Decorate <label /> */
+.RadForm_Prompt.rfdLabel label
+{	
+	color: #000;
+}
+
+/* Decorate <input type="checkbox" /> */
+.RadForm_Prompt .rfdCheckboxUnchecked,
+.RadForm_Prompt .rfdInputDisabled.rfdCheckboxUnchecked:hover
+{
+	background: transparent url('FormDecorator/CheckBoxSprites.gif') no-repeat 0 0;
+}
+
+.RadForm_Prompt .rfdCheckboxUnchecked:hover
+{
+	background: transparent url('FormDecorator/CheckBoxSprites.gif') no-repeat 0 -200px;
+}
+
+.RadForm_Prompt .rfdCheckboxChecked,
+.RadForm_Prompt .rfdInputDisabled.rfdCheckboxChecked:hover
+{
+	background: transparent url('FormDecorator/CheckBoxSprites.gif') no-repeat 0 -420px;
+}
+
+.RadForm_Prompt .rfdCheckboxChecked:hover
+{
+	background: transparent url('FormDecorator/CheckBoxSprites.gif') no-repeat 0 -640px;
+}
+
+/* Decorate <input type="radio" /> */
+.RadForm_Prompt .rfdRadioUnchecked,
+.RadForm_Prompt .rfdInputDisabled.rfdRadioUnchecked:hover
+{
+	background: transparent url('FormDecorator/RadioButtonSprites.png') no-repeat 1px 0;
+}
+
+.RadForm_Prompt .rfdRadioUnchecked:hover
+{
+	background: transparent url('FormDecorator/RadioButtonSprites.png') no-repeat 1px -220px;
+}
+
+.RadForm_Prompt .rfdRadioChecked,
+.RadForm_Prompt .rfdInputDisabled.rfdRadioChecked:hover 
+{
+	background: transparent url('FormDecorator/RadioButtonSprites.png') no-repeat 1px -440px;
+}
+
+.RadForm_Prompt.rfdRadio .rfdRadioChecked:hover
+{
+	background: transparent url('FormDecorator/RadioButtonSprites.png') no-repeat 1px -640px;
+}
+
+.RadForm_Prompt .rfdRadioUnchecked,
+.RadForm_Prompt .rfdInputDisabled.rfdRadioUnchecked:hover,
+.RadForm_Prompt .rfdRadioUnchecked:hover,
+.RadForm_Prompt .rfdRadioChecked,
+.RadForm_Prompt .rfdInputDisabled.rfdRadioChecked:hover,
+.RadForm_Prompt .rfdRadioChecked:hover
+{
+    _background-image: url('FormDecorator/RadioButtonSprites.gif'); /* IE6 hack */
+}
+
+/* <fieldset /> and <legend /> */
+.rfdRoundedInner
+{  
+  width: 1px;
+  font-size: 1px;      
+  background-repeat :no-repeat;
+}
+
+.rfdRoundedOuter
+{    
+  width: 1px;
+  font-size: 0px;
+}
+
+table.rfdRoundedWrapper,
+table.rfdRoundedWrapper_fieldset
+{
+    display: -moz-inline-box; /* FF2 */
+    display: inline-block; /* FF3, Opera, Safari */
+    _display: inline; /* IE6 */            
+    vertical-align: middle;
+    border-width: 0px !important;
+}
+
+table.rfdRoundedWrapper td,
+table.rfdRoundedWrapper_fieldset>tbody>tr>td
+{
+	padding: 0px !important;
+	border: 0px !important;                 
+}
+
+/* IE7 */
+*+html table.rfdRoundedWrapper,
+*+html table.rfdRoundedWrapper_fieldset
+{
+   display: inline;
+}
+
+table.rfdRoundedWrapper td, table.rfdRoundedWrapper_fieldset td
+{
+    vertical-align: middle;
+}
+
+.RadForm_Prompt.rfdFieldset table.rfdRoundedWrapper_fieldset legend,
+.RadForm_Prompt fieldset.rfdFieldset legend
+{
+	color: #000000;
+}
+
+.RadForm_Prompt table.rfdRoundedWrapper:hover div.rfdRoundedInner
+{
+    background-color: #ffffff;
+    border-color: #c1dbfc !important;
+}
+
+/* this selector styles the hover of the side bars of the rounded elements */
+.RadForm_Prompt table.rfdRoundedWrapper:hover .rfdRoundedOuter
+{	
+	background-color: #c1dbfc !important;
+}
+
+/* Decorate <input type="text | password" /> and <textarea /> */
+/* For all browsers except IE6 we are using attribute selectors - single or double */
+.RadForm_Prompt.rfdTextbox input[type="text"],
+.RadForm_Prompt.rfdTextbox input[type="password"],
+.RadForm_Prompt.rfdTextarea textarea,
+.RadForm_Prompt.rfdTextarea textarea[disabled]:hover,
+.RadForm_Prompt.rfdTextbox input[disabled][type="text"]:hover,
+.RadForm_Prompt.rfdTextbox input[disabled][type="password"]:hover
+{
+    border: solid 1px #b8cbde;
+    background-color: #ffffff;
+}
+
+.RadForm_Prompt.rfdTextbox .rfdDecorated:hover,
+.RadForm_Prompt.rfdTextbox .rfdDecorated:hover,
+.RadForm_Prompt.rfdTextarea textarea:hover
+{
+    border: solid 1px #c1dbfc;
+}
+
+/* Decorate <fieldset /> and <legend /> */
+.RadForm_Prompt.rfdFieldset table.rfdRoundedWrapper_fieldset legend,
+.RadForm_Prompt.rfdFieldset fieldset.rfdFieldset legend
+{
+	color: #000000;
+}
+
+.RadForm_Prompt.rfdFieldset table.rfdRoundedWrapper_fieldset fieldset,
+.RadForm_Prompt.rfdFieldset fieldset.rfdFieldset
+{	
+	border: solid 1px #e0e0e0;
+	background-image: url('FormDecorator/FieldsetBgr.png'); /* having a background image on a fieldset is not okay with IE */	
+}
+
+/* Because of a glitch in IE the following 2 CSS classes must be declared separately for correct parsing of the textarea class in IE6*/
+.RadForm_Prompt table.rfdRoundedWrapper input,
+.RadForm_Prompt table.rfdRoundedWrapper textarea,
+.RadForm_Prompt input.rfdInput, 
+.RadForm_Prompt textarea.rfdTextarea
+{
+	border: solid 1px #b8cbde;
+	background: #ffffff;	
+	color: #000000;
+}
+
+.RadForm_Prompt textarea.rfdTextarea,
+.RadForm_Prompt table.rfdRoundedWrapper textarea
+{
+    overflow: auto;
+}
+
+/* <select /> */
+.rfdSelect_Prompt,
+.rfdSelect_Prompt:hover,
+.rfdSelect_Prompt .rfdSelectOuter,
+.rfdSelect_Prompt:hover .rfdSelectOuter,
+.rfdSelect_Prompt .rfdSelectArrow span,
+.rfdSelectBox_Prompt .rfdSelect_selected,
+.rfdSelectBox_Prompt li:hover,
+.rfdSelect_Prompt.rfdSelectDisabled:hover,
+.rfdRtl .rfdSelect_Prompt,
+.rfdRtl .rfdSelect_Prompt:hover,
+.rfdRtl .rfdSelect_Prompt .rfdSelectOuter,
+.rfdRtl .rfdSelect_Prompt .rfdSelectOuter:hover
+{
+    background-image: url('FormDecorator/ComboSprites.gif');
+    background-repeat: no-repeat;
+    background-color: transparent;
+}
+
+.rfdSelect_Prompt .rfdSelectOuter,
+.rfdSelect_Prompt.rfdSelectDisabled:hover .rfdSelectOuter
+{
+    color: #1e395b;
+}
+
+/* dropdown settings */
+.rfdSelectBox_Prompt
+{
+    background: white;
+    border: solid 1px #a5b3c5;
+    color: #1e395b;
+}
+
+.rfdSelectBox_Prompt li
+{
+    padding: 0 0 0 3px;
+    background-image: none !important;
+}
+
+.rfdSelectBox_Prompt .rfdSelect_selected,
+.rfdSelectBox_Prompt li:hover
+{
+    color: #1e395b;
+    background-color: #c3dcfc;
+}
+
+.rfdSelectBox_Prompt .rfdSelectBox_optgroup_label:hover
+{
+    background: none;
+    color: #1e395b;
+}
+
+/* IE6 disabled state fix - this should not be added to the base stylesheet, but at the bottom of the skin file */
+* html .rfdSkinnedButton.rfdInputDisabled
+{
+    _filter: alpha(opacity=50);
+}
+
+* html .RadForm_Prompt.rfdButton a.rfdInputDisabled:hover
+{
+	_background-position: 0 0;
+}
+
+* html .RadForm_Prompt.rfdButton a.rfdInputDisabled:hover *
+{
+	_background-position: right -21px;
+	_color: #824703;
+}
+
+.RadForm_Prompt.rfdTextbox input.rfdIE6TextBox,
+.RadForm_Prompt.rfdTextbox textarea.rfdIE6TextBox
+{
+    _border: solid 1px #938879;
+    _background-color: #ffffff;
+}
+
+/* the styling of radiobuttons and checkboxes in Safari and Chrome is already fully achieved with CSS */
+@media screen and (-webkit-min-device-pixel-ratio: 0)
+{
+    /* checkboxes */
+    .rfdCheckbox input[type="checkbox"],
+    .rfdCheckbox input[type="checkbox"][disabled]:hover
+    {
+        background-image: url('FormDecorator/CheckBoxSprites.gif');
+    }
+    
+    /* radio buttons */
+    .rfdRadio input[type="radio"],
+    .rfdRadio input[type="radio"][disabled="disabled"]:hover
+    {
+        background-image: url('FormDecorator/RadioButtonSprites.png');
+    }
+}
+
+/* ----------------------------------------------- Skin-specific Scrollbar Settings for WebKit ----------------------------------------------- */
+
+/* the scrollbar face color */
+.RadForm.rfdScrollBars.RadForm_Prompt textarea::-webkit-scrollbar-thumb:vertical,
+.RadForm.rfdScrollBars.RadForm_Prompt textarea::-webkit-scrollbar-thumb:horizontal,
+.RadForm.rfdScrollBars.RadForm_Prompt div::-webkit-scrollbar-thumb:vertical,
+.RadForm.rfdScrollBars.RadForm_Prompt div::-webkit-scrollbar-thumb:horizontal
+{
+    background-color: #dce6f4;
+}
+
+/* scrollbar track background color */
+.RadForm.rfdScrollBars.RadForm_Prompt textarea::-webkit-scrollbar-track-piece,
+.RadForm.rfdScrollBars.RadForm_Prompt div::-webkit-scrollbar-track-piece
+{
+    background-color: #f6f9fe;
+}
+
+.RadForm.rfdScrollBars.RadForm_Prompt textarea::-webkit-scrollbar-button:vertical:decrement,
+.RadForm.rfdScrollBars.RadForm_Prompt textarea::-webkit-scrollbar-button:vertical:increment,
+.RadForm.rfdScrollBars.RadForm_Prompt textarea::-webkit-scrollbar-button:horizontal:decrement,
+.RadForm.rfdScrollBars.RadForm_Prompt textarea::-webkit-scrollbar-button:horizontal:increment,
+.RadForm.rfdScrollBars.RadForm_Prompt textarea::-webkit-scrollbar-thumb:vertical,
+.RadForm.rfdScrollBars.RadForm_Prompt textarea::-webkit-scrollbar-thumb:horizontal,
+.RadForm.rfdScrollBars.RadForm_Prompt div::-webkit-scrollbar-button:vertical:decrement,
+.RadForm.rfdScrollBars.RadForm_Prompt div::-webkit-scrollbar-button:vertical:increment,
+.RadForm.rfdScrollBars.RadForm_Prompt div::-webkit-scrollbar-button:horizontal:decrement,
+.RadForm.rfdScrollBars.RadForm_Prompt div::-webkit-scrollbar-button:horizontal:increment,
+.RadForm.rfdScrollBars.RadForm_Prompt div::-webkit-scrollbar-thumb:vertical,
+.RadForm.rfdScrollBars.RadForm_Prompt div::-webkit-scrollbar-thumb:horizontal
+{
+    border-color: #ccdaea #a9bfd6 #a9bfd6 #ccdaea;
+}
+
+/* increment / decrement button settings */
+.RadForm.rfdScrollBars.RadForm_Prompt textarea::-webkit-scrollbar-button:vertical:decrement,
+.RadForm.rfdScrollBars.RadForm_Prompt textarea::-webkit-scrollbar-button:vertical:increment,
+.RadForm.rfdScrollBars.RadForm_Prompt textarea::-webkit-scrollbar-button:horizontal:decrement,
+.RadForm.rfdScrollBars.RadForm_Prompt textarea::-webkit-scrollbar-button:horizontal:increment,
+.RadForm.rfdScrollBars.RadForm_Prompt div::-webkit-scrollbar-button:vertical:decrement,
+.RadForm.rfdScrollBars.RadForm_Prompt div::-webkit-scrollbar-button:vertical:increment,
+.RadForm.rfdScrollBars.RadForm_Prompt div::-webkit-scrollbar-button:horizontal:decrement,
+.RadForm.rfdScrollBars.RadForm_Prompt div::-webkit-scrollbar-button:horizontal:increment
+{
+    background-image: url('FormDecorator/ButtonSprites.gif');
+    background-color: #dce6f4;
+}

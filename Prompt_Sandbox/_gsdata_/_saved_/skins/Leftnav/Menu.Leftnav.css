@@ -1,0 +1,289 @@
+/* <RadMenu / Vista> */
+
+.RadMenu_Leftnav .rmRootGroup,
+.RadMenu_Leftnav .rmFirst,
+.RadMenu_Leftnav .rmLink,
+.RadMenu_Leftnav .rmText,
+.RadMenu_Leftnav .rmLeftArrow,
+.RadMenu_Leftnav .rmRightArrow,
+.RadMenu_Leftnav .rmTopArrow,
+.RadMenu_Leftnav .rmBottomArrow
+{
+	background-image: url('Menu/rmSprite.png');
+	background-color: transparent;
+}
+
+.RadMenu_Leftnav .rmRootGroup
+{
+	background-repeat: repeat-x;
+	background-position: 0 -408px;
+	background-color: red;
+}
+
+.RadMenu_Leftnav .rmFirst
+{
+	background-position: 0 -24px;
+}
+
+.RadMenu_Leftnav .rmVertical .rmFirst,
+.RadMenu_Leftnav .rmVertical .rmLast
+{
+	background: none;
+	padding: 0;
+}
+
+/* <Root items> */
+
+.RadMenu_Leftnav,
+.RadMenu_Leftnav .rmLink
+{
+	font: normal 12px/23px "Segoe UI", Arial, sans-serif;
+	color: #4c607a;
+	text-decoration: none;
+}
+
+.RadMenu_Leftnav .rmLink,
+.RadMenu_Leftnav .rmText
+{
+	background-position: 0 1050px;
+	background-repeat: no-repeat;
+}
+
+.RadMenu_Leftnav .rmLink:hover,
+.RadMenu_Leftnav .rmFocused,
+.RadMenu_Leftnav .rmSelected
+{
+	background-position: 0 -72px;
+}
+
+.RadMenu_Leftnav .rmLink:hover .rmText,
+.RadMenu_Leftnav .rmFocused .rmText,
+.RadMenu_Leftnav .rmSelected .rmText
+{
+	background-position: 100% -96px;
+}
+
+.RadMenu_Leftnav .rmExpanded,
+.RadMenu_Leftnav .rmExpanded:hover
+{
+	background-position: 0 -120px;
+}
+
+.RadMenu_Leftnav .rmExpanded .rmText,
+.RadMenu_Leftnav .rmExpanded:hover .rmText
+{
+	background-position: 100% -144px;
+}
+
+.RadMenu_Leftnav .rmDisabled,
+.RadMenu_Leftnav .rmDisabled:hover
+{
+	color: #a7a7a7;
+}
+
+.RadMenu_Leftnav .rmDisabled:hover,
+.RadMenu_Leftnav .rmDisabled:hover .rmText
+{
+	background: none;
+}
+
+/* </Root items> */
+
+
+/* <Submenu items> */
+
+.RadMenu_Leftnav .rmGroup,
+.RadMenu_Leftnav .rmMultiColumn,
+.RadMenu_Leftnav .rmGroup .rmVertical
+{
+	background: #fff url('Menu/rmVSprite.png') repeat-y -1px 0;
+}
+
+.RadMenu_Leftnav .rmSlide .rmScrollWrap
+{
+	background-image: none;
+}
+
+.RadMenu_Leftnav_rtl .rmGroup,
+.RadMenu_Leftnav_rtl .rmMultiColumn,
+.RadMenu_Leftnav_rtl .rmGroup .rmVertical
+{
+	background-position: 101% 0;
+}
+
+.RadMenu_Leftnav .rmRootGroup .rmHorizontal
+{
+	background-image: none;
+}
+
+.RadMenu_Leftnav .rmScrollWrap .rmVertical
+{
+	border: 0;
+}
+
+.RadMenu_Leftnav .rmGroup .rmFirst,
+.RadMenu_Leftnav .rmGroup .rmLast
+{
+	background: none;
+}
+
+.RadMenu_Leftnav .rmGroup .rmLast
+{
+	padding-bottom: 1px;
+}
+
+.RadMenu_Leftnav .rmGroup .rmLink .rmText,
+{
+	color: #000;
+}
+
+.RadMenu_Leftnav .rmGroup .rmLink:hover,
+.RadMenu_Leftnav .rmGroup .rmFocused,
+.RadMenu_Leftnav .rmGroup .rmSelected,
+.RadMenu_Leftnav .rmGroup .rmExpanded
+{
+	background-position: 0 -168px;
+}
+
+.RadMenu_Leftnav .rmGroup .rmLink:hover .rmText,
+.RadMenu_Leftnav .rmGroup .rmFocused .rmText,
+.RadMenu_Leftnav .rmGroup .rmSelected .rmText,
+.RadMenu_Leftnav .rmGroup .rmExpanded .rmText
+{
+	color: #4c607a;
+	background-position: 100% -192px;
+}
+
+/* <expand arrows> */
+
+.RadMenu_Leftnav .rmGroup .rmExpandRight,
+.RadMenu_Leftnav .rmGroup .rmExpandDown
+{
+	background-position: 100% -216px;
+}
+
+.RadMenu_Leftnav .rmGroup .rmLink:hover .rmExpandRight,
+.RadMenu_Leftnav .rmGroup .rmFocused .rmExpandRight,
+.RadMenu_Leftnav .rmGroup .rmSelected .rmExpandRight,
+.RadMenu_Leftnav .rmGroup .rmExpanded .rmExpandRight,
+.RadMenu_Leftnav .rmGroup .rmLink:hover .rmExpandDown,
+.RadMenu_Leftnav .rmGroup .rmFocused .rmExpandDown,
+.RadMenu_Leftnav .rmGroup .rmSelected .rmExpandDown,
+.RadMenu_Leftnav .rmGroup .rmExpanded .rmExpandDown
+{
+	background-position: 100% -240px;
+}
+
+.RadMenu_Leftnav .rmGroup .rmDisabled:hover .rmExpandRight,
+.RadMenu_Leftnav .rmGroup .rmDisabled:hover .rmExpandDown
+{
+	background-image: url('Menu/rmSprite.png');
+	background-position: 100% -216px;
+}
+
+/* </expand arrows> */
+
+/* <rtl> */
+
+.RadMenu_Leftnav_rtl .rmGroup .rmLink:hover,
+.RadMenu_Leftnav_rtl .rmGroup .rmFocused,
+.RadMenu_Leftnav_rtl .rmGroup .rmSelected,
+.RadMenu_Leftnav_rtl .rmGroup .rmExpanded
+{
+	background-position: 100% -264px;
+}
+
+.RadMenu_Leftnav_rtl .rmGroup .rmLink:hover .rmText,
+.RadMenu_Leftnav_rtl .rmGroup .rmFocused .rmText,
+.RadMenu_Leftnav_rtl .rmGroup .rmSelected .rmText,
+.RadMenu_Leftnav_rtl .rmGroup .rmExpanded .rmText
+{
+	background-position: 0 -288px;
+}
+
+.RadMenu_Leftnav_rtl .rmGroup .rmExpandLeft
+{
+	background-position: 0 -312px;
+}
+
+.RadMenu_Leftnav_rtl .rmGroup .rmLink:hover .rmExpandLeft,
+.RadMenu_Leftnav_rtl .rmGroup .rmFocused .rmExpandLeft,
+.RadMenu_Leftnav_rtl .rmGroup .rmSelected .rmExpandLeft,
+.RadMenu_Leftnav_rtl .rmGroup .rmExpanded .rmExpandLeft
+{
+	background-position: 0 -336px;
+}
+
+/* </rtl> */
+
+/* </Submenu items> */
+
+/* <Submenu offsets (Vista - specific, overlapping submenus)> */
+
+.RadMenu_Leftnav .rmSlide
+{
+	margin: -3px 0 0 1px;
+}
+
+.RadMenu_Leftnav .rmVertical .rmSlide,
+.RadMenu_Leftnav .rmSlide .rmSlide,
+.RadMenu_Leftnav_Context .rmGroup .rmSlide
+{
+	margin: 0 0 0 -5px;
+}
+
+.RadMenu_Leftnav_rtl .rmSlide
+{
+	margin: -3px 0 0 -1px;
+}
+
+.RadMenu_Leftnav_rtl .rmVertical .rmSlide,
+.RadMenu_Leftnav_rtl .rmSlide .rmSlide,
+.RadMenu_Leftnav_Context_rtl .rmGroup .rmSlide
+{
+	margin: 0 0 0 5px;
+}
+
+/* </Submenu offsets> */
+
+/* <Scrolling arrows> */
+
+.RadMenu_Leftnav .rmLeftArrow,
+.RadMenu_Leftnav .rmRightArrow
+{
+	background-color: #E0E5F5;
+}
+
+.RadMenu_Leftnav .rmLeftArrow { background-position: -8px -312px;}
+.RadMenu_Leftnav .rmRightArrow { background-position: -482px -216px;}
+
+.RadMenu_Leftnav .rmTopArrow,
+.RadMenu_Leftnav .rmBottomArrow,
+.RadMenu_Leftnav .rmGroup .rmLeftArrow,
+.RadMenu_Leftnav .rmGroup .rmRightArrow
+{
+	background-color: #f0f0f0;
+}
+
+.RadMenu_Leftnav .rmTopArrow { background-position: 50% -367px;}
+.RadMenu_Leftnav .rmBottomArrow { background-position: 50% -391px;}
+
+/* </Scrolling arrows> */
+
+/* <Separators> */
+
+.RadMenu_Leftnav .rmVertical .rmSeparator .rmText,
+.RadMenu_Leftnav .rmHorizontal .rmVertical .rmSeparator .rmText
+{
+	background-position: 0 -406px;
+}
+
+.RadMenu_Leftnav .rmHorizontal .rmSeparator .rmText,
+.RadMenu_Leftnav .rmVertical .rmHorizontal .rmSeparator .rmText
+{
+	background-position: 0 -386px;
+}
+
+/* </Separators> */
+
+/* </RadMenu / Vista> */

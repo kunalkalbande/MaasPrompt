@@ -1,0 +1,531 @@
+<%@ Page Language="vb" %>
+
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
+<%@ Import Namespace="Prompt" %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<script runat="server">
+
+    Private nTransmittalID As Integer = 0
+    Private nProjectID As Integer = 0
+    Private strPhysicalPath As String = ""
+
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+        ProcLib.CheckSession(Page)
+        ProcLib.LoadPopupJscript(Page)
+
+        Session("PageID") = "TransmittalEdit"
+        
+        lblMessage.Text = ""
+
+        nTransmittalID = Request.QueryString("TransmittalID")
+        nProjectID = Request.QueryString("ProjectID")
+     
+        'set up help button
+        butHelp.Attributes.Add("onclick", "openPopup('help_view.aspx','pophelp',550,450,'yes');")
+        butHelp.NavigateUrl = "#"
+        
+        ''set up print button
+        'Dim url As String = "http://216.129.104.66/Q34JF8SFA/Pages/ReportViewer.aspx?/PromptReports/Transmittals&TransmittalID=" & nTransmittalID
+        'butPrint.Attributes.Add("onclick", "window.open('" & url & "')")
+  
+        If Not IsPostBack Then
+            
+            'fill the from /to fields
+            Using db As New TeamMember
+                
+                With cboFromID
+                    .DataValueField = "ContactID"
+                    .DataTextField = "Name"
+                    .DataSource = db.GetExistingMembersForDropDowns(nProjectID)
+                    .DataBind()
+                End With
+                
+                With cboToID
+                    .DataValueField = "ContactID"
+                    .DataTextField = "Name"
+                    .DataSource = db.GetExistingMembersForDropDowns(nProjectID)
+                    .DataBind()
+                End With
+                
+            End Using
+            
+            
+            
+            Using db As New Transmittal
+                db.CallingPage = Page
+                If nTransmittalID = 0 Then
+                    butDelete.Visible = False
+                    'txtRefNumber.Text = db.GetSuggestedNextRefNumber()
+                    txtTransmittedBy.Text = Session("UserName")
+                    txtTransmittedOn.SelectedDate = Now()
+                End If
+                db.GetTransmittalForEdit(nTransmittalID)
+                
+            End Using
+        End If
+        
+        lblxTransmittalID.Text = nTransmittalID
+
+        txtTransmittedOn.Focus()
+        
+
+    End Sub
+    
+
+    Private Sub butSave_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles butSave.Click
+    
+        'If txtTransmittalNumber.Text = "" Then
+        '    lblMessage.Text = "Please enter a Reference Number."
+        '    Exit Sub
+        'End If
+        If txtTransmittedOn.SelectedDate Is Nothing Then
+            lblMessage.Text = "Please enter a ReceivedOn Date."
+            Exit Sub
+        End If
+        'If txtRequiredBy.SelectedDate Is Nothing Then
+        '    lblMessage.Text = "Please enter a RequiredBy Date."
+        '    Exit Sub
+        'End If
+        'If txtTransmittedOn.SelectedDate > txtRequiredBy.SelectedDate Then
+        '    lblMessage.Text = "Required By data must be later than ReceivedOn Date."
+        '    Exit Sub
+        'End If
+        'If txtTitle.Text = "" Then
+        '    lblMessage.Text = "Please enter a Subject."
+        '    Exit Sub
+        'End If
+        'If txtQuestion.Text = "" Then
+        '    lblMessage.Text = "Please enter a Question."
+        '    Exit Sub
+        'End If
+
+        Using db As New Transmittal
+            db.CallingPage = Page
+            db.SaveTransmittal(nProjectID, nTransmittalID)
+
+        End Using
+
+        Session("RtnFromEdit") = True
+        ProcLib.CloseAndRefreshRADNoPrompt(Page)
+    End Sub
+
+    Private Sub butDelete_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles butDelete.Click
+     
+        Using db As New Transmittal
+            db.CallingPage = Page
+            db.DeleteTransmittal(nProjectID, nTransmittalID)
+        End Using
+
+        Session("RtnFromEdit") = True
+        ProcLib.CloseAndRefreshRADNoPrompt(Page)
+    End Sub
+
+    
+  
+
+</script>
+
+<html>
+<head>
+    <title>Transmittal Edit</title>
+    <link href="Styles.css" type="text/css" rel="stylesheet" />
+
+    <script type="text/javascript" language="javascript">
+        function GetRadWindow() {
+            var oWindow = null;
+            if (window.RadWindow) oWindow = window.RadWindow;
+            else if (window.frameElement.radWindow) oWindow = window.frameElement.radWindow;
+            return oWindow;
+        }
+
+
+    </script>
+
+</head>
+<body>
+    <form id="Form1" method="post" runat="server">
+    <telerik:RadScriptManager ID="RadScriptManager1" runat="server" />
+    <asp:Label ID="Label3" runat="server" Style="z-index: 105; left: 17px; position: absolute;
+        top: 216px; width: 175px;">Items listed being sent Via: </asp:Label>
+    <asp:TextBox ID="txtItemsBeingSentVia" runat="server" Style="z-index: 105; left: 172px;
+        position: absolute; top: 216px;" CssClass="EditDataDisplay"></asp:TextBox>
+    &nbsp;&nbsp;
+    <table id="Table2" style="z-index: 103; left: 16px; position: absolute; top: 81px;
+        width: 550px; height: 120px;" border="1">
+        <tr>
+            <td>
+                <table id="Table1">
+                    <tr>
+                        <td colspan="2">
+                            Transmitting the following:
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:CheckBox ID="chkTransmittingOriginals" runat="server" Text="Originals" />
+                        </td>
+                        <td>
+                            <asp:CheckBox ID="chkTransmittingChangeOrders" runat="server" Text="Change Orders" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:CheckBox ID="chkTransmittingSubmittals" runat="server" Text="Submittals" />
+                        </td>
+                        <td>
+                            <asp:CheckBox ID="chkTransmittingSpecifications" runat="server" Text="Specifications" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:CheckBox ID="chkTransmittingDrawingsPrints" runat="server" Text="Drawings/Prints" />
+                        </td>
+                        <td>
+                            <asp:CheckBox ID="chkTransmittingContracts" runat="server" Text="Contracts" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:CheckBox ID="chkTransmittingLetters" runat="server" Text="Letters" />
+                        </td>
+                        <td>
+                            <asp:CheckBox ID="chkTransmittingOther" runat="server" Text="Other" />
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <table id="Panel4">
+                    <tr>
+                        <td colspan="2">
+                            &nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:CheckBox ID="chkYourSignatureReturn" runat="server" Text="Your Signature & Return" />
+                        </td>
+                        <td>
+                            <asp:CheckBox ID="chkActionRequired" runat="server" Text="Action Required" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:CheckBox ID="chkYourInformation" runat="server" Text="Your Information" />
+                        </td>
+                        <td>
+                            <asp:CheckBox ID="chkAsRequested" runat="server" Text="As Requested" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:CheckBox ID="chkYourFiles" runat="server" Text="Your Files" />
+                        </td>
+                        <td>
+                            <asp:CheckBox ID="chkReplyRequested" runat="server" Text="Reply Requested" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:CheckBox ID="chkYourApproval" runat="server" Text="Your Approval" />
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table id="Table3" style="z-index: 103; left: 16px; position: absolute; top: 250px;
+        width: 550px; height: 120px;" border="1">
+        <tr>
+            <td height="21px">
+                Copies
+            </td>
+            <td>
+                Dated
+            </td>
+            <td>
+                Description/Remarks
+            </td>
+        </tr>
+        
+        <tr>
+            <td width="25px" valign="top">
+                <asp:TextBox width="25px" ID="txtCopiesNumber1" runat="server"></asp:TextBox>
+            </td>
+            <td valign="top"  width="125px" >
+                <telerik:RadDatePicker ID="txtCopiesDated1" runat="server" Width="120px" Skin="Web20"
+                    TabIndex="3" Calendar-ID="Calendar1">
+                    <DateInput  runat="server" Skin="WebBlue" Font-Size="13px" ForeColor="Blue"
+                        TabIndex="3">
+                    </DateInput>
+                    <DatePopupButton ImageUrl="" HoverImageUrl="" TabIndex="3"></DatePopupButton>
+                </telerik:RadDatePicker>
+            </td>
+            <td valign="top">
+                <asp:TextBox  width="375px" ID="txtCopiesDescription1" runat="server"></asp:TextBox>
+            </td>
+        </tr>
+        
+          <tr>
+             <td width="25px" valign="top">
+                <asp:TextBox width="25px" ID="txtCopiesNumber2" runat="server"></asp:TextBox>
+            </td>
+             <td valign="top"  width="125px" >
+                <telerik:RadDatePicker ID="txtCopiesDated2" runat="server" Width="120px" Skin="Web20"
+                    TabIndex="3" Calendar-ID="Calendar1">
+                    <DateInput ID="DateInput1"  runat="server" Skin="WebBlue" Font-Size="13px" ForeColor="Blue"
+                        TabIndex="3">
+                    </DateInput>
+                    <DatePopupButton ImageUrl="" HoverImageUrl="" TabIndex="3"></DatePopupButton>
+                </telerik:RadDatePicker>
+            </td>
+            <td valign="top">
+                <asp:TextBox  width="375px" ID="txtCopiesDescription2" runat="server"></asp:TextBox>
+            </td>
+        </tr>
+        
+          <tr>
+             <td width="25px" valign="top">
+                <asp:TextBox  width="25px" ID="txtCopiesNumber3" runat="server"></asp:TextBox>
+            </td>
+             <td valign="top"  width="125px" >
+                <telerik:RadDatePicker ID="txtCopiesDated3" runat="server" Width="120px" Skin="Web20"
+                    TabIndex="3" Calendar-ID="Calendar1">
+                    <DateInput ID="DateInput2"  runat="server" Skin="WebBlue" Font-Size="13px" ForeColor="Blue"
+                        TabIndex="3">
+                    </DateInput>
+                    <DatePopupButton ImageUrl="" HoverImageUrl="" TabIndex="3"></DatePopupButton>
+                </telerik:RadDatePicker>
+            </td>
+            <td valign="top">
+                <asp:TextBox  width="375px" ID="txtCopiesDescription3" runat="server"></asp:TextBox>
+            </td>
+        </tr>
+        
+        
+          <tr>
+             <td width="25px" valign="top">
+                <asp:TextBox width="25px" ID="txtCopiesNumber4" runat="server"></asp:TextBox>
+            </td>
+             <td valign="top"  width="125px" >
+                <telerik:RadDatePicker ID="txtCopiesDated4" runat="server" Width="120px" Skin="Web20"
+                    TabIndex="3" Calendar-ID="Calendar1">
+                    <DateInput ID="DateInput3"  runat="server" Skin="WebBlue" Font-Size="13px" ForeColor="Blue"
+                        TabIndex="3">
+                    </DateInput>
+                    <DatePopupButton ImageUrl="" HoverImageUrl="" TabIndex="3"></DatePopupButton>
+                </telerik:RadDatePicker>
+            </td>
+            <td valign="top">
+                <asp:TextBox  width="375px" ID="txtCopiesDescription4" runat="server"></asp:TextBox>
+            </td>
+        </tr>
+        
+        
+          <tr>
+            <td width="25px" valign="top">
+                <asp:TextBox width="25px" ID="txtCopiesNumber5" runat="server"></asp:TextBox>
+            </td>
+            <td valign="top"  width="125px" >
+                <telerik:RadDatePicker ID="txtCopiesDated5" runat="server" Width="120px" Skin="Web20"
+                    TabIndex="3" Calendar-ID="Calendar1">
+                    <DateInput ID="DateInput4"  runat="server" Skin="WebBlue" Font-Size="13px" ForeColor="Blue"
+                        TabIndex="3">
+                    </DateInput>
+                    <DatePopupButton ImageUrl="" HoverImageUrl="" TabIndex="3"></DatePopupButton>
+                </telerik:RadDatePicker>
+            </td>
+            <td valign="top">
+                <asp:TextBox  width="375px" ID="txtCopiesDescription5" runat="server"></asp:TextBox>
+            </td>
+        </tr>
+        
+        
+          <tr>
+            <td width="25px" valign="top">
+                <asp:TextBox width="25px" ID="txtCopiesNumber6" runat="server"></asp:TextBox>
+            </td>
+            <td valign="top"  width="125px" >
+                <telerik:RadDatePicker ID="txtCopiesDated6" runat="server" Width="120px" Skin="Web20"
+                    TabIndex="3" Calendar-ID="Calendar1">
+                    <DateInput ID="DateInput5"  runat="server" Skin="WebBlue" Font-Size="13px" ForeColor="Blue"
+                        TabIndex="3">
+                    </DateInput>
+                    <DatePopupButton ImageUrl="" HoverImageUrl="" TabIndex="3"></DatePopupButton>
+                </telerik:RadDatePicker>
+            </td>
+            <td valign="top">
+                <asp:TextBox width="375px"  ID="txtCopiesDescription6" runat="server"></asp:TextBox>
+            </td>
+        </tr>
+        
+          <tr>
+             <td width="25px" valign="top">
+                <asp:TextBox width="25px" ID="txtCopiesNumber7" runat="server"></asp:TextBox>
+            </td>
+            <td valign="top"  width="125px" >
+                <telerik:RadDatePicker ID="txtCopiesDated7" runat="server" Width="120px" Skin="Web20"
+                    TabIndex="3" Calendar-ID="Calendar1">
+                    <DateInput ID="DateInput6"  runat="server" Skin="WebBlue" Font-Size="13px" ForeColor="Blue"
+                        TabIndex="3">
+                    </DateInput>
+                    <DatePopupButton ImageUrl="" HoverImageUrl="" TabIndex="3"></DatePopupButton>
+                </telerik:RadDatePicker>
+            </td>
+            <td valign="top">
+                <asp:TextBox  width="375px" ID="txtCopiesDescription7" runat="server"></asp:TextBox>
+            </td>
+        </tr>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </table>
+    <asp:HyperLink ID="butHelp" Style="z-index: 112; left: 539px; position: absolute;
+        top: 9px; height: 20px;" runat="server" ImageUrl="images/button_help.gif">HyperLink</asp:HyperLink>
+    <asp:ImageButton ID="butSave" Style="z-index: 113; left: 16px; position: absolute;
+        top: 604px" TabIndex="50" runat="server" ImageUrl="images/button_save.gif"></asp:ImageButton>
+    <asp:ImageButton ID="butDelete" Style="z-index: 107; left: 291px; position: absolute;
+        top: 605px" TabIndex="99" runat="server" 
+        ImageUrl="images/button_delete.gif">
+    </asp:ImageButton>
+<%--    <asp:ImageButton ID="butPrint" Style="z-index: 107; left: 150px; position: absolute;
+        top: 605px" TabIndex="99" runat="server" 
+        ImageUrl="images/print.png">
+    </asp:ImageButton>
+--%>
+    <asp:Label ID="lblMessage" Style="z-index: 105; left: 17px; position: absolute; top: 581px"
+        runat="server" Height="24px" Font-Bold="True" ForeColor="Red">Error Message</asp:Label>
+    <asp:Label ID="Label8" Style="z-index: 105; left: 17px; position: absolute; top: 41px;
+        right: 1151px; width: 110px;" runat="server" Height="24px">To:</asp:Label>
+    <asp:Label ID="Label10" Style="z-index: 105; left: 16px; position: absolute; top: 501px"
+        runat="server" Height="24px">Review Instructions:</asp:Label>
+    <asp:Label ID="Label16" Style="z-index: 105; left: 18px; position: absolute; top: 561px"
+        runat="server" Height="24px">Transmitted By:</asp:Label>
+    <asp:Label ID="Label9" Style="z-index: 105; left: 426px; position: absolute; top: 606px; width: 14px;"
+        runat="server" Height="24px">ID:</asp:Label>
+    <asp:Label ID="lblxTransmittalID" Style="z-index: 105; left: 446px; position: absolute;
+        top: 605px" runat="server" Height="24px"></asp:Label>
+    <asp:Label ID="Label2" Style="z-index: 105; left: 11px; position: absolute; top: 11px"
+        runat="server" Height="24px">Date:</asp:Label>
+    <telerik:RadDatePicker ID="txtTransmittedOn" Style="z-index: 103; left: 58px; position: absolute;
+        top: 12px; right: 1100px;" runat="server" Width="120px" Skin="Web20" TabIndex="3">
+        <DateInput runat="server" Skin="WebBlue" Font-Size="13px" ForeColor="Blue" TabIndex="3">
+        </DateInput>
+        <Calendar ID="Calendar1" runat="server" UseRowHeadersAsSelectors="False" UseColumnHeadersAsSelectors="False"
+            ViewSelectorText="x" Skin="Web20">
+             <SpecialDays> 
+            <telerik:RadCalendarDay Repeatable="Today"> 
+                <ItemStyle BackColor="LightBlue" /> 
+            </telerik:RadCalendarDay> 
+        </SpecialDays> 
+        </Calendar>
+        <DatePopupButton ImageUrl="" HoverImageUrl="" TabIndex="3"></DatePopupButton>
+    </telerik:RadDatePicker>
+    <asp:TextBox ID="txtReviewInstructions" Style="z-index: 103; left: 152px; position: absolute;
+        top: 501px; height: 43px; width: 412px; right: 1043px;" runat="server" 
+        TabIndex="20" CssClass="EditDataDisplay"
+        TextMode="MultiLine"></asp:TextBox>
+   
+   
+   
+   
+    <telerik:RadComboBox ID="cboToID" runat="server" Style="z-index: 505; left: 58px;
+        position: absolute; top: 40px; right: 1118px;" Skin="Vista" Text="(To)" DropDownWidth="220px"
+        AppendDataBoundItems="True" TabIndex="14">
+                                            <HeaderTemplate>
+                                <table style="width: 415px; text-align: left">
+                                    <tr>
+                                        <td style="width: 125px;">
+                                            Name
+                                        </td>
+                                        <td style="width: 125px;">
+                                            Company
+                                        </td>
+                                        <td style="width: 125px;">
+                                            Group
+                                        </td>
+                                    </tr>
+                                </table>
+                            </HeaderTemplate>
+                            <ItemTemplate>
+                                <table style="width: 415px; text-align: left">
+                                    <tr>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "Name")%>
+                                        </td>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "Company")%>
+                                        </td>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "TeamGroupName")%>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </ItemTemplate>
+    </telerik:RadComboBox>
+   
+    <telerik:RadComboBox ID="cboFromID" runat="server" Style="z-index: 505; left: 322px;
+        position: absolute; top: 39px; right: 1118px;" Skin="Vista" Text="(From)" DropDownWidth="220px"
+        TabIndex="16">
+                                            <HeaderTemplate>
+                                <table style="width: 415px; text-align: left">
+                                    <tr>
+                                        <td style="width: 125px;">
+                                            Name
+                                        </td>
+                                        <td style="width: 125px;">
+                                            Company
+                                        </td>
+                                        <td style="width: 125px;">
+                                            Group
+                                        </td>
+                                    </tr>
+                                </table>
+                            </HeaderTemplate>
+                            <ItemTemplate>
+                                <table style="width: 415px; text-align: left">
+                                    <tr>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "Name")%>
+                                        </td>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "Company")%>
+                                        </td>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "TeamGroupName")%>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </ItemTemplate>
+    </telerik:RadComboBox>
+   
+   
+   
+   
+    <asp:CheckBox ID="chkItemsEnclosed" runat="server" Style="z-index: 103; left: 366px;
+        position: absolute; top: 215px;" Text="Enclosed" />
+    <asp:TextBox ID="txtTransmittalNumber" Style="z-index: 103; left: 225px; position: absolute;
+        top: 11px; width: 135px;" runat="server" Height="24px" TabIndex="1" CssClass="EditDataDisplay"
+        Wrap="False"></asp:TextBox>
+    <asp:TextBox ID="txtTransmittedBy" Style="z-index: 103; left: 150px; position: absolute;
+        top: 558px; width: 167px;" runat="server" Height="24px" TabIndex="40" 
+        CssClass="EditDataDisplay"></asp:TextBox>
+    <asp:Label ID="Label6" Style="z-index: 105; left: 266px; position: absolute; top: 42px;
+        width: 122px;" runat="server" Height="24px">From:</asp:Label>
+    <asp:Label ID="Label12" Style="z-index: 105; left: 190px; position: absolute; top: 10px"
+        runat="server" Height="24px">Ref:</asp:Label>
+    </form>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<%@ Master Language="VB" ClassName="PromptCBOCPublicMaster" %>
+
+<%@ Import Namespace="Prompt" %>
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
+<%@ Register TagPrefix="prompt" TagName="pagefooter" Src="footer.ascx" %>
+
+<script runat="server"> 
+     
+    Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs)
+
+        If Request.QueryString("District") = "" Then
+            Session("DistrictID") = 55
+        Else
+            Session("DistrictID") = Request.QueryString("District")
+        End If
+        
+        Session("UserName") = "CBOC Board Member"
+        
+        BuildMenu()
+    End Sub
+    
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs)
+
+   
+        
+    End Sub
+    
+  
+    
+    
+   
+    Public Sub BuildMenu()
+      
+        RadMenu1.Items.Clear()
+        Dim mm As RadMenuItem
+        Dim nFontSize As Integer = 10
+
+        mm = New RadMenuItem
+        With mm
+            .Value = "AppLogo"
+            
+            If ProcLib.GetLocale() = "Production" Then
+                .Value = "AppLogo"
+                If Session("UsePromptName") = 1 Then
+                    .ImageUrl = "images/prompt.ed_logo.png"
+                    .CssClass = "logoheader"
+                    Page.Header.Title = "Welcome to PROMPT.ed"
+                Else
+                    .ImageUrl = "images/prompt.ed_logo.png"
+                    .CssClass = "logoheader"
+                    Page.Header.Title = "Welcome to PROMPT.ed"
+                End If
+            
+                .Width = Unit.Pixel(250)
+               
+            ElseIf ProcLib.GetLocale() = "Beta" Or ProcLib.GetLocale() = "VMBeta" Then
+                .Value = "AppLogo"
+                
+                If Session("UsePromptName") = 1 Then
+                    .ImageUrl = "images/prompt.ed_logo.png"
+                    .CssClass = "logoheader"
+                    Page.Header.Title = "Prompt Beta"
+                Else
+                    .ImageUrl = "images/prompt.ed_logo.png"
+                    .CssClass = "logoheader"
+                    Page.Header.Title = "Prompt Beta"
+                End If
+                .Width = Unit.Pixel(250)
+                
+            Else
+                .Value = "AppLogo"
+                If Session("UsePromptName") = 1 Then
+                    .ImageUrl = "images/prompt.ed_logo.png"
+                    .CssClass = "logoheader"
+                    Page.Header.Title = "Prompt Local"
+                Else
+                    .ImageUrl = "images/prompt.ed_logo.png"
+                    .CssClass = "logoheader"
+                    Page.Header.Title = "Prompt Local"
+                End If
+                .Width = Unit.Pixel(250)
+                
+            End If
+        End With
+        RadMenu1.Items.Add(mm)
+        
+  
+        mm = New RadMenuItem
+        With mm
+            .Text = "Citizen's Bond Oversight Committee Reports"
+            .Value = "Home"
+            '.ImageUrl = "images/dashboard.png"
+            .NavigateUrl = ""
+            .PostBack = False
+            .Font.Size = nFontSize
+        End With
+        RadMenu1.Items.Add(mm)
+ 
+ 
+        '****** Build the district menu ****
+        Using db As New PromptDataHelper
+            Dim mmDistrict = New RadMenuItem
+            With mmDistrict
+                .Text = db.ExecuteScalar("SELECT Name FROM Districts WHERE DistrictID = " & Session("DistrictID"))
+                .Value = "District"
+                .Font.Size = 10
+                .Font.Bold = True
+                .GroupSettings.ExpandDirection = ExpandDirection.Auto
+                .GroupSettings.Flow = ItemFlow.Vertical
+                .GroupSettings.OffsetX = -20
+            
+            End With
+
+            RadMenu1.Items.Add(mmDistrict)
+        End Using
+  
+     
+ 
+    End Sub
+    
+ 
+</script>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head id="masterHeading" runat="server">
+    <title id="PageTitle" runat="server"></title>
+    <link rel="icon" type="image/png" href="images/home.png" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="Styles.css" rel="stylesheet" type="text/css" />
+    <link href="styles_prompt_nav.css" rel="stylesheet" type="text/css" />
+    <link href="skins/Prompt/Grid.Prompt.css" rel="stylesheet" type="text/css" />
+    <link href="skins/Prompt/Menu.Prompt.css" rel="stylesheet" type="text/css" />
+    <link href="skins/Topnav/Menu.Topnav.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" language="javascript">
+        // keeps the frameset as the top frame  
+        if (parent.frames.length != 0) top.location = location.href;
+    </script>
+
+    <style type="text/css">
+        div.RadMenu .rmRootGroup .rmLast
+        {
+            float: right;
+        }
+        div.RadMenu .rmGroup .rmLast
+        {
+            float: none;
+        }
+        .logoheader
+        {
+            margin: -5px 0 0 -10px; !important;}</style>
+    <link href="js/jquery-ui.css" type="text/css" rel="Stylesheet" />
+
+    <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
+
+    <script src="js/jquery-ui.1.8.2.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript" language="javascript">
+
+
+
+    </script>
+
+</head>
+<body style="margin: 0; padding: 0;">
+    <form id="Form1" method="post" runat="server">
+    <telerik:RadScriptManager ID="RadScriptManager1" runat="server" />
+    <!-- Page Top Menu Items -->
+    <telerik:RadMenu ID="RadMenu1" runat="server" Width="99.5%" DefaultGroupSettings-Flow="Vertical"
+        EnableEmbeddedSkins="false" Skin="Topnav" />
+    <!-- Main Content -->
+    <asp:Panel ID="Panel1" runat="server" Style="z-index: 103; position: absolute; top: 25px;
+        left: 0px;" Height="95%" Width="99.5%">
+        <asp:ContentPlaceHolder ID="mainBody" runat="Server">
+        </asp:ContentPlaceHolder>
+        <prompt:pagefooter ID="Pagefooter1" runat="server" />
+    </asp:Panel>
+    </form>
+</body>
+</html>

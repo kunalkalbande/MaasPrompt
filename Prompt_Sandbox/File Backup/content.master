@@ -1,0 +1,408 @@
+<%@ Master Language="VB" ClassName="ContentMaster" %>
+
+<%@ Import Namespace="Prompt" %>
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
+
+<script runat="server">    
+    
+    Private nCurrentKey As Integer = 0
+    Private nProjectID As Integer = 0
+    Private nProjectGroupID As Integer = 0
+    Private nCollegeID As Integer = 0
+    Private nDistrictID As Integer = 0
+    Private nContractID As Integer = 0
+    Private nLedgerAccountID As Integer = 0
+    Private view As String = ""
+    
+    Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs)
+        '*************** Added here to allow user control click event to be triggered!!!
+        'Build the tab strip
+        tabMain.Tabs.Clear() 'clear any exiting tabs
+
+        'This needs to be done here to ensure project title in parent tab
+        nProjectID = Request.QueryString("ProjectID")
+        nProjectGroupID = Request.QueryString("ProjectGroupID")
+        nCollegeID = Request.QueryString("CollegeID")
+        Session("CollegeID") = nCollegeID
+        
+        nDistrictID = Session("DistrictID")
+        nContractID = Request.QueryString("ContractID")
+        nLedgerAccountID = Request.QueryString("LedgerAccountID")
+        view = Request.QueryString("view")
+  
+        Select Case view
+            Case "project"
+                nCurrentKey = nProjectID
+                lblViewTitle.CssClass = "project_lbl"
+            Case "projectlogs"
+                nCurrentKey = nProjectID
+                lblViewTitle.CssClass = "projectlogs_lbl"
+            Case "college"
+                nCurrentKey = nCollegeID
+				lblViewTitle.CssClass = "college_lbl"
+            Case "contract"
+                nCurrentKey = nContractID
+				lblViewTitle.CssClass = "contract_lbl"
+            Case "ledgeraccount"
+                nCurrentKey = nLedgerAccountID
+				lblViewTitle.CssClass = "ledger_lbl"
+            Case "projectgroup"
+                nCurrentKey = nProjectGroupID
+				lblViewTitle.CssClass = "projectgroup_lbl"
+        End Select
+        
+        If Not IsPostBack Then
+            panelViewTitle.Visible = True
+
+       
+            Using db As New EISSecurity
+           
+                db.DistrictID = Session("DistrictID")
+                db.CollegeID = nCollegeID
+                db.ProjectID = nProjectID
+            
+                Select Case view
+                    
+                    Case "college"
+                    
+                        nCurrentKey = nCollegeID
+                    
+                        If Not IsPostBack Then
+                            lblViewTitle.Text = db.GetCollegeName(nCollegeID)
+                            tabMain.SelectedIndex = 0
+                        End If
+    
+                        Dim tbl As DataTable = db.GetDistrictObjectVisibilitySettings("CollegeTabs")
+                        For Each row In tbl.Rows
+                            If ProcLib.CheckNullNumField(row("Visibility")) = 1 Then
+                                If db.FindUserPermission(row("ObjectID"), "read") Then
+                                    Select Case row("ObjectID")
+                                        Case "CollegeOverview"
+                                            AddTab("Overview", "Overview", "images/home2.png", "college_overview.aspx")
+                                        Case "CollegeAttachments"
+                                            AddTab("Attachments", "Attachments", "images/tab_attachments.png", "attachments.aspx")
+                                        Case "CollegeNotesTab"
+                                            AddTab("Notes", "Notes", "images/note.png", "notes.aspx", 100)
+                                            
+                                        Case "CollegeCalendar"
+                                            AddTab("Calendar", "Calendar", "images/calendar.png", "calendar.aspx")
+ 
+                                    End Select
+                                End If
+ 
+                            End If
+                        Next
+                        
+                        
+                    Case "project"
+                    
+                        nCurrentKey = nProjectID
+                                        
+                        If Not IsPostBack Then
+                            lblViewTitle.Text = db.GetProjectName(nProjectID)    'note: also sets the session variable for collegeID
+                            tabMain.SelectedIndex = 0
+                        End If
+                    
+                        Dim tbl As DataTable = db.GetDistrictObjectVisibilitySettings("ProjectTabs")
+                        For Each row In tbl.Rows
+                            If ProcLib.CheckNullNumField(row("Visibility")) = 1 Then
+                                If db.FindUserPermission(row("ObjectID"), "read") Then            'Does the user have read rights to this object
+                                    Select Case row("ObjectID")
+                                        Case "ProjectOverview"
+                                            AddTab("Overview", "Overview", "images/home2.png", "project_overview.aspx")
+  
+                                         
+                                        Case "RFILog"
+                                            AddTab("RFIs", "RFIs", "images/rfis1.png", "RFIs.aspx")
+                                        Case "SubmittalLog"
+                                            AddTab("Submittals", "Submittals", "images/submittals.png", "submittals.aspx")
+                                            
+                                        Case "PADLog"
+                                            AddTab("PADs", "PADs", "images/pads.png", "PADS.aspx")
+                                            
+                                        Case "MeetingMinutes"
+                                            AddTab("Meeting Minutes", "MeetingMinutes", "images/meetingminutes.png", "meetingminutes.aspx")
+                                        Case "ProcurementLog"
+                                            AddTab("Procurement Log", "ProcurementLog", "images/procurementlog.png", "procurementlog.aspx")
+                                        Case "TransmittalLog"
+                                            AddTab("Transmittals", "Transmittals", "images/transmittallog.png", "transmittals.aspx")
+                                        Case "InfoBulletinLog"
+                                            AddTab("IBs", "InfoBulletins", "images/infobulletins.png", "InfoBulletins.aspx")
+                                       
+                                        Case "BondWebsite"
+                                            AddTab("Bond Website", "BondWebsite", "images/bondsite.png", "bondsite_projectinfo.aspx")
+                                        Case "ProjectPhotos"
+                                            AddTab("Photos", "Photos", "images/photos.png", "photos.aspx")
+                                        Case "ProjectNotesTab"
+                                            AddTab("Notes", "Notes", "images/note.png", "notes.aspx")
+                                        Case "ProjectAttachments"
+                                            AddTab("Attachments", "Attachments", "images/tab_attachments.png", "attachments.aspx")
+                                        Case "JCAFBudget"
+                                            AddTab("JCAF Budget", "Budget", "images/tab_budget.png", "budget.aspx")
+                                        Case "ProjectPassthroughInfo"
+                                            AddTab("Passthrough", "Passthrough", "images/ledger_account.png", "passthrough_entries_view.aspx")
+                                        Case "State14D"
+                                            AddTab("State 14Ds", "State14D", "images/14d.png", "state14ds.aspx")
+                                             
+                                        Case "PMProgressReport"
+                                            AddTab("Prog Reports", "PMProgressReports", "images/submittals.png", "project_progressreports.aspx")
+                                       
+                                    End Select
+                                End If
+            
+                            End If
+                        Next
+ 
+                    Case "projectlogs"
+                    
+                        nCurrentKey = nProjectID
+                                        
+                        If Not IsPostBack Then
+                            lblViewTitle.Text = db.GetProjectName(nProjectID) & " Project Logs "    'note: also sets the session variable for collegeID
+                            tabMain.SelectedIndex = 0
+                        End If
+                    
+                        Dim tbl As DataTable = db.GetDistrictObjectVisibilitySettings("ProjectTabs")
+                        For Each row In tbl.Rows
+                            If ProcLib.CheckNullNumField(row("Visibility")) = 1 Then
+                                If db.FindUserPermission(row("ObjectID"), "read") Then            'Does the user have read rights to this object
+                                    Select Case row("ObjectID")
+                                       
+                                        Case "RFILog"
+                                            AddTab("RFIs", "RFIs", "images/rfis1.png", "RFIs.aspx")
+                                        Case "SubmittalLog"
+                                            AddTab("Submittals", "Submittals", "images/submittals.png", "submittals.aspx")
+                                        Case "MeetingMinutes"
+                                            AddTab("Meeting Minutes", "MeetingMinutes", "images/meetingminutes.png", "meetingminutes.aspx")
+                                        Case "ProcurementLog"
+                                            AddTab("Procurement Log", "ProcurementLog", "images/procurementlog.png", "procurementlog.aspx")
+                                        Case "TransmittalLog"
+                                            AddTab("Transmittals", "Transmittals", "images/transmittallog.png", "transmittals.aspx")
+                                       
+                                        Case "InfoBulletinLog"
+                                            AddTab("IBs", "InfoBulletins", "images/infobulletins.png", "InfoBulletins.aspx")
+                                            
+                                                                                        
+                                        Case "PADLog"
+                                            AddTab("PADs", "PADs", "images/pads.png", "PADS.aspx")
+                                            
+                                        Case "PMProgressReport"
+                                            AddTab("Prog Reports", "PMProgressReports", "images/submittals.png", "project_progressreports.aspx")
+                                            
+                                    End Select
+                                End If
+            
+                            End If
+                        Next
+ 
+ 
+                    Case "contract"
+                    
+                        nCurrentKey = nContractID
+                    
+                        If Not IsPostBack Then
+                            lblViewTitle.Text = db.GetContractName(nContractID)
+                        End If
+    
+                        Dim tbl As DataTable = db.GetDistrictObjectVisibilitySettings("ContractTabs")
+                        For Each row In tbl.Rows
+                            If ProcLib.CheckNullNumField(row("Visibility")) = 1 Then   'NOTE: For now all district visible tabs are shown if user has read rights to overview
+                                If db.FindUserPermission(row("ObjectID"), "read") Then
+                                    Select Case row("ObjectID")
+                                        Case "ContractOverview"
+                                            AddTab("Overview", "Overview", "images/home2.png", "contract_overview.aspx")
+                                        Case "ContractLineItems"
+                                            AddTab("Line Items/CO's", "ContractLineItems", "images/changeorders.png", "contract_line_items.aspx")
+                                           
+                                        Case "ContractAttachments"
+                                            AddTab("Attachments", "Attachments", "images/tab_attachments.png", "attachments.aspx")
+                                        Case "Transactions"
+                                            AddTab("Transactions", "Transactions", "images/cashier.png", "transactions.aspx")
+                                        Case "ContractNOC"
+                                            AddTab("NOC", "NOC", "images/transmittallog.png", "contract_noc.aspx")
+                                        Case "ContractNotesTab"
+                                            AddTab("Notes", "Notes", "images/note.png", "notes.aspx")
+                                    End Select
+                                End If
+                            End If
+                        Next
+
+                    Case "ledgeraccount"
+                                        
+                        nCurrentKey = nLedgerAccountID
+                                                            
+                        If Not IsPostBack Then
+                            lblViewTitle.Text = db.GetLedgerName(nLedgerAccountID)
+                        End If
+    
+                        Dim tbl As DataTable = db.GetDistrictObjectVisibilitySettings("LedgerTabs")
+                        For Each row In tbl.Rows
+                            If ProcLib.CheckNullNumField(row("Visibility")) = 1 Then
+                                If db.FindUserPermission(row("ObjectID"), "read") Then
+                                    Select Case row("ObjectID")
+                                        Case "LedgerList"
+                                            AddTab("Ledger", "Overview", "images/ledger_account.png", "ledger_entries.aspx")
+                                        Case "LedgerNotes"
+                                            AddTab("Notes", "Notes", "images/note.png", "notes.aspx")
+ 
+                                    End Select
+                                End If
+                            End If
+                        Next
+                    
+                    Case "projectgroup"
+                    
+                        nCurrentKey = nProjectGroupID
+                                                        
+                        If Not IsPostBack Then
+                            lblViewTitle.Text = db.GetProjectGroupName(nProjectGroupID)
+                        End If
+
+                        Dim tbl As DataTable = db.GetDistrictObjectVisibilitySettings("ProjectGroupTabs")
+                        For Each row In tbl.Rows
+                            If ProcLib.CheckNullNumField(row("Visibility")) = 1 Then
+                                'If db.FindUserPermission(row("ObjectID"), "read") Then    'NOTE: Always show groups as they will only be included if there are child projects user has rights to
+                                Select Case row("ObjectID")
+                                    Case "ProjectGroupOverview"
+                                        AddTab("Overview", "Overview", "images/projectgroup.png", "project_group_info.aspx")
+                                        
+     
+                                End Select
+                                'End If
+                            End If
+                        Next
+                    
+                    Case "DistrictBondWebsiteInfo"              'this page has set tabs
+                    
+                        panelViewTitle.Visible = False
+                    
+                        AddTab("Current News", "News", "", "bondsite_currentnews.aspx")
+                        AddTab("Links", "Links", "", "bondsite_links.aspx")
+                        AddTab("Meetings", "Meetings", "", "bondsite_meetings.aspx")
+                        
+                    
+
+                End Select
+
+  
+            End Using
+        End If
+        '************************
+
+    End Sub
+    
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs)
+
+        ProcLib.CheckSession(Page)
+        ProcLib.LoadPopupJscript(Page)
+        
+        If Session("RtnFromEdit") = True And Session("RefreshNav") = True Then
+            Session("RtnFromEdit") = False
+            Exit Sub
+        End If
+          
+        If tabMain.Tabs.Count = 0 Then
+            lblViewTitle.Text = "Sorry, You have not been granted access to this information. Please contact technical support."
+            Exit Sub
+        End If
+        
+  
+    End Sub
+
+    Private Sub tabMain_TabClick(ByVal sender As Object, ByVal e As Telerik.Web.UI.RadTabStripEventArgs) Handles tabMain.TabClick
+        Session("CurrentTab") = e.Tab.Value
+        
+    End Sub
+
+ 
+    Private Sub AddTab(ByVal DisplayTitle As String, ByVal TabValue As String, ByVal ImagePath As String, Optional ByVal PageLink As String = "", Optional ByVal tabwidth As Integer = 0)
+
+        'Adds a tab to the tab strip
+        Dim sQueryString As String = Request.ServerVariables("QUERY_STRING")
+        If Not sQueryString.Contains("&t=y") Then
+            sQueryString &= "&t=y"           't=y  indicates it was a click on a tab
+        End If
+        Dim t1 As New RadTab
+        With t1
+            .Value = TabValue
+            .Text = DisplayTitle
+            .ImageUrl = ImagePath
+            .NavigateUrl = PageLink & "?" & sQueryString   'append the calling querystring. 
+            If tabwidth > 0 Then
+                .Width = Unit.Pixel(tabwidth)
+            End If
+            
+        End With
+        
+        tabMain.Tabs.Add(t1)
+
+    End Sub
+   
+  
+    
+ 
+</script>
+
+<%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">--%>
+
+<head id="contentHeading" runat="server">
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+<%--NOTE: The metta tag above forces IE to render in IE8 compatibilty mode as the RAD dock breaking in IE9 - dfj 1/2012--%>
+    <link href="Styles.css" type="text/css" rel="stylesheet" />
+    <link href="skins/Prompt/TabStrip.Prompt.css" rel="stylesheet" type="text/css" />
+    <link href="skins/Prompt/Grid.Prompt.css" rel="stylesheet" type="text/css" />
+    <link href="skins/Prompt/Dock.Prompt.css" rel="stylesheet" type="text/css" />
+    <link href="skins/Prompt/Menu.Prompt.css" rel="stylesheet" type="text/css" />
+    <link href="skins/Prompt/TreeView.Prompt.css" rel="stylesheet" type="text/css" />
+
+   
+    <telerik:RadCodeBlock ID="RadCodeBlock1" runat="server">
+
+        <script type="text/javascript" language="javascript">
+
+            function checkRefreshNav() {    //checks onload for a refresh nav value in the hidded field to determin if parent nav should be refreshed
+                //var navstate = document.getElementById("RefreshNav");   ////obtain reference to hidden field to check status
+                var navstate = '<%=Session("RefreshNav")%>';
+                if (navstate == 'True') {
+                    var parentPageWnd = window.parent;              //obtain reference to the parent page
+                    parentPageWnd.refreshParentPage();      //call a method from the parent page
+                }
+            }
+ 
+        </script>
+
+    </telerik:RadCodeBlock>
+    
+
+    <style type="text/css">
+ 
+/* TO Override Today Cell in Calendar */
+        div.RadScheduler_Windows7 .rsMonthView .rsTodayCell
+        {
+        background-color: LightYellow;
+        color: #000;
+        border: 1px solid #000;
+        }
+    </style>
+    
+</head>
+<body onload="checkRefreshNav();">
+    <form id="Form1" method="post" runat="server" class="title">
+    <telerik:RadScriptManager ID="RadScriptManager1" runat="server" />
+    <telerik:RadStyleSheetManager ID="RadStyleSheetManager1" runat="server" />
+    <asp:Panel ID="panelViewTitle" runat="server" Height="62">
+        <asp:Label ID="lblViewTitle" runat="server"></asp:Label></asp:Panel>
+    <telerik:RadTabStrip ID="tabMain" runat="server" BackColor="Transparent" AutoPostBack="True"
+        SelectedIndex="0" ScrollChildren="true" Skin="Windows7">
+    </telerik:RadTabStrip>
+    <asp:Panel ID="Panel1" runat="server" Height="88%" Width="100%">
+        <asp:ContentPlaceHolder ID="mainBody" runat="Server">
+            <!-- Main Content -->
+        </asp:ContentPlaceHolder>
+    </asp:Panel>
+
+    <script type="text/javascript" src="./print.js"></script>
+
+    </form>
+</body>
+</html>

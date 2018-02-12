@@ -1,0 +1,5 @@
+﻿
+Partial Class RFI_BackCode
+    Inherits System.Web.UI.Page
+
+End Class

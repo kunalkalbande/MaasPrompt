@@ -1,0 +1,15 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Prompt
+</name>
+</assembly>
+<members>
+<member name="T:Prompt.Prompt.PromptDataHelper">
+	<summary>
+ Represents a data access layer to the Prompt database.
+ </summary>
+</member>
+</members>
+</doc>

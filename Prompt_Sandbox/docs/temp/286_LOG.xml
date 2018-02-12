@@ -1,0 +1,245 @@
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+  <Author>MaasIT</Author>
+  <LastAuthor>MaasIT</LastAuthor>
+  <LastPrinted>2014-03-27T15:48:47Z</LastPrinted>
+  <Created>2014-03-27T15:07:30Z</Created>
+  <LastSaved>2014-04-07T17:23:27Z</LastSaved>
+  <Company>Microsoft</Company>
+  <Version>14.00</Version>
+ </DocumentProperties>
+ <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
+  <AllowPNG/>
+ </OfficeDocumentSettings>
+ <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
+  <WindowHeight>7995</WindowHeight>
+  <WindowWidth>20115</WindowWidth>
+  <WindowTopX>240</WindowTopX>
+  <WindowTopY>75</WindowTopY>
+  <ProtectStructure>False</ProtectStructure>
+  <ProtectWindows>False</ProtectWindows>
+ </ExcelWorkbook>
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="11" ss:Color="#000000"/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="m82239648">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"/>
+   </Borders>
+   <Font ss:FontName="Arial" x:Family="Swiss" ss:Size="20" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s16">
+   <Borders/>
+  </Style>
+  <Style ss:ID="s22">
+   <Alignment ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font ss:FontName="Arial" x:Family="Swiss" ss:Size="11" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s24">
+   <Borders>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+  </Style>
+  <Style ss:ID="s25">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"/>
+   </Borders>
+  </Style>
+  <Style ss:ID="s27">
+   <Alignment ss:Vertical="Bottom"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"/>
+   </Borders>
+  </Style>
+  <Style ss:ID="s28">
+   <Alignment ss:Vertical="Bottom"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"/>
+   </Borders>
+   <Font ss:FontName="Arial" x:Family="Swiss" ss:Size="11" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s30">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/>
+   </Borders>
+   <Interior ss:Color="#F2F2F2" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s30b">
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"/>
+   </Borders>
+  </Style>  
+  <Style ss:ID="s31">
+   <Alignment ss:Vertical="Top"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+   <Font ss:FontName="Arial" x:Family="Swiss" ss:Size="10" ss:Color="#000000"
+    ss:Bold="0"/>
+  </Style>
+  <Style ss:ID="s34">
+   <Interior ss:Color="#F2F2F2" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s35">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Top" ss:WrapText="1"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+   <Font ss:FontName="Arial" x:Family="Swiss" ss:Size="11" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="s36">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Top" ss:WrapText="1"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
+   </Borders>
+  </Style>
+  <Style ss:ID="s37">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font ss:FontName="Arial" x:Family="Swiss" ss:Size="11" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s38">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
+   <Borders/>
+  </Style>
+  <Style ss:ID="s39">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Bottom"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"/>
+   </Borders>
+   <Font ss:FontName="Arial" x:Family="Swiss" ss:Size="11" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s41">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font ss:FontName="Arial" x:Family="Swiss" ss:Size="11" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s42">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font ss:FontName="Arial" x:Family="Swiss" ss:Size="11" ss:Color="#000000"
+    ss:Bold="1"/>
+   <!--<NumberFormat ss:Format="Short Date"/>-->
+  </Style>
+  <Style ss:ID="s43">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"/>
+   </Borders>
+   <Font ss:FontName="Arial" x:Family="Swiss" ss:Size="11" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="Sheet1">
+  <Table ss:ExpandedColumnCount="14" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultRowHeight="15">
+   <Column ss:Index="4" ss:AutoFitWidth="0" ss:Width="43.5" ss:Span="2"/>
+   <Column ss:Index="7" ss:AutoFitWidth="0" ss:Width="31.5"/>
+   <Column ss:AutoFitWidth="0" ss:Width="50.25"/>
+   <Column ss:AutoFitWidth="0" ss:Width="43.5" ss:Span="1"/>
+   <Row>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+    <Cell ss:StyleID="s24"/>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="19.5">
+    <Cell ss:MergeAcross="2" ss:StyleID="s37"><Data ss:Type="String">ABC Community College District</Data></Cell><Cell ss:StyleID='s16'/><Cell ss:StyleID='s16'/><Cell ss:StyleID='s16'/><Cell ss:StyleID='s16'/><Cell ss:StyleID='s16'/><Cell ss:StyleID='s16'/><Cell ss:StyleID='s16'/><Cell ss:MergeAcross='3' ss:StyleID='s41'><Data ss:Type='String' > Gymnasium</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="19.5">
+    <Cell ss:MergeAcross="2" ss:StyleID="s38"/>
+    <Cell ss:MergeAcross="6" ss:MergeDown="1" ss:StyleID="m82239648"><Data
+      ss:Type="String">Request and Response Log</Data></Cell>
+    <Cell ss:StyleID="s16"/>
+    <Cell ss:StyleID="s22"><Data ss:Type="String">Date:</Data></Cell>
+    <Cell ss:MergeAcross="1" ss:StyleID="s42"><Data ss:Type="String">10/23/2014</Data></Cell></Row><Row ss:AutoFitHeight='0' ss:Height='19.5'><Cell ss:MergeAcross='2' ss:StyleID='s39'><Data ss:Type='String'>Project No: 286</Data></Cell>
+    <Cell ss:Index="11" ss:StyleID="s27"/>
+    <Cell ss:StyleID="s28"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:MergeAcross="1" ss:StyleID="s43"><Data ss:Type="String"></Data></Cell>
+   </Row>
+
+<Row ss:AutoFitHeight='0' ss:Height='19.5'><Cell ss:MergeAcross='2' ss:StyleID='s39'><Data ss:Type='String'>Contract Number:17553</Data></Cell><Cell ss:MergeAcross='2' ss:StyleID='s30'><Data ss:Type='String'>Main water line replacement. </Data></Cell><Cell ss:StyleID='s25'/><Cell ss:StyleID='s30' ss:MergeAcross='2'><Data ss:Type='String'>Joe's Plumbing</Data></Cell><Cell ss:StyleID='s30' ss:MergeAcross='2'><Data ss:Type='String'> : </Data></Cell><Cell ss:StyleID='s27'/></Row>
+ <Row ss:AutoFitHeight='0' ss:Height='18'><Cell ss:StyleID='s30'><Data ss:Type='String' >RFI-17553-001</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30b'><Data ss:Type='String' >Status: Closed         Originator: Scott McKool</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Issue:</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 10/22/2014 - Required By: 10/28/2014 ] &#10;We are now going to test Item #1.</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) [ Responded On 10/22/2014 ]&#10; [ Mac McGinnis ]&#10;Try this again.</Data></Cell></Row> <Row ss:AutoFitHeight='0' ss:Height='18'><Cell ss:StyleID='s30'><Data ss:Type='String' >RFI-17553-002</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30b'><Data ss:Type='String' >Status: Closed         Originator: Scott McKool</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Issue:</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 10/22/2014 - Required By: 10/29/2014 ] &#10;Let's test out #3 for working.</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) [ Responded On 10/21/2014 ]&#10; [ Bart Connelly ]&#10;Can you revise and make it clear what you are looking for?</Data></Cell></Row><Row ss:AutoFitHeight='0' ss:Height='120'><Cell ss:StyleID='s31'><Data ss:Type='String'>Rev - 1</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 10/22/2014Required By: 10/29/2014 ] &#10;What we need is to know where the wall went.</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) [ Responded On: 10/22/2014 ]&#10;[ Mac McGinnis ]&#10;The wall is behind the tree over by the fountain and next to the river. &#10;&#10; 2.) [ Responded On: 10/22/2014 ]&#10;[ Mac McGinnis ]&#10;See the attachment. &#10;&#10; </Data></Cell></Row> <Row ss:AutoFitHeight='0' ss:Height='18'><Cell ss:StyleID='s30'><Data ss:Type='String' >RFI-17553-003</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30b'><Data ss:Type='String' >Status: Closed         Originator: Scott McKool</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Issue:</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 10/22/2014 - Required By: 10/27/2014 ] &#10;This is for #5</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) [ Responded On 10/22/2014 ]&#10; [ Bo Ralston ]&#10;Ive seen this before. All you need to do is the thing with the hammer.</Data></Cell></Row>
+<Row ss:AutoFitHeight='0' ss:Height='19.5'><Cell ss:MergeAcross='2' ss:StyleID='s39'><Data ss:Type='String'>Contract Number:17554</Data></Cell><Cell ss:MergeAcross='2' ss:StyleID='s30'><Data ss:Type='String'>Replace Roof. </Data></Cell><Cell ss:StyleID='s25'/><Cell ss:StyleID='s30' ss:MergeAcross='2'><Data ss:Type='String'>Lyon Construction</Data></Cell><Cell ss:StyleID='s30' ss:MergeAcross='2'><Data ss:Type='String'> : </Data></Cell><Cell ss:StyleID='s27'/></Row>
+ <Row ss:AutoFitHeight='0' ss:Height='18'><Cell ss:StyleID='s30'><Data ss:Type='String' >RFI-17554-001</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30b'><Data ss:Type='String' >Status: Closed         Originator: Jessie James</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Issue:</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 6/23/2014 - Required By: 10/28/2014 ] &#10;Original question</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) No Response For This Request</Data></Cell></Row> <Row ss:AutoFitHeight='0' ss:Height='18'><Cell ss:StyleID='s30'><Data ss:Type='String' >RFI-17554-002</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30b'><Data ss:Type='String' >Status: Closed         Originator: Bo Ralston</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/></Row><Row ss:AutoFitHeight='0' ss:Height='124'><Cell ss:StyleID='s31'><Data ss:Type='String'>Issue:</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 10/23/2014 - Required By: 10/28/2014 ] &#10;This is a test for #6</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) [ Responded On: 10/23/2014 ]&#10;[ Bart Connelly ]&#10;I think this can go ahead even if Mac doesnt get to it. &#10;&#10; 2.) [ Responded On: 10/23/2014 ]&#10;[ Scott McKool ]&#10;I agree with Bart. All you have to do is attach the thing to the other thing and move forward three steps and do the Hoki Poki. &#10;&#10; </Data></Cell></Row>
+<Row ss:AutoFitHeight='0' ss:Height='19.5'><Cell ss:MergeAcross='2' ss:StyleID='s39'><Data ss:Type='String'>Contract Number:17555</Data></Cell><Cell ss:MergeAcross='2' ss:StyleID='s30'><Data ss:Type='String'>Remove existing wall partition on the east side of the building. </Data></Cell><Cell ss:StyleID='s25'/><Cell ss:StyleID='s30' ss:MergeAcross='2'><Data ss:Type='String'>Brothers Construction</Data></Cell><Cell ss:StyleID='s30' ss:MergeAcross='2'><Data ss:Type='String'> : </Data></Cell><Cell ss:StyleID='s27'/></Row>
+ <Row ss:AutoFitHeight='0' ss:Height='18'><Cell ss:StyleID='s30'><Data ss:Type='String' >RFI-17555-001</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30b'><Data ss:Type='String' >Status: Unassigned         Originator: Vladi Putin</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Issue:</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 6/23/2014 - Required By: 10/28/2014 ] &#10;Original request for information</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) No Response For This Request</Data></Cell></Row> <Row ss:AutoFitHeight='0' ss:Height='18'><Cell ss:StyleID='s30'><Data ss:Type='String' >RFI-17555-002</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30b'><Data ss:Type='String' >Status: Unassigned         Originator: Thomas Jefferson</Data></Cell><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/><Cell ss:StyleID='s30'/></Row><Row ss:AutoFitHeight='0' ss:Height='80'><Cell ss:StyleID='s31'><Data ss:Type='String'>Issue:</Data></Cell><Cell ss:MergeAcross='5' ss:StyleID='s36'><Data ss:Type='String'>[Requested: 6/16/2014 - Required By: 10/28/2014 ] &#10;Original request</Data></Cell>
+    <Cell ss:StyleID="s31"><Data ss:Type="String">Response:</Data></Cell>
+    <Cell ss:MergeAcross="5" ss:StyleID="s35"><Data ss:Type="String">1.) No Response For This Request</Data></Cell></Row>
+
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Layout x:Orientation="Landscape"/>
+    <Header x:Margin="0.3"/>
+    <Footer x:Margin="0.3"/>
+    <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+   </PageSetup>
+   <Print>
+    <ValidPrinterInfo/>
+    <HorizontalResolution>600</HorizontalResolution>
+    <VerticalResolution>600</VerticalResolution>
+   </Print>
+   <Selected/>
+   <Panes>
+    <Pane>
+     <Number>3</Number>
+     <ActiveRow>8</ActiveRow>
+     <ActiveCol>1</ActiveCol>
+     <RangeSelection>R9C2:R9C7</RangeSelection>
+    </Pane>
+   </Panes>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+</Workbook>

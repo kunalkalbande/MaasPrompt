@@ -1,0 +1,440 @@
+<%@ Page Language="vb" %>
+
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
+<%@ Import Namespace="Prompt" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<script runat="server">
+
+    Private nRoleID As Integer = 0
+    Dim saveType As String = ""
+    Dim sMessage As String = ""
+    Dim newRoleID As Integer = 0
+    
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+        ProcLib.CheckSession(Page)
+        ProcLib.LoadPopupJscript(Page)
+
+        'set up help button
+        Session("PageID") = "UserRoleEdit"
+        nRoleID = Request.QueryString("RoleID")
+        
+        'David D 10-26-17 added below to handle NEW roleID after save
+        sMessage = Request.QueryString("Message")
+        If sMessage = "Success" Then
+            lblMessage.Text = "Role Saved Successfully"
+            lblMessage.Style.Add("color", "green")
+        End If
+        
+        Using db As New promptUser
+            newRoleID = db.getRoleID(nRoleID)
+        End Using
+
+        'keep these un editable for now as they are hard coded to users at present
+        
+        txtRoleName.Enabled = True
+        txtDescription.Enabled = True
+        
+
+        If IsPostBack Then   'only do the following post back
+            'David D 10-26-17 added below to handle NEW roleID after save
+            If txtRoleName.Text <> String.Empty Then
+                saveType = "Existing"
+                If saveType = "Existing" Then
+                    Using db As New promptUser
+                        lblID.Text = db.getRoleID(nRoleID)
+                        lblID.Style.Add("color", "black")
+                        lblID.Style.Add("font-weight", "normal")
+                    End Using
+                    
+                End If
+            End If
+            
+        Else  'only do the following on first load
+             
+            Using db As New promptUser
+                db.CallingPage = Page
+ 
+                If nRoleID < 1 Then    'load new record 
+                    '    butDelete.Visible = False           'new record so hide delete button
+                    'David D 10-26-17 added below to handle NEW roleID before save
+                    lblID.Text = "New"
+                    saveType = "New"
+                    lblID.Style.Add("margin-left", "-5px")
+                    lblID.Style.Add("color", "red")
+                    lblID.Style.Add("font-weight", "bold")
+                    'lblID.Style.Add("font-style", "italic")
+                Else
+                    db.GetRoleForEdit(nRoleID)   'loads existing record
+                    txtRoleName.Focus()
+                    lblID.Text = nRoleID
+                    saveType = "Existing"
+                End If
+
+            End Using
+
+        End If
+        'butDelete.Visible = False   'for now no delete
+        
+        With UserPopups
+            .VisibleOnPageLoad = False
+            .Skin = "Office2007"
+                         
+            Dim ww As New RadWindow
+
+            ww = New RadWindow
+            With ww
+                .ID = "EditWindow"
+                .NavigateUrl = "#"
+                .Title = ""
+                .Width = 800
+                .Height = 600
+                .Modal = True
+                .VisibleStatusbar = False
+                .ReloadOnShow = True
+                .Behaviors = WindowBehaviors.Close
+            End With
+            .Windows.Add(ww)
+            
+            'David D 10-25-17 added top nav menu
+            BuildMenu()
+            
+        End With
+        'lblMessage.Text = "nRoleID=" & nRoleID & " saveType=" & saveType & " newRoleID=" & newRoleID 
+    End Sub
+
+    
+    Protected Sub RadMenu1_ItemClick(ByVal sender As Object, ByVal e As Telerik.Web.UI.RadMenuEventArgs) Handles RadMenu1.ItemClick
+        Dim Item As Telerik.Web.UI.RadMenuItem = e.Item
+        If Item.Text = "Exit" Then
+            ProcLib.CloseOnlyRAD(Page)
+        End If
+        
+        If Item.Text = "Save" Then
+            
+            If txtRoleName.Text <> String.Empty Then
+                Using db As New promptUser
+                    db.CallingPage = Page
+                    sMessage = db.SaveRole(nRoleID)
+                End Using
+                'David D 10-27-17 added below to handle NEW roleID after save
+                Response.Redirect("admin_user_role_edit.aspx?roleID= " & newRoleID & "&saveType=Existing&Message=Success")
+                RadGrid1.Rebind()
+            Else
+                sMessage = "Role Name is Required"
+                lblMessage.Text = "* " & sMessage
+                txtRoleName.Focus()
+            End If
+            
+        End If
+        
+    End Sub
+
+    '    Private Sub butSave_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles butSave.Click
+        
+    '    Dim sMessage As String = ""
+    '    If txtRoleName.Text <> "" Then
+    '        Using db As New promptUser
+    '            db.CallingPage = Page
+    '            sMessage = db.SaveRole(nRoleID)
+    '        End Using
+            
+    '    Else
+    '        sMessage = "You must have a Role Name"
+    '    End If
+    '    If sMessage = "" Then
+    '        ProcLib.CloseAndRefreshRAD(Page)
+    '    Else
+    '        lblMessage.Text = sMessage
+    '    End If
+    '    Server.Transfer("admin_user_roles.aspx", True)
+    '    ProcLib.CloseAndRefreshRAD(Page)
+    'End Sub
+    
+    
+    Protected Sub RadGrid1_ItemCreated(ByVal sender As Object, ByVal e As Telerik.Web.UI.GridItemEventArgs) Handles RadGrid1.ItemCreated
+        'This event allows us to customize the cell contents - fired before databound
+        If (TypeOf e.Item Is GridDataItem) Then
+            Dim item As GridDataItem = CType(e.Item, GridDataItem)
+            Dim nObjectID As String = e.Item.OwnerTableView.DataKeyValues(e.Item.ItemIndex)("ObjectID")
+           
+        End If
+    End Sub
+    
+          
+    Protected Sub RadGrid1_NeedDataSource(ByVal source As Object, ByVal e As Telerik.Web.UI.GridNeedDataSourceEventArgs) Handles RadGrid1.NeedDataSource
+        'loads the grid whenever it needs data (sorting, rebinding, etc...)
+        Using db As New EISSecurity
+            RadGrid1.DataSource = db.GetRolePermissionsForEdit(nRoleID)
+        End Using
+        
+
+    End Sub
+
+    
+
+    Private Sub RadGrid1_ItemDataBound(ByVal sender As Object, ByVal e As Telerik.Web.UI.GridItemEventArgs) Handles RadGrid1.ItemDataBound
+        
+        If TypeOf e.Item Is GridDataItem Then
+            Dim dataitem As GridDataItem = e.Item
+            Dim sPermissions As String = dataitem.OwnerTableView.DataKeyValues(dataitem.ItemIndex)("Permissions")
+            Dim sObjectID As String = dataitem.OwnerTableView.DataKeyValues(dataitem.ItemIndex)("ObjectID")
+            Dim lstRights As DropDownList = dataitem.FindControl("lstRights")
+ 
+            For Each item As ListItem In lstRights.Items
+                If item.Value = sPermissions Then
+                    item.Selected = True
+                End If
+            Next
+            
+            If lstRights.SelectedValue = "Yes" Or lstRights.SelectedValue = "Write" Then
+                lstRights.BackColor = Color.LightGreen
+                dataitem.BackColor = Color.LightYellow
+                dataitem.Font.Bold = True
+            End If
+            If lstRights.SelectedValue = "ReadOnly" Then
+                dataitem.BackColor = Color.LightYellow
+                lstRights.BackColor = Color.LightSalmon
+                dataitem.Font.Bold = True
+            End If
+   
+        End If
+
+        'David D 10-24-17 Below handles styling of the GridGroupHeaderItem's
+        If TypeOf e.Item Is GridGroupHeaderItem Then
+            Dim header As GridGroupHeaderItem = DirectCast(e.Item, GridGroupHeaderItem)
+
+            header.Style.Add("font-weight", "bold")
+            
+            If header.DataCell.Text.Substring(header.DataCell.Text.IndexOf(" ") + 1) = " " Then
+                header.Display = False
+            End If
+            
+            If header.DataCell.Text.Contains("Menu Navigation") Then
+                header.Style.Add("background-color", "#183061")
+                header.Style.Add("color", "#fff")
+            ElseIf header.DataCell.Text.Contains("College") Then
+                header.Style.Add("background-color", "#183061")
+                header.Style.Add("color", "#fff")
+            ElseIf header.DataCell.Text.Contains("Project") And Not header.DataCell.Text.Contains("Access") Then
+                header.Style.Add("background-color", "#183061")
+                header.Style.Add("color", "#fff")
+            ElseIf header.DataCell.Text.Contains("Contract") Then
+                header.Style.Add("background-color", "#183061")
+                header.Style.Add("color", "#fff")
+            Else
+                'SubMenu items italic
+                header.Style.Add("font-style", "italic")
+            End If
+            
+            'below handles removing the number value from the GridGroupHeaderItem set in the DB SubMenu and placed at the start of the GridGroupHeaderItem (not visible due to the code below). Used for sorting the below items to the bottom of the grid.
+            If header.DataCell.Text.Contains("1") Then
+                'Project Group Tabs sort top of Admin menu
+                header.DataCell.Text = header.DataCell.Text.Replace("1", "")
+            ElseIf header.DataCell.Text.Contains("2") Then
+                'Contract sort to top of Project Group Tabs
+                header.DataCell.Text = header.DataCell.Text.Replace("2", "")
+            ElseIf header.DataCell.Text.Contains("3") Then
+                'Project sort to top of Contracts
+                header.DataCell.Text = header.DataCell.Text.Replace("3", "")
+            End If
+            
+        End If
+        
+    End Sub
+    
+    
+    Protected Sub butResetUserRolePermissions_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+        
+        Using db As New EISSecurity
+            db.ResetAllUserRolePermissions(nRoleID)
+        End Using
+
+    End Sub
+    
+    Protected Sub butExpandCollapse_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+        If butExpandCollapse.Text = "Expand All" Then
+            RadGrid1.MasterTableView.GroupsDefaultExpanded = True
+            butExpandCollapse.Text = "Collapse All"
+        Else
+            RadGrid1.MasterTableView.GroupsDefaultExpanded = False
+            butExpandCollapse.Text = "Expand All"
+        End If
+        RadGrid1.Rebind()
+
+    End Sub
+ 
+    Private Sub BuildMenu()
+        RadMenu1.Width = Unit.Percentage(100)
+
+        Dim nTopLineHeight As Unit = Unit.Pixel(27)
+        Dim nTopMenuItemWidths As Unit = Unit.Pixel(75)
+
+        With RadMenu1
+            .Items.Clear()
+        End With
+        Dim mm As Telerik.Web.UI.RadMenuItem
+
+        '**********************************************
+        mm = New Telerik.Web.UI.RadMenuItem
+        With mm
+            .Height = nTopLineHeight
+            .Text = "Back"
+            .NavigateUrl = "admin_user_roles.aspx"
+            .ImageUrl = "images/arrow_left_green.png"
+            .Width = nTopMenuItemWidths
+            .TabIndex = 6
+        End With
+        RadMenu1.Items.Add(mm)
+        
+
+        mm = New Telerik.Web.UI.RadMenuItem
+        With mm
+            .Text = "Save"
+            .Height = nTopLineHeight
+            .Width = nTopMenuItemWidths
+            .ImageUrl = "images/prompt_savetodisk.gif"
+            .TabIndex = 7
+        End With
+        RadMenu1.Items.Add(mm)
+        
+        'No delete function yet
+        'If nRoleID > 0 Then
+        '    mm = New Telerik.Web.UI.RadMenuItem
+        '    With mm
+        '        .Text = "Delete"
+        '        .Height = nTopLineHeight
+        '        .Width = nTopMenuItemWidths
+        '        .ImageUrl = "images/attachment_remove_small.gif"
+        '    End With
+        '    RadMenu1.Items.Add(mm)
+
+        'End If
+ 
+        mm = New Telerik.Web.UI.RadMenuItem
+        With mm
+            .Text = "Help"
+            .ImageUrl = "images/help.png"
+            .Attributes("onclick") = "openPopup('help_view.aspx','pophelp',550,450,'yes');"
+            .PostBack = False
+            .Height = nTopLineHeight
+            .Width = nTopMenuItemWidths
+            .TabIndex = 8
+        End With
+        RadMenu1.Items.Add(mm)
+
+    End Sub
+    
+    
+</script>
+<html>
+<head>
+    <title>Edit User Role</title>
+    <meta content="Microsoft Visual Studio .NET 7.1" name="GENERATOR" />
+    <link href="Styles.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" language="javascript">
+        window.onload = focusIt();
+        
+<script type="text/javascript">
+        function GetRadWindow() {
+            var oWindow = null;
+            if (window.RadWindow) oWindow = window.RadWindow;
+            else if (window.frameElement.radWindow) oWindow = window.frameElement.radWindow;
+            return oWindow;
+        }
+
+    </script>
+</head>
+<body>
+    <form id="Form1" method="post" runat="server">
+    <telerik:RadScriptManager ID="RadScriptManager1" runat="server" />
+    <telerik:RadMenu ID="RadMenu1" runat="server" DefaultGroupSettings-Flow="Horizontal"
+        Skin="Vista">
+        <DefaultGroupSettings Flow="Horizontal"></DefaultGroupSettings>
+    </telerik:RadMenu>
+    <div id="test" style="z-index: 110; position: absolute; top: -25px; width: 900px;">
+        <asp:Label ID="lblRoleIDs" Style="z-index: 103; left: 16px; position: absolute; top: 77px"
+            runat="server" EnableViewState="False" Height="8px" Font-Bold="true">Role ID:</asp:Label>
+        <asp:Label ID="lblID" Style="z-index: 102; left: 70px; position: absolute; top: 77px"
+            runat="server" Height="8px">999</asp:Label>
+        <asp:Label ID="lblRoleNames" Style="z-index: 109; left: 102px; position: absolute;
+            top: 77px" runat="server" EnableViewState="False" Font-Bold="true">Role Name:</asp:Label>
+        <asp:TextBox ID="txtRoleName" Style="z-index: 100; left: 175px; position: absolute;
+            top: 73px" runat="server" EnableViewState="False" Width="168px" TabIndex="1"></asp:TextBox>
+        <asp:Label ID="lblDescriptions" Style="z-index: 109; left: 385px; position: absolute;
+            top: 77px" runat="server" EnableViewState="False" Font-Bold="true">Description:</asp:Label>
+        <asp:TextBox ID="txtDescription" Style="z-index: 100; left: 460px; position: absolute;
+            top: 73px; width: 273px;" runat="server" EnableViewState="False" TabIndex="2"></asp:TextBox>
+        <asp:Button ID="butResetUserRolePermissions" runat="server" Style="z-index: 121;
+            left: 830px; position: absolute; top: 72px" Text="Reset All Users Role Permissions"
+            OnClick="butResetUserRolePermissions_Click" TabIndex="3" />
+        <asp:Button ID="butExpandCollapse" runat="server" Text="Collapse All" Style="z-index: 121;
+            left: 1050px; position: absolute; top: 72px" OnClick="butExpandCollapse_Click"
+            TabIndex="4" />
+        <asp:Label ID="lblMessage" Style="z-index: 19999; left: 175px; position: absolute;
+            top: 100px; height: 15px;" runat="server" BackColor="ControlLight" EnableViewState="False"
+            CssClass="FieldLabel" Font-Bold="True" ForeColor="Red"></asp:Label>
+    </div>
+    <telerik:RadGrid ID="RadGrid1" runat="server" AllowSorting="true" AutoGenerateColumns="False"
+        Style="z-index: 112; left: 10px; position: absolute; top: 90px" GridLines="None"
+        Width="98%" Height="80%" EnableAJAX="True" Skin="Sitefinity">
+        <ClientSettings>
+            <Selecting AllowRowSelect="True" />
+            <Scrolling AllowScroll="True" UseStaticHeaders="True" ScrollHeight="50%" SaveScrollPosition="true" />
+        </ClientSettings>
+        <MasterTableView Width="100%" GridLines="None" DataKeyNames="ObjectID,ObjectType,UserID,RoleID,Category,MenuNavigation,SubMenu,ScopeLevel,Permissions"
+            NoMasterRecordsText="No Permissions Found.">
+            <GroupByExpressions>
+                <telerik:GridGroupByExpression>
+                    <SelectFields>
+                        <telerik:GridGroupByField FieldAlias="MenuNavigation" FieldName="MenuNavigation"
+                            HeaderText=" " HeaderValueSeparator=" " />
+                    </SelectFields>
+                    <GroupByFields>
+                        <telerik:GridGroupByField FieldAlias="MenuNavigation" FieldName="MenuNavigation"
+                            HeaderText=" " SortOrder="Descending" />
+                    </GroupByFields>
+                </telerik:GridGroupByExpression>
+            </GroupByExpressions>
+            <GroupByExpressions>
+                <telerik:GridGroupByExpression>
+                    <SelectFields>
+                        <telerik:GridGroupByField FieldAlias="SubMenu" FieldName="SubMenu" HeaderText=" "
+                            HeaderValueSeparator=" " />
+                    </SelectFields>
+                    <GroupByFields>
+                        <telerik:GridGroupByField FieldAlias="SubMenu" FieldName="SubMenu" HeaderText=" " />
+                    </GroupByFields>
+                </telerik:GridGroupByExpression>
+            </GroupByExpressions>
+            <Columns>
+                <telerik:GridBoundColumn UniqueName="Description" HeaderText="User Role Admin Control Groups"
+                    DataField="Description">
+                    <ItemStyle HorizontalAlign="Left" VerticalAlign="Top" />
+                    <HeaderStyle HorizontalAlign="Left" />
+                </telerik:GridBoundColumn>
+                <telerik:GridTemplateColumn UniqueName="Rights" HeaderText="Role Access">
+                    <ItemStyle HorizontalAlign="Center" Width="175px" VerticalAlign="Top" />
+                    <HeaderStyle HorizontalAlign="Center" Width="175px" VerticalAlign="Top" />
+                    <ItemTemplate>
+                        <asp:DropDownList ID="lstRights" runat="server">
+                            <asp:ListItem Value="none">none</asp:ListItem>
+                            <asp:ListItem Value="ReadOnly">Read Only</asp:ListItem>
+                            <asp:ListItem Value="Write">Write</asp:ListItem>
+                        </asp:DropDownList>
+                    </ItemTemplate>
+                </telerik:GridTemplateColumn>
+            </Columns>
+        </MasterTableView>
+    </telerik:RadGrid>
+    <%--<asp:ImageButton ID="butSave" Style="z-index: 121; left: 17px; position: absolute;
+        top: 499px" runat="server" ImageUrl="images/button_save.gif" TabIndex="40"></asp:ImageButton>
+        <asp:ImageButton ID="butDelete" Style="z-index: 101; left: 568px; position: absolute;
+        top: 499px" runat="server" ImageUrl="images/button_delete.gif" TabIndex="41">
+    </asp:ImageButton>
+    --%>
+    </form>
+    <telerik:RadWindowManager ID="UserPopups" runat="server">
+    </telerik:RadWindowManager>
+</body>
+</html>

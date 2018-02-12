@@ -1,0 +1,754 @@
+﻿<%@ Page Language="vb" %>
+
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
+<%@ Import Namespace="Prompt" %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<script runat="server">
+
+    Private nRFIID As Integer = 0
+    Private nProjectID As Integer = 0
+    Private nContractID As Integer = 0
+    Private strPhysicalPath As String = ""
+    Private sRefNum As String = ""
+    
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+        'testingStuff.Visible = True
+       
+        
+        ProcLib.CheckSession(Page)
+        ProcLib.LoadPopupJscript(Page)
+
+        Session("PageID") = "RFIEdit"
+        
+        lblMessage.Text = ""
+        
+        Dim sType As String = Request.QueryString("EditType")
+        If sType = "New" Then
+            nProjectID = Request.QueryString("ProjectID")
+            'nContractID = ContractID.SelectedValue
+            sRefNum = txtRefNumber.Text
+            If sRefNum = "" Then
+                RefNum.Text = "New Ref Number:"
+            End If           
+        End If
+        
+        If sType = "Edit" Then
+
+            nRFIID = Request.QueryString("RFIID")
+            nProjectID = Request.QueryString("ProjectID")
+            nContractID = Request.QueryString("ContractID")
+            cboContractID.Visible = "false"
+            labelContractID.Visible = "true"
+            labelContractID.Text = nContractID
+            RefNum.Visible = "true"
+            
+        End If
+       
+        'txtAnswer.Text = "RFIID: " & nRFIID & vbCrLf & "ProjectID: " & nProjectID & vbCrLf & "ContractID: " & nContractID
+        'txtAnswer.Text = sType
+        
+        'set up help button
+        butHelp.Attributes.Add("onclick", "openPopup('help_view.aspx','pophelp',550,450,'yes');")
+        butHelp.NavigateUrl = "#"
+        
+        'set up Flag button
+        Flag.Attributes.Add("onclick", "openPopup('flag_edit.aspx?ParentRecID=" & nRFIID & "&ParentRecType=RFI&BudgetItem=" & "" & "&RFIID=" & nRFIID & "','pophelp',550,450,'yes');")
+        Flag.NavigateUrl = "#"
+  
+        printValidationMessage.Text = ""
+        
+        If Not IsPostBack Then
+                                 
+            'fill the from /to fields
+            Using db As New TeamMember
+                
+                With cboSubmittedToID
+                    .DataValueField = "ContactID"
+                    .DataTextField = "Name"
+                    .DataSource = db.GetExistingMembersForDropDowns(nProjectID)
+                    .DataBind()
+                End With
+                
+                With cboTransmittedByID
+                    .DataValueField = "ContactID"
+                    .DataTextField = "Name"
+                    .DataSource = db.GetExistingMembersForDropDowns(nProjectID)
+                    .DataBind()
+                End With
+                
+            End Using
+            
+            
+            Using db As New RFI
+                db.CallingPage = Page
+                If nRFIID = 0 Then
+                    butDelete.Visible = False
+                    Flag.Visible = False
+                    'txtRefNumber.Text = db.GetSuggestedNextRefNumber()
+                    printLabel.Visible = False
+                    printRFI.Visible = False
+                    printRFIMessage.Visible = False
+                    Session("newRFI") = "True"
+                    numAns.Text = ""
+                Else
+                    Session("newRFI") = ""
+                End If
+                
+                db.GetRFIForEdit(nRFIID)
+                
+                With cboContractID
+                    .DataValueField = "ContractID"
+                    .DataTextField = "ContractID"
+                    .DataSource = db.getAllProjectContracts(nProjectID, True)
+                    .DataBind()
+                End With
+                
+            End Using
+            'fill in the answer dropdown
+            updateAnswerDropdown()
+        End If
+        
+        lblxRFIID.Text = nRFIID
+        RefNum.Text = txtRefNumber.Text
+        
+        'txtRefNumber.Focus()
+        
+    End Sub
+    
+    Private Sub updateAnswerDropdown()
+        Using db As New RFI
+                
+            With multiAnswers
+                .DataValueField = "SequenceNum"
+                .DataTextField = "SequenceNum"
+                .DataSource = db.GetAnswersForRFI(nRFIID)
+                .DataBind()
+            End With
+            
+            Dim tbl As DataTable = db.GetAnswersForRFI(nRFIID)
+            Dim count As Integer = tbl.Rows.Count()
+            
+            If count > 1 Then
+                showAllAnswers.Visible = "true"
+                newAnswerButton.Visible = "true"
+                numAns.Text = "of " & count
+            Else
+                showAllAnswers.Visible = "false"
+                If txtAnswer.Text <> "" Then
+                    newAnswerButton.Visible = "true"
+                Else
+                    newAnswerButton.Visible = "false"
+                End If
+                
+                multiAnswers.Visible = "false"
+                Label10.Text = "Answer # 1"
+            End If
+            
+        End Using
+    End Sub
+    
+    Private Sub multiAnswers_Change() Handles multiAnswers.SelectedIndexChanged
+        Dim Seq As Integer = multiAnswers.SelectedValue
+        
+        Select Case Seq
+            Case 1
+                Using db As New RFI
+                    txtAnswer.Text = db.getOriginalAnswer(nRFIID)
+                End Using
+                updateAnswer.Visible = "false"
+            Case Else
+                Using db As New RFI
+                    txtAnswer.Text = db.getRFIAnswer(nRFIID, Seq)
+                End Using
+                updateAnswer.Visible = "true"
+                'txtAnswer.Text = Seq
+                
+                
+        End Select
+                
+    End Sub
+    
+    Private Sub newAnswerButton_Click() Handles newAnswerButton.Click
+        Using db As New RFI
+            Dim nextId As Integer = db.getNextRFIAnswerID(nRFIID)
+            Label10.Text = "New Answer #: " & nextId
+        End Using
+        txtAnswer.Text = ""
+        saveNewAnswer.Visible = "true"
+        cancelNewAnswer.Visible = "true"
+        newAnswerButton.Visible = "false"
+        multiAnswers.Visible = "false"
+        txtAnswer.BackColor = Color.Yellow
+        txtAnswer.Focus()
+        updateAnswer.Visible = "false"
+        showAllAnswers.Visible = "false"
+        numAns.Visible = "false"
+        
+    End Sub
+    
+    Private Sub cancelNewAnswer_Click() Handles cancelNewAnswer.Click
+        saveNewAnswer.Visible = "false"
+        cancelNewAnswer.Visible = "false"
+        newAnswerButton.Visible = "true"
+        multiAnswers.Visible = "true"
+        showAllAnswers.Visible = "true"
+        numAns.Visible = "true"
+        
+        Select Case multiAnswers.SelectedIndex
+            Case 0
+                Using db As New RFI
+                    txtAnswer.Text = db.getOriginalAnswer(nRFIID)
+                End Using
+                updateAnswer.Visible = "false"
+            Case Else
+                Using db As New RFI
+                    txtAnswer.Text = db.getRFIAnswer(nRFIID, multiAnswers.SelectedIndex)
+                End Using
+                updateAnswer.Visible = "true"
+        End Select
+        txtAnswer.BackColor = Color.White
+        Label10.Text = "Answer #: "
+        updateAnswerDropdown()
+    End Sub
+    
+    Private Sub saveNewAnswer_Click() Handles saveNewAnswer.Click
+        
+        Using db As New RFI
+            Dim nextId As Integer = db.getNextRFIAnswerID(nRFIID)
+            db.insertRFIAnswer(nRFIID, txtAnswer.Text, nextId + 1)
+ 
+        End Using
+        updateAnswerDropdown()
+        cancelNewAnswer_Click()
+        
+    End Sub
+    
+    Public Sub updateAnswer_Click() Handles updateAnswer.Click
+        Dim Seq As Integer = multiAnswers.SelectedValue
+        Dim Ans As String = (txtAnswer.Text).Replace("'","")
+        
+        Using db As New RFI
+            db.updateRFIAnswer(nRFIID, Seq, Ans)
+        End Using
+        
+    End Sub
+    
+    Public Sub getAllAnswers() Handles showAllAnswers.Click
+        newAnswerButton.Visible = "false"
+        Label10.Visible = "false"
+        showAllAnswers.Visible = "false"
+        multiAnswers.Visible = "false"
+        backToEditing.Visible = "true"
+        updateAnswer.Visible = "false"
+        numAns.Visible = "false"
+        Using db As New RFI
+            Dim ans As String = db.getAllRFIAnswers(nRFIID, "Prompt")
+            txtAnswer.Text = ans
+            
+            txtRespondedBy.Text = ans.Split(vbCrLf).Length() & "  -  " & ans.Length
+        End Using
+       
+    End Sub
+    
+    Public Sub backToEditing_click() Handles backToEditing.Click
+        newAnswerButton.Visible = "true"
+        Label10.Visible = "true"
+        showAllAnswers.Visible = "true"
+        multiAnswers.Visible = "true"
+        backToEditing.Visible = "false"
+        numAns.Visible = "true"
+        Using db As New RFI
+            txtAnswer.Text = db.getOriginalAnswer(nRFIID)
+        End Using
+        multiAnswers.SelectedIndex = 0
+        
+    End Sub
+    
+    Public Sub printRFI_click() Handles printRFI.Click
+        
+        If cboSubmittedToID.Text = "--none--" Then
+            printValidationMessage.Text = "Please select a 'Submitted To:' entitity or person and hit the save button."
+            cboSubmittedToID.Focus()
+            Exit Sub
+        End If
+        If cboTransmittedByID.Text = "--none--" Then
+            printValidationMessage.Text = "Please select a 'Transmitted By:' entitity or person and hit the save button."
+            cboTransmittedByID.Focus()
+            Exit Sub
+        End If
+        
+        Using db As New OpenXML
+            Dim dwnData As Object = db.RFIPrint(nRFIID)
+               
+            If dwnData(2) = True Then
+                printRFIMessage.Text = dwnData(1)
+                printValidationMessage.Text = dwnData(1)
+            Else
+                printValidationMessage.Text = ""
+                postPrintMessage.Visible = "true"
+                postPrintMessage.Text = "The file has been downloaded to your download directory."
+                printRFI.Visible = "false"
+                printRFIMessage.Visible = "false"
+                
+                downloadFile(dwnData(0))
+                'Response.End()
+            End If
+        
+        End Using
+        
+    End Sub
+      
+    Public Sub downloadFile(ByVal newFile As String)
+            
+        Dim targetFile As New System.IO.FileInfo(newFile)
+            
+        Response.Clear()
+        Response.AddHeader("content-Disposition", "attachment; filename=" & targetFile.Name)
+        Response.AddHeader("Content-Length", targetFile.Length.ToString())
+        Response.ContentType = "application/octet-stream"
+        Response.WriteFile(targetFile.FullName)
+        Response.End()
+            
+    End Sub
+    
+    Public Sub testingStuff_Click() Handles testingStuff.Click
+        Using db As New OpenXML
+            Dim dwnData As String = db.LogPrint(nProjectID)
+            
+            Dim targetFile As New System.IO.FileInfo(dwnData)
+            txtAnswer.Text = dwnData
+            Response.Clear()
+            Response.AddHeader("content-Disposition", "attachment; filename=" & targetFile.Name)
+            Response.AddHeader("Content-Length", targetFile.Length.ToString())
+            Response.ContentType = "application/octet-stream"
+            Response.WriteFile(targetFile.FullName)
+            Response.End()
+            
+        End Using
+
+    End Sub
+    
+    Public Sub createRFInumber() Handles cboContractID.SelectedIndexChanged
+        'txtAnswer.Text = "You have changed the Contract to " & ContractID.SelectedValue
+        Using db As New RFI
+            Dim tbl As DataTable = db.getAllContractRFIs(cboContractID.SelectedValue)
+            Dim len As Integer = tbl.Rows.Count + 1
+            Dim rTag As String = "00"
+            
+            If len > 10 Then
+                rTag = "0" & len
+            ElseIf len > 99 Then
+                rTag = len
+            ElseIf len < 10 Then
+                rTag = "00" & len
+            End If
+                    
+            Dim sRefNum As String = "RFI-" & cboContractID.SelectedValue & "-" & rTag
+            RefNum.Text = "New Ref Number: " & sRefNum
+            txtRefNumber.Text = sRefNum
+            nContractID = cboContractID.SelectedValue
+            'txtAnswer.Text = nContractID
+        End Using
+    End Sub
+    
+    Private Sub butSave_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles butSave.Click
+    
+        If txtRefNumber.Text = "" Then
+            lblMessage.Text = "Please enter a Reference Number."
+            Exit Sub
+        End If
+        
+        If txtReceivedOn.SelectedDate Is Nothing Then
+            lblMessage.Text = "Please enter a ReceivedOn Date."
+            Exit Sub
+        End If
+        If txtRequiredBy.SelectedDate Is Nothing Then
+            lblMessage.Text = "Please enter a RequiredBy Date."
+            Exit Sub
+        End If
+        If txtReceivedOn.SelectedDate > txtRequiredBy.SelectedDate Then
+            lblMessage.Text = "Required By data must be later than ReceivedOn Date."
+            Exit Sub
+        End If
+        'If txtTitle.Text = "" Then
+        'essage.Text = "Please enter a Subject/Title."
+        'Exit Sub
+        'End If
+        If txtQuestion.Text = "" Then
+            lblMessage.Text = "Please enter a Question."
+            Exit Sub
+        End If
+        
+        If multiAnswers.SelectedIndex <> 0 Then
+            multiAnswers.SelectedIndex = 0
+            
+            Using db As New RFI
+                txtAnswer.Text = db.getOriginalAnswer(nRFIID)
+            End Using
+            updateAnswer.Visible = "false"
+        End If
+        
+        nContractID = CType(cboContractID.SelectedValue, Integer)
+        
+        Using db As New RFI
+            db.CallingPage = Page
+            db.SaveRFI(nProjectID, nRFIID, nContractID)
+            'txtAnswer.Text = "Save Data: " & vbCrLf & "Ref Num: " & sRefNum & vbCrLf & "RFIID: " & nRFIID & vbCrLf & "Contract ID: " & nContractID & vbCrLf & "Project ID: " & nProjectID
+        End Using
+        
+        If txtAnswer.Text <> "" Then
+            newAnswerButton.Visible = "true"
+        Else
+            Try
+                Dim chk = multiAnswers.SelectedValue(1)
+                newAnswerButton.Visible = "true"
+            Catch
+                newAnswerButton.Visible = "false"
+            End Try
+        End If
+        
+        If Session("newRFI") = "True" Then
+            Session("RtnFromEdit") = True
+            'ProcLib.CloseAndRefreshRADNoPrompt(Page)
+        End If
+        'printLabel.Visible = True
+        'printRFI.Visible = True
+        'printRFIMessage.Visible = True
+    End Sub
+    
+    Private Sub butClose_Click() Handles butClose.Click
+        Session("RtnFromEdit") = True
+        ProcLib.CloseAndRefreshRADNoPrompt(Page)
+    End Sub
+
+    Private Sub butDelete_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles butDelete.Click
+     
+        Using db As New RFI
+            db.CallingPage = Page
+            db.DeleteRFI(nProjectID, nRFIID)
+        End Using
+
+        Session("RtnFromEdit") = True
+        ProcLib.CloseAndRefreshRADNoPrompt(Page)
+    End Sub
+
+</script>
+
+<html>
+<head>
+    <title>Request For Information Form</title>
+    <link href="Styles.css" type="text/css" rel="stylesheet" />
+    <script src="/js/new_2014.js" type="text/javascript"></script>
+    <script src="js/jquery-1.10.1.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript" language="javascript">
+        function GetRadWindow() {
+            var oWindow = null;
+            if (window.RadWindow) oWindow = window.RadWindow;
+            else if (window.frameElement.radWindow) oWindow = window.frameElement.radWindow;
+            return oWindow;
+        }
+    </script>
+
+</head>
+<body>
+    <form id="Form1" method="post" runat="server">
+    <telerik:RadComboBox ID="cboRFIType" runat="server" Style="z-index: 505; left: 427px;
+        position: absolute; top: 71px; right: 913px;" Skin="Vista" 
+        Text="(Type)" Width="65px" Visible="False" TabIndex="6">
+        <Items>
+            <telerik:RadComboBoxItem runat="server" Text="RFI" Value="RFI" />
+            <telerik:RadComboBoxItem runat="server" Text="Pre-Bid" Value="Pre-Bid" />
+        </Items>
+    </telerik:RadComboBox>
+
+    <telerik:RadComboBox ID="cboContractID" runat="server" Style="z-index: 605; left: 97px; 
+        position: absolute; top: 10px;" autopostback="True" onselectedindexchange="ContractID_Change" Skin="Vista"  Width="100px"  TabIndex="0">
+    </telerik:RadComboBox>
+    <asp:Label ID="labelContractID" Style="z-index: 105; left: 97px; position: absolute; top: 13px"
+        runat="server" Height="24px" Font-Bold="True" ForeColor="black" visible="false"></asp:Label>
+
+    <asp:Label ID="RefNum" Style="z-index: 105; left: 230px; position: absolute; top: 13px"
+        runat="server" Height="24px" Font-Bold="True" ForeColor="black" visible="true"></asp:Label>
+
+
+    <telerik:RadScriptManager ID="RadScriptManager1" runat="server" />
+
+    <telerik:RadComboBox ID="cboStatus" runat="server" Style="z-index: 505; left: 65px;
+        position: absolute; top: 100px; right: 818px;" Skin="Vista"  TabIndex="7"
+        Text="(Status)">
+        <Items>
+            <telerik:RadComboBoxItem runat="server" Text="Pending" Value="Pending" />
+            <telerik:RadComboBoxItem runat="server" Text="Answered" Value="Answered" />
+        </Items>
+    </telerik:RadComboBox>
+
+
+     <asp:ImageButton ID="testingStuff" Style="z-index: 107; left: 330px; position: absolute;
+        top:9px" TabIndex="99" runat="server" Visible="false"
+        ImageUrl="images/testing_stuff.png">
+     </asp:ImageButton>
+
+      <asp:Label ID="printLabel" Style="z-index: 105; left: 400px; position: absolute; top: 70px"
+        runat="server" Height="24px" Font-Bold="True" ForeColor="black" >Printing Options</asp:Label>
+
+      <asp:ImageButton ID="printRFI" Style="z-index: 112; left: 400px; position: absolute;
+        top: 90px; height: 20px;" runat="server" ImageUrl="images/print_to_file.png" >
+        </asp:ImageButton>
+
+      <asp:Label ID="printRFIMessage" Style="z-index: 105; left: 400px; position: absolute; top: 120px"
+        runat="server" width="140px" Height="24px" Font-Bold="false" ForeColor="black" >
+        This print option will print a file to your download directory</asp:Label>
+
+      <asp:Label ID="postPrintMessage" Style="z-index: 105; left: 300px; position: absolute; top: 100px"
+        runat="server" width="240px" Height="50px" Font-Bold="false" ForeColor="black" >
+       </asp:Label>
+
+    <asp:HyperLink ID="Flag" Style="z-index: 112; left: 439px; position: absolute;
+        top: 9px; height: 20px;" runat="server" ImageUrl="images/button_flag.gif">Flag</asp:HyperLink>
+
+    <asp:HyperLink ID="butHelp" Style="z-index: 112; left: 525px; position: absolute;
+        top: 9px; height: 20px;" runat="server" ImageUrl="images/button_help.gif">HyperLink</asp:HyperLink>
+
+    <asp:ImageButton ID="butSave" Style="z-index: 113; left: 9px; position: absolute;
+        top: 525px" TabIndex="50" runat="server" ImageUrl="images/button_save.gif"></asp:ImageButton>
+
+    <asp:ImageButton ID="butClose" Style="z-index: 113; left: 130px; position: absolute;
+        top: 525px" runat="server" ImageUrl="images/button_close.gif"></asp:ImageButton>
+
+
+    <asp:ImageButton ID="butDelete" Style="z-index: 107; left: 273px; position: absolute;
+        top: 525px" TabIndex="99" runat="server" 
+         OnClientClick="return confirm('You are about to delete this RFI.\nAre you sure you want to delete this RFI?')"
+        ImageUrl="images/button_delete.gif">
+    </asp:ImageButton>
+
+    <asp:Label ID="lblMessage" Style="z-index: 105; left: 12px; position: absolute; top: 135px"
+        runat="server" Height="24px" Font-Bold="True" ForeColor="Red">Error Message</asp:Label>
+    <asp:Label ID="Label8" Style="z-index: 105; left: 13px; position: absolute; top: 243px;
+        right: 1494px; width: 110px;" runat="server" Height="24px" >Submitted To:</asp:Label>
+    <asp:Label ID="Label7" Style="z-index: 105; left: 250px; position: absolute; top: 38px"
+        runat="server" Height="24px">Required By:</asp:Label>
+    <asp:Label ID="Label10" Style="z-index: 105; left: 13px; position: absolute; top: 305px"
+        runat="server" Height="24px" >Answer #:</asp:Label>
+    <asp:Label ID="Label11" Style="z-index: 105; left: 11px; position: absolute; top: 476px"
+        runat="server" Height="24px" >Returned On:</asp:Label>
+    <asp:Label ID="Label16" Style="z-index: 105; left: 247px; position: absolute; top: 473px"
+        runat="server" Height="24px" >Responded By:</asp:Label>
+    <asp:Label ID="Label9" Style="z-index: 105; left: 426px; position: absolute; top: 520px"
+        runat="server" Height="24px" >ID:</asp:Label>
+    <asp:Label ID="Label6" Style="z-index: 105; left: 254px; position: absolute; top: 245px;
+        width: 122px;" runat="server" Height="24px" >Transmitted By:</asp:Label>
+    <asp:Label ID="lblxRFIID" Style="z-index: 105; left: 445px; position: absolute; top: 520px"
+        runat="server" Height="24px" ></asp:Label>
+    <asp:Label ID="Label12" Style="z-index: 105; left: 12px; position: absolute; top: 14px"
+        runat="server" Height="24px">Contract ID:</asp:Label>
+    <asp:Label ID="Label2" Style="z-index: 105; left: 11px; position: absolute; top: 40px"
+        runat="server" Height="24px">Received On:</asp:Label>
+
+    <telerik:RadDatePicker ID="txtRequiredBy" Style="z-index: 103; left: 336px; position: absolute;
+        top: 39px" runat="server" Width="120px" Skin="Web20" TabIndex="4">
+        <DateInput ID="DateInput1" runat="server" Skin="WebBlue" Font-Size="13px" ForeColor="Blue" 
+            TabIndex="4">
+        </DateInput>
+        <Calendar ID="Calendar1" runat="server" UseRowHeadersAsSelectors="False" UseColumnHeadersAsSelectors="False"
+            ViewSelectorText="x" Skin="Web20">
+             <SpecialDays> 
+            <telerik:RadCalendarDay Repeatable="Today"> 
+                <ItemStyle BackColor="LightBlue" /> 
+            </telerik:RadCalendarDay> 
+        </SpecialDays> 
+        </Calendar>
+        <DatePopupButton ImageUrl="" HoverImageUrl="" TabIndex="4"></DatePopupButton>
+    </telerik:RadDatePicker>
+
+    <telerik:RadDatePicker ID="txtReturnedOn" Style="z-index: 103; left: 89px; position: absolute;
+        top: 475px; right: 760px;" runat="server" Width="120px" Skin="Web20" 
+        TabIndex="30" >
+        <DateInput ID="DateInput2" runat="server" Skin="WebBlue" Font-Size="13px" ForeColor="Blue" 
+            TabIndex="30">
+        </DateInput>
+        <Calendar ID="Calendar2" runat="server" UseRowHeadersAsSelectors="False" UseColumnHeadersAsSelectors="False"
+            ViewSelectorText="x" Skin="Web20">
+             <SpecialDays> 
+            <telerik:RadCalendarDay Repeatable="Today"> 
+                <ItemStyle BackColor="LightBlue" /> 
+            </telerik:RadCalendarDay> 
+        </SpecialDays> 
+        </Calendar>
+        <DatePopupButton ImageUrl="" HoverImageUrl="" TabIndex="30"></DatePopupButton>
+    </telerik:RadDatePicker>
+
+    <telerik:RadDatePicker ID="txtReceivedOn" Style="z-index: 103; left: 97px; position: absolute;
+        top: 39px; right: 1390px;" runat="server" Width="120px" Skin="Web20" 
+        TabIndex="3" >
+        <DateInput ID="DateInput3" runat="server" Skin="WebBlue" Font-Size="13px" ForeColor="Blue" 
+            TabIndex="3">
+        </DateInput>
+        <Calendar ID="Calendar3" runat="server" UseRowHeadersAsSelectors="False" UseColumnHeadersAsSelectors="False"
+            ViewSelectorText="x" Skin="Web20">
+             <SpecialDays> 
+            <telerik:RadCalendarDay Repeatable="Today"> 
+                <ItemStyle BackColor="LightBlue" /> 
+            </telerik:RadCalendarDay> 
+        </SpecialDays> 
+        </Calendar>
+        <DatePopupButton ImageUrl="" HoverImageUrl="" TabIndex="3"></DatePopupButton>
+    </telerik:RadDatePicker>
+
+
+
+   <asp:ImageButton ID="updateAnswer" Style="z-index: 107; left: 150px; position: absolute;
+        top:300px" TabIndex="99" runat="server" 
+        ImageUrl="images/update_answer.png" Visible="false">
+     </asp:ImageButton>
+
+   <asp:ImageButton ID="saveNewAnswer" Style="z-index: 107; left: 223px; position: absolute;
+        top:300px" TabIndex="99" runat="server" 
+        ImageUrl="images/save_new_answer.png" Visible="false">
+     </asp:ImageButton>
+
+   <asp:ImageButton ID="cancelNewAnswer" Style="z-index: 107; left: 363px; position: absolute;
+        top:300px" TabIndex="99" runat="server" 
+        ImageUrl="images/cancel_new_answer.png" Visible="false">
+     </asp:ImageButton>
+
+    <asp:ImageButton ID="newAnswerButton" Style="z-index: 107; left: 373px; position: absolute;
+        top:300px" TabIndex="99" runat="server" 
+        ImageUrl="images/new_answer_button.png" >
+     </asp:ImageButton>
+
+     <asp:ImageButton ID="showAllAnswers" Style="z-index: 107; left: 273px; position: absolute;
+        top:300px" TabIndex="99" runat="server" 
+        ImageUrl="images/all_answers.png" >
+     </asp:ImageButton>
+
+     <asp:ImageButton ID="backToEditing" Style="z-index: 107; left: 350px; position: absolute;
+        top:300px" TabIndex="99" runat="server" 
+        ImageUrl="images/back_to_editing.png" Visible="false">
+     </asp:ImageButton>
+
+   <telerik:RadComboBox ID="multiAnswers" runat="server" Style="z-index: 505; left: 75px; 
+        position: absolute; top: 300px;" autopostback="True" onselectedindexchange="multiAnswers_Change" Skin="Vista"  Width="30px"  TabIndex="6">
+    </telerik:RadComboBox>
+
+    <asp:Label ID="numAns" Style="z-index: 105; left: 110px; position: absolute; top: 305px"
+        runat="server" Height="24px" ></asp:Label>
+
+    <asp:TextBox ID="txtAnswer" Style="z-index: 103; left: 12px; position: absolute;
+        top: 325px; height: 140px; width: 484px;" runat="server" TabIndex="20" CssClass="EditDataDisplay"
+        TextMode="MultiLine" ></asp:TextBox>
+
+    <asp:Label ID="printValidationMessage" Style="z-index: 105; left: 110px; position: absolute; top: 289px"
+        runat="server" Height="24px" Font-Bold="True" ForeColor="Red" ></asp:Label>
+       
+    <telerik:RadComboBox ID="cboSubmittedToID" runat="server" Style="z-index: 505;
+        left: 11px; position: absolute; top: 263px; right: 818px;" Skin="Vista" Text="(Submitted To)"
+        DropDownWidth="375px" MaxHeight="150px" AppendDataBoundItems="True" TabIndex="14" >
+                                          <HeaderTemplate>
+                                <table style="width: 415px; text-align: left">
+                                    <tr>
+                                        <td style="width: 125px;">
+                                            Name
+                                        </td>
+                                        <td style="width: 125px;">
+                                            Company
+                                        </td>
+                                        <td style="width: 125px;">
+                                            Group
+                                        </td>
+                                    </tr>
+                                </table>
+                            </HeaderTemplate>
+                            <ItemTemplate>
+                                <table style="width: 415px; text-align: left">
+                                    <tr>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "Name")%>
+                                        </td>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "Company")%>
+                                        </td>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "TeamGroupName")%>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </ItemTemplate>
+        
+    </telerik:RadComboBox>
+    
+    
+    <telerik:RadComboBox ID="cboTransmittedByID" runat="server" Style="z-index: 7505;
+        left: 254px; position: absolute; top: 263px; right: 1195px;" Skin="Vista" Text="(Transmitted By)"
+        DropDownWidth="375px" TabIndex="16"  MaxHeight="150px" >
+                                          <HeaderTemplate>
+                                <table style="width: 415px; text-align: left">
+                                    <tr>
+                                        <td style="width: 125px;">
+                                            Name
+                                        </td>
+                                        <td style="width: 125px;">
+                                            Company
+                                        </td>
+                                        <td style="width: 125px;">
+                                            Group
+                                        </td>
+                                    </tr>
+                                </table>
+                            </HeaderTemplate>
+                            <ItemTemplate>
+                                <table style="width: 415px; text-align: left">
+                                    <tr>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "Name")%>
+                                        </td>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "Company")%>
+                                        </td>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "TeamGroupName")%>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </ItemTemplate>
+        
+    </telerik:RadComboBox>
+   
+   
+   
+    <asp:Label ID="Label5" Style="z-index: 105; left: 14px; position: absolute; top: 158px"
+        runat="server" Height="24px" >Question:</asp:Label>
+    <asp:Label ID="Label15" Style="z-index: 105; left: 16px; position: absolute; top: 103px"
+        runat="server" Height="24px">Status:</asp:Label>
+    <asp:Label ID="Label13" Style="z-index: 105; left: 388px; position: absolute; top: 70px"
+        runat="server" Height="24px" Visible="false" >Type:</asp:Label>
+
+    <asp:Label ID="Label14" Style="z-index: 105; left: 15px; position: absolute; top: 71px"
+        runat="server" Height="24px" Visible="true">Title:</asp:Label>
+
+    <asp:Label ID="Label3" Style="z-index: 105; left: 20px; position: absolute; top: 137px"
+        runat="server" Height="24px" Visible="false" >Trade:</asp:Label>
+
+    <asp:TextBox ID="txtTitle" Style="z-index: 103; left: 65px; position: absolute;
+        top: 70px; width: 292px;" runat="server" Height="24px" TabIndex="5" 
+        CssClass="EditDataDisplay" Visible="false"></asp:TextBox>
+
+    <asp:TextBox ID="txtRefNumber" Style="z-index: 103; left: 97px; position: absolute;
+        top: 8px; width: 135px;" runat="server" Height="24px" TabIndex="1"  Visible="false"
+        CssClass="EditDataDisplay"></asp:TextBox>
+
+    <asp:TextBox ID="txtRespondedBy" Style="z-index: 103; left: 335px; position: absolute;
+        top: 473px; width: 167px;" runat="server" Height="24px" TabIndex="40" 
+        CssClass="EditDataDisplay" ></asp:TextBox>
+    <asp:TextBox ID="txtQuestion" Style="z-index: 103; left: 13px; position: absolute;
+        top: 178px; height: 60px; width: 484px;" runat="server" TabIndex="12" CssClass="EditDataDisplay"
+        TextMode="MultiLine" ></asp:TextBox>
+    <asp:TextBox ID="txtTrade" Style="z-index: 103; left: 69px; position: absolute;
+        top: 133px; width: 195px;" runat="server" Height="24px" TabIndex="10" 
+        CssClass="EditDataDisplay" visible="false"></asp:TextBox>
+    </form>
+</body>
+</html>

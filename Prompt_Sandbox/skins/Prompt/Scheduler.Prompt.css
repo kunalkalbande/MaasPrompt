@@ -1,0 +1,586 @@
+/* RadScheduler Vista skin */
+
+/* common */
+.RadScheduler_Prompt,
+.RadScheduler_Prompt a,
+.RadScheduler_Prompt input,
+.RadScheduler_Prompt select,
+.RadScheduler_Prompt textarea
+{
+	color: #000;
+	font: normal 12px/14px "Segoe UI", Arial, sans-serif;
+}
+
+.RadScheduler_Prompt textarea
+{
+	background: #fff;
+}
+
+/* header */
+
+/* header sprites */
+.RadScheduler_Prompt .rsHeader,
+.RadScheduler_Prompt .rsHeader ul a:hover,
+.RadScheduler_Prompt .rsHeader ul a:hover span,
+.RadScheduler_Prompt .rsHeader .rsSelected,
+.RadScheduler_Prompt .rsHeader .rsSelected em,
+.RadScheduler_Prompt .rsHeader .rsDatePickerActivator,
+.RadScheduler_Prompt .rsHeader .rsPrevDay,
+.RadScheduler_Prompt .rsHeader .rsNextDay,
+.RadScheduler_Prompt .rsHorizontalHeaderTable th
+{
+	background-image: url('Scheduler/rsSprites.png');
+}
+
+* html .RadScheduler_Prompt .rsHeader,
+* html .RadScheduler_Prompt .rsHeader ul a:hover,
+* html .RadScheduler_Prompt .rsHeader ul a:hover span,
+* html .RadScheduler_Prompt .rsHeader .rsSelected,
+* html .RadScheduler_Prompt .rsHeader .rsSelected em,
+* html .RadScheduler_Prompt .rsHeader .rsDatePickerActivator,
+* html .RadScheduler_Prompt .rsHeader .rsPrevDay,
+* html .RadScheduler_Prompt .rsHeader .rsNextDay,
+* html .RadScheduler_Prompt .rsHorizontalHeaderTable th
+{
+	background-image: url('Scheduler/rsSpritesIE6.png');
+}
+
+.RadScheduler_Prompt .rsHeader
+{
+	border: 1px solid #cddaea;
+}
+
+.RadScheduler_Prompt .rsHeader,
+.RadScheduler_Prompt .rsHeader a,
+.RadScheduler_Prompt .rsHeader ul span,
+.RadScheduler_Prompt .rsHeader ul em
+{
+	color: #1e395b;
+}
+
+*+html .RadScheduler_Prompt .rsHeader .RadCalendar_Prompt a { line-height: 20px; }
+* html .RadScheduler_Prompt .rsHeader .RadCalendar_Prompt a { line-height: 20px; }
+
+div.RadScheduler_Prompt .rsHeader ul
+{
+	padding-top: 1px;
+}
+
+div.RadScheduler_Prompt .rsHeader li,
+div.RadScheduler_Prompt .rsTopWrap .rsHeader ul a
+{
+	line-height: 28px;
+}
+
+div.RadScheduler_Prompt .rsHeader ul a:hover,
+div.RadScheduler_Prompt .rsHeader .rsSelected 
+{
+	background-position: 0 -70px;
+}
+
+div.RadScheduler_Prompt .rsHeader ul a:hover span,
+div.RadScheduler_Prompt .rsHeader .rsSelected em
+{
+	background-position: 100% -70px;
+}
+
+div.RadScheduler_Prompt .rsHeader .rsPrevDay, 
+div.RadScheduler_Prompt .rsHeader .rsNextDay
+{
+	height: 22px;
+	line-height: 22px;
+	width: 22px;
+}
+
+div.RadScheduler_Prompt .rsHeader .rsPrevDay 
+{
+	margin: 4px 0 0 3px;
+}
+
+div.RadScheduler_Prompt .rsHeader .rsNextDay
+{
+	background-position: -23px -48px;
+	margin: 4px 6px 0 0;
+}
+
+div.RadScheduler_Prompt .rsHeader .rsNextDay:hover {
+	background-position: -93px -48px;
+}
+
+/* content */
+
+.RadScheduler_Prompt .rsContent
+{
+	background: #fff;
+}
+
+/* <headers> */
+
+.RadScheduler_Prompt .rsHorizontalHeaderTable
+{
+	background: #eff6fc;
+}
+
+.RadScheduler_Prompt .rsHorizontalHeaderWrapper {
+	border-color: #d4dbe5;
+	background: #dfeaf7;
+}
+
+.RadScheduler_Prompt .rsSpacerCell,
+.RadScheduler_Prompt .rsAllDayHeader,
+.RadScheduler_Prompt .rsVerticalHeaderWrapper,
+.RadScheduler_Prompt .rsVerticalHeaderTable
+{
+	background: #f1f5fb;
+}
+
+.RadScheduler_Prompt .rsHorizontalHeaderTable th
+{
+	border-color: #d4dbe5;
+	background-color: #dfeaf7;
+}
+
+.RadScheduler_Prompt .rsVerticalHeaderTable th
+{
+	border-color: #eff7fc #e7edf7;
+}
+
+.RadScheduler_Prompt .rsVerticalHeaderTable .rsAlt th
+{
+	border-color: #d4dbe5 #e7edf7;
+}
+
+/* </headers> */
+
+/* <all-day-row> */
+
+.RadScheduler_Prompt .rsAllDayRow
+{
+	background: #dfeaf7;
+}
+
+.RadScheduler_Prompt .rsSpacerCell,
+.RadScheduler_Prompt .rsAllDayHeader,
+.RadScheduler_Prompt .rsVerticalHeaderTable .rsAllDayHeader
+{
+	border-color: #a7bac5 #cfe4f0;
+}
+
+.RadScheduler_Prompt .rsAllDayRow td,
+.RadScheduler_Prompt .rsContentTable .rsAllDayRow td
+{
+	border-color: #d4dbe5;
+	border-style: solid;
+}
+
+.RadScheduler_Prompt .rsVerticalHeaderTable .rsMainHeader th
+{
+	border-bottom-color: #A7BAC5;
+}
+
+.RadScheduler_Prompt .rsSpacerCell,
+.RadScheduler_Prompt .rsContent .rsAllDayHeader
+{
+	border-bottom-color: #d4dbe5;
+}
+
+/* </all-day-row> */
+
+.RadScheduler_Prompt .rsContent,
+.RadScheduler_Prompt .rsTopWrap .rsFooter
+{
+	border: 1px solid #a5b3c5;
+	border-top: 0;
+}
+
+.RadScheduler_Prompt .rsContentTable td
+{
+	border-color: #e8eaec #e8eaec;
+	border-bottom-style: dotted;
+}
+
+.RadScheduler_Prompt .rsContentTable .rsAlt td
+{
+	border-color: #d4dbe5 #e8eaec;
+	border-bottom-style: solid;
+}
+
+.RadScheduler_Prompt .rsMonthView .rsOtherMonth
+{
+	background-color: #F9F9F9;
+}
+
+/* <appointments> */
+.RadScheduler_Prompt .rsApt .rsArrowTop,
+.RadScheduler_Prompt .rsApt .rsArrowBottom,
+.RadScheduler_Prompt .rsApt .rsArrowLeft,
+.RadScheduler_Prompt .rsApt .rsArrowRight,
+.RadScheduler_Prompt .rsApt .rsAptDelete,
+.RadScheduler_Prompt .rsApt .rsAptDelete:hover,
+.RadScheduler_Prompt .rsApt .rsAptResize,
+.RadScheduler_Prompt .rsApt .rsAptRecurrence,
+.RadScheduler_Prompt .rsApt .rsAptRecurrenceException
+{
+	background-color: transparent;
+	background-image: url('Scheduler/rsSprites.png');
+	background-repeat: no-repeat;
+}
+
+* html .RadScheduler_Prompt .rsApt .rsArrowTop,
+* html .RadScheduler_Prompt .rsApt .rsArrowBottom,
+* html .RadScheduler_Prompt .rsApt .rsArrowLeft,
+* html .RadScheduler_Prompt .rsApt .rsArrowRight,
+* html .RadScheduler_Prompt .rsApt .rsAptDelete,
+* html .RadScheduler_Prompt .rsApt .rsAptDelete:hover,
+* html .RadScheduler_Prompt .rsApt .rsAptResize,
+* html .RadScheduler_Prompt .rsApt .rsAptRecurrence,
+* html .RadScheduler_Prompt .rsApt .rsAptRecurrenceException
+{
+	background-image: url('Scheduler/rsSpritesIE6.png');
+}
+
+.RadScheduler_Prompt .rsApt .rsAptDelete
+{
+	width: 16px;
+	height: 16px;
+	background-position: -40px -343px;
+}
+
+.RadScheduler_Prompt .rsAptDelete:hover
+{
+	background-position: -65px -343px;
+}
+
+.RadScheduler_Prompt .rsAptCreate,
+.RadScheduler_Prompt .rsMonthView .rsAptCreate,
+.RadScheduler_Prompt .rsAptCreateRow2,
+.RadScheduler_Prompt .rsMonthView .rsAptCreateRow2
+{
+	background-color: #e6eff7;
+	background-image: url('Scheduler/rsSprites.png');
+	background-repeat: repeat-x;
+}
+
+* hmtl .RadScheduler_Prompt .rsAptCreate,
+* hmtl .RadScheduler_Prompt .rsMonthView .rsAptCreate,
+* hmtl .RadScheduler_Prompt .rsAptCreateRow2,
+* hmtl .RadScheduler_Prompt .rsMonthView .rsAptCreateRow2
+{
+	background-image: url('Scheduler/rsSpritesIE6.png');
+}
+
+.RadScheduler_Prompt .rsNonWorkHour,
+.RadScheduler_Prompt .rsSunCol,
+.RadScheduler_Prompt .rsSatCol
+{
+	background-color: #f5fcff;
+}
+
+.RadScheduler_Prompt .rsAptCreateRow3,
+.RadScheduler_Prompt .rsMonthView .rsAptCreateRow3,
+.RadScheduler_Prompt .rsAptCreateRow4,
+.RadScheduler_Prompt .rsMonthView .rsAptCreateRow4,
+.RadScheduler_Prompt .rsAptCreateRow5,
+.RadScheduler_Prompt .rsMonthView .rsAptCreateRow5
+{
+	background: #e6eff7;
+}
+
+.RadScheduler_Prompt .rsFullTime 
+{
+	color: #000;
+}
+
+.RadScheduler_Prompt .rsAptContent,
+.RadScheduler_Prompt .rsAptIn,
+.RadScheduler_Prompt .rsAptMid,
+.RadScheduler_Prompt .rsAptOut
+{
+	background-image: url('Scheduler/rsAppointmentBg.png');
+}
+
+.RadScheduler_Prompt .rsAptSimple
+{
+	background-color: #d5effc;
+	border-color: #99defd;
+}
+
+/* </appointments> */
+
+/* <footer> */
+
+.RadScheduler_Prompt div.rsFooter
+{
+	background-color: #f0fafd;
+	background-image: url('Scheduler/rsSprites.png');
+	background-repeat: repeat-x;
+	border-color: #a2a2a2;
+}
+
+.RadScheduler_Prompt div.rsFooter a
+{
+	color: #1e395b;
+	background-color: transparent;
+	background-image: url('Scheduler/rsSprites.png');
+	background-repeat: no-repeat;
+}
+
+* html .RadScheduler_Prompt div.rsFooter,
+* html .RadScheduler_Prompt div.rsFooter a
+{
+	background-image: url('Scheduler/rsSpritesIE6.png');
+}
+
+.RadScheduler_Prompt div.rsFooter a:hover
+{
+	color: #3e597b;
+}
+
+/* </footer> */
+
+/* <inline edit form> */
+
+.RadScheduler_Prompt .rsEditOptions a,
+.RadScheduler_Prompt .rsAptEditResizeHandle,
+.RadScheduler_Prompt .rsAptEditFormWrapper
+{
+	background-image: url('Scheduler/rsSprites.png');
+}
+
+* html .RadScheduler_Prompt .rsEditOptions a,
+* html .RadScheduler_Prompt .rsAptEditResizeHandle,
+* html .RadScheduler_Prompt .rsAptEditFormWrapper
+{
+	background-image: url('Scheduler/rsSpritesIE6.png');
+}
+
+.RadScheduler_Prompt .rsAptEditFormOuter, /* top */
+.RadScheduler_Prompt .rsAptEditFormInner  /* bottom */
+{
+	background-image: url('Scheduler/rsInlineEditHSprite.png');
+}
+
+.RadScheduler_Prompt .rsAptEditFormMiddle, /* left */
+.RadScheduler_Prompt .rsAptEditFormMiddle2 /* right */
+{
+	background-image: url('Scheduler/rsInlineEditVSprite.png');
+}
+
+.RadScheduler_Prompt .rsAptEditFormWrapper .rsAptEditTextareaWrapper
+{
+	border-color: #9cb6c5;
+	background: #fff;
+}
+
+.RadScheduler_Prompt .rsAptEditFormWrapper .rsAptEditTextareaWrapper textarea
+{
+	background: #fff;
+}
+
+.RadScheduler_Prompt .rsAptEditFormWrapper .rsEditOptions 
+{
+	background: #dfe4f5;
+}
+
+/* <inline edit form template> */
+
+.RadScheduler_Prompt .rsAptEditFormWrapper .rsTemplateWrapper 
+{
+	background: #DFE4F5;
+}
+
+/* </inline edit form template> */
+
+/* </inline edit form> */
+
+/* <advanced edit form> */
+
+.RadScheduler_Prompt .rsAdvancedEdit .rsAdvContentWrapper
+{
+	background: #f0f0f0;
+	border: 1px solid #9cb6c5;
+	border-top-color: #a5b3c5;
+}
+
+/* <xref input skins> */
+
+.RadScheduler_Prompt .rsAdvancedEdit .rsAdvInput,
+.RadScheduler_Prompt .rsAdvancedEdit select,
+.RadScheduler_Prompt .rsAdvancedEdit .textareaWrapper
+{
+	border-color: #ABADB3 #DBDFE6 #DBDFE6 #ABADB3;
+}
+
+.RadScheduler_Prompt .rsAdvancedEdit .rsInvalid textarea,
+.RadScheduler_Prompt .rsAdvancedEdit .rsInvalid input,
+.RadScheduler_Prompt .rsAdvancedEdit .rsAdvTimePicker .riEmpty
+{
+	background-image: url('Input/sprite.gif');
+}
+
+.RadScheduler_Prompt .rsAdvancedEdit .textareaWrapper
+{
+	background: #fff;
+}
+
+.RadScheduler_Prompt .rsAdvancedEdit .rsInvalid
+{
+	border-color: #F32800;
+	color: #F32800;
+}
+/* </xref input skins> */
+
+.RadScheduler_Prompt .rsAdvancedEdit h2,
+.RadScheduler_Prompt .rsAdvancedEdit h3
+{
+	color: #567db0;
+}
+
+.RadScheduler_Prompt .rsAdvancedEdit h2
+{
+	border-bottom: 1px solid #CCC;
+}
+
+.RadScheduler_Prompt .rsAdvancedEdit h2 span
+{
+	background: #f0f0f0;
+}
+
+.RadScheduler_Prompt .rsAdvancedEdit .rsAdvRecurrenceFreq
+{
+	border-right: 1px solid #fff;
+}
+
+.RadScheduler_Prompt .rsAdvancedEdit ul.rsRecurrenceOptionList   /* ??? */
+{
+	border-right: 1px solid #CCC;
+}
+
+.RadScheduler_Prompt .rsAdvancedEdit div.rsAdvPatternPanel
+{
+	border-left: 0;
+}
+
+.RadScheduler_Prompt .rsAdvancedEdit .rsAdvancedSubmitArea
+{
+	border-color: #CCC;
+}
+
+.RadScheduler_Prompt .rsAdvancedEdit div.rsAdvancedSubmitArea a 
+{
+	color: #333;
+	background-image: url('Scheduler/rsSprites.png');
+}
+
+/* </advanced edit form> */
+
+/* <date/time picker> */
+
+.RadScheduler_Prompt .rsTimePick .RadInput_Prompt input.riEnabled,
+.RadScheduler_Prompt .rsTimePick .RadInput_Prompt input.riHover,
+.RadScheduler_Prompt .rsTimePick .RadInput_Prompt input.riFocused
+{
+	background-image: url('Scheduler/rsSprites.png');
+}
+
+* html .RadScheduler_Prompt .rsTimePick .RadInput_Prompt input.riEnabled,
+* html .RadScheduler_Prompt .rsTimePick .RadInput_Prompt input.riHover,
+* html .RadScheduler_Prompt .rsTimePick .RadInput_Prompt input.riFocused,
+* html .RadScheduler_Prompt .rsAdvancedEdit div.rsAdvancedSubmitArea a 
+{
+	background-image: url('Scheduler/rsSpritesIE6.png');
+}
+
+/* </date/time picker> */
+
+/* <modal dialogs> */
+
+.RadScheduler_Prompt .rsAdvancedEdit .rsAdvTitle,
+.RadScheduler_Prompt .rsModalWrapper .rsModalOuter,
+.RadScheduler_Prompt .rsAdvancedEdit .rsAdvInnerTitle,
+.RadScheduler_Prompt .rsModalWrapper .rsModalOuterTitle
+{
+	border-color: #a5b3c5;
+	background-image: url('Scheduler/rsModalOuterBg.png');
+}
+
+div.RadScheduler_Prompt .rsAdvancedEdit .rsAdvInnerTitle,
+div.RadScheduler_Prompt .rsModalWrapper .rsModalOuterTitle
+{
+	color: #1e395b;
+	background-position: 100% 0;
+}
+
+* html .RadScheduler_Prompt .rsAdvancedEdit .rsAdvTitle,
+* html .RadScheduler_Prompt .rsModalWrapper .rsModalOuter,
+* html .RadScheduler_Prompt .rsAdvancedEdit .rsAdvInnerTitle,
+* html .RadScheduler_Prompt .rsModalWrapper .rsModalOuterTitle
+{
+	background-image: url('Scheduler/rsModalOuterBgIE6.png');
+}
+
+.RadScheduler_Prompt .rsAdvancedEdit a.rsAdvEditClose,
+.RadScheduler_Prompt .rsModalWrapper a.rsModalWindowClose
+{
+	background-image: url('Scheduler/rsSprites.png');
+	opacity: 0.8;
+	-moz-opacity: 0.8;
+	filter: alpha(opacity=80);
+	height:18px;
+	margin-top:-24px;
+	width:27px;
+}
+
+.RadScheduler_Prompt .rsAdvancedEdit a.rsAdvEditClose:hover,
+.RadScheduler_Prompt .rsModalWrapper .rsModalWindowClose:hover
+{
+	opacity: 1;
+	-moz-opacity: 1;
+	filter: alpha(opacity=100);
+}
+
+.RadScheduler_Prompt .rsModalWrapper .rsModalTitle
+{
+	color: #000;
+	background-image: url('Scheduler/rsSprites.png');
+}
+
+.RadScheduler_Prompt .rsModalWrapper .rsModalInner
+{
+	border-color: #a5b3c5;
+	background: #fff;
+}
+
+.RadScheduler_Prompt .rsModalWrapper .rsModalIcon,
+.RadScheduler_Prompt .rsModalWrapper .rsModalButtons a
+{
+	background-image: url('Scheduler/rsSprites.png');
+}
+
+* html .RadScheduler_Prompt .rsAdvancedEdit a.rsAdvEditClose,
+* html .RadScheduler_Prompt .rsModalWrapper a.rsModalWindowClose,
+* html .RadScheduler_Prompt .rsModalWrapper .rsModalTitle,
+* html .RadScheduler_Prompt .rsModalWrapper .rsModalIcon,
+* html .RadScheduler_Prompt .rsModalWrapper .rsModalButtons a
+{
+	background-image: url('Scheduler/rsSpritesIE6.png');
+}
+
+/* Inline Edit buttons + ModalDialog buttons */
+.RadScheduler_Prompt .rsModalWrapper .rsModalButtons a,
+.RadScheduler_Prompt .rsTopWrap .rsAptEditFormWrapper .rsEditOptions a
+{
+	color: #333;
+}
+
+/* </modal dialogs> */
+
+.RadScheduler_Prompt .rsBottomIndicator .rsOvertimeArrow
+{
+	background: transparent url('Scheduler/rsSprites.png') no-repeat -180px -31px;
+}        	
+
+.RadScheduler_Prompt .rsTopIndicator .rsOvertimeArrow
+{
+	background: transparent url('Scheduler/rsSprites.png') no-repeat -134px -31px;
+}      

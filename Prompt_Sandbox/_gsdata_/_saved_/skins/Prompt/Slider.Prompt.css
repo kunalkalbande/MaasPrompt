@@ -1,0 +1,118 @@
+/* RadSlider for ASP.NET AJAX Windows7 Skin */
+
+.RadSlider_Prompt .rslHorizontal a.rslHandle
+{
+	background-image:url('Slider/Handles.gif');
+}
+
+.RadSlider_Prompt .rslHorizontal a.rslDraghandle
+{
+	background-image:url('Slider/DragHandle.gif');
+}
+
+.RadSlider_Prompt .rslHorizontal .rslTrack
+{	
+	background:url('Slider/TrackBgr.gif') repeat-x;
+}
+
+.RadSlider_Prompt .rslHorizontal .rslSelectedregion
+{
+	background:url('Slider/SelectedRegionHorizontalBgr.gif') right top no-repeat;
+}
+
+/* vertical slider */
+.RadSlider_Prompt .rslVertical a.rslHandle
+{
+	background-image:url('Slider/HandlesVertical.gif');
+}
+
+.RadSlider_Prompt .rslVertical .rslTrack
+{
+	background:url('Slider/TrackVerticalBgr.gif') repeat-y;
+}
+
+.RadSlider_Prompt .rslVertical .rslSelectedregion
+{
+	background:url('Slider/SelectedRegionVerticalBgr.gif') left bottom no-repeat;
+}
+
+.RadSlider_Prompt .rslVertical a.rslDraghandle
+{
+	background:url('Slider/DragVerticalHandle.gif') no-repeat;
+}
+
+.RadSlider_Prompt .rslItem,
+.RadSlider_Prompt .rslLargeTick span
+{
+	color:#333;
+}
+
+.RadSlider_Prompt .rslItemsWrapper .rslItemSelected
+{
+    color:#000;
+}
+
+/* horizontal slider items */
+.RadSlider_Prompt .rslHorizontal .rslItem
+{
+	background-image:url('Slider/ItemHorizontalBgr.gif');
+}
+
+/* vertical slider items */
+.RadSlider_Prompt .rslVertical .rslItem
+{
+	background-image:url('Slider/ItemVerticalBgr.gif');
+}
+
+/* horizontal slider - TrackPosition=Top/Bottom */
+.RadSlider_Prompt .rslTop .rslSmallTick,
+.RadSlider_Prompt .rslBottom .rslSmallTick
+{
+    background-image:url('Slider/SmallChangeHorizontal.gif');
+}
+
+.RadSlider_Prompt .rslTop .rslLargeTick,
+.RadSlider_Prompt .rslBottom .rslLargeTick
+{
+    background-image:url('Slider/LargeChangeHorizontal.gif');
+}
+
+/* vertical slider - TrackPosition=Left/Right */
+.RadSlider_Prompt .rslLeft .rslSmallTick,
+.RadSlider_Prompt .rslRight .rslSmallTick
+{
+    background-image:url('Slider/SmallChangeVertical.gif');
+}
+
+.RadSlider_Prompt .rslLeft .rslLargeTick,
+.RadSlider_Prompt .rslRight .rslLargeTick 
+{
+    background-image:url('Slider/LargelChangeVertical.gif');
+}
+
+/* horizontal slider - TrackPosition=Center */
+.RadSlider_Prompt .rslMiddle .rslSmallTick
+{
+	background-image:url('Slider/SmallChangeMiddleHorizontal.gif');
+}
+
+.RadSlider_Prompt .rslMiddle .rslLargeTick  
+{
+	background-image:url('Slider/LargeChangeMiddleHorizontal.gif');
+}
+
+/* vertical slider - TrackPosition=Center */
+.RadSlider_Prompt .rslCenter .rslSmallTick
+{
+    background-image:url('Slider/SmallChangeCenterVertical.gif');
+}
+
+.RadSlider_Prompt .rslCenter .rslLargeTick 
+{
+    background-image:url('Slider/LargelChangeCenterVertical.gif');
+}
+
+div.RadSlider_Prompt div.rslHorizontal a.rslHandle.rslIncrease:hover
+{
+    background-position: -27px 0;
+}

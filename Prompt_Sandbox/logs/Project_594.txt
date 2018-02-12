@@ -1,0 +1,33 @@
+1/9/2015 12:11:03 PM
+Inv.900...14147,12883,18770,12882,11683,11681.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/ProjectID_594/ContractID_8183/Invoices/
+Inv.900...14147,12883,18770,12882,11683,11681.pdf
+New File Found: False
+AttachmentID: 25365
+Char Found:  False
+Changed: False
+--------------------------------------------
+
+1/9/2015 12:11:03 PM
+PO.,MC150440.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/ProjectID_594/ContractID_19177/Contract/
+PO.,MC150440.pdf
+New File Found: False
+AttachmentID: 60582
+Char Found:  False
+Changed: False
+--------------------------------------------
+
+1/9/2015 12:11:03 PM
+PO.MC110980.CO1&2.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/ProjectID_594/ContractID_14144/Change Orders/
+PO.MC110980.CO1 and 2.pdf
+New File Found: True
+AttachmentID: 39659
+Char Found:  True
+Changed: True
+--------------------------------------------
+

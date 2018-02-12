@@ -1,0 +1,968 @@
+1/9/2015 11:56:55 AM
+FHDA MC 073113RE-111 PM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/
+FHDA MC 073113RE-111 PM  and  Invoice Copies.pdf
+New File Found: True
+AttachmentID: 53133
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 11:58:53 AM
+FHDA MC JV 073114-93I IMPLEMENTATION CMDM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1415/
+FHDA MC JV 073114-93I IMPLEMENTATION CMDM  and  Timesheets.pdf
+New File Found: True
+AttachmentID: 60200
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 12:07:22 PM
+FHDA MC JV 073114-93I IMPLEMENTATION PM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1415/
+FHDA MC JV 073114-93I IMPLEMENTATION PM  and  Timesheets.pdf
+New File Found: True
+AttachmentID: 60201
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 12:54:27 PM
+BndMstrList.BAI.DA&FH Transfer 01 09 12.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Bond List Revisions/FY1112/Board meeting on 2012 01.09/
+BndMstrList.BAI.DA and FH Transfer 01 09 12.pdf
+New File Found: True
+AttachmentID: 38476
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 12:54:54 PM
+FHDA MC 073113RE-112 CMDM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/
+FHDA MC 073113RE-112 CMDM  and  Invoice Copies.pdf
+New File Found: True
+AttachmentID: 53132
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 12:55:36 PM
+FHDA MC 073114RE-135 PM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1415/Reimbursable Invoices/
+FHDA MC 073114RE-135 PM  and  Invoice Copies.pdf
+New File Found: True
+AttachmentID: 60148
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 12:56:01 PM
+BndMstrList.FH BudgetTransfer21 & Agenda.8.02.10.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Bond List Revisions/FY1011/Board meeting on 2010 08.02/
+BndMstrList.FH BudgetTransfer21  and  Agenda.8.02.10.pdf
+New File Found: True
+AttachmentID: 31113
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 12:56:29 PM
+BndMstrList_02_07_11_FH&DIST1_Final_TT.xls
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Bond List Revisions/FY1011/Board meeting on 2011 02.07/
+BndMstrList_02_07_11_FH and DIST1_Final_TT.xls
+New File Found: True
+AttachmentID: 32366
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:00:45 PM
+FHDA MC 013114RE-123 PM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC 013114RE-123 PM  and  Invoice Copies.pdf
+New File Found: False
+AttachmentID: 57418
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:02:16 PM
+FHDA MC 013114RE-124 CMDM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC 013114RE-124 CMDM  and  Invoice Copies.pdf
+New File Found: False
+AttachmentID: 57417
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:02:37 PM
+Board of Trustees Agenda Aug 3,2009_DRAFT.Rev2.doc
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Bond List Revisions/FY0910/Board meeting on 2009 08.03/
+Board of Trustees Agenda Aug 3,2009_DRAFT.Rev2.doc
+New File Found: False
+AttachmentID: 23567
+Char Found:  False
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:04:25 PM
+FHDA MC 083113RE-113 PM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/
+FHDA MC 083113RE-113 PM  and  Invoice Copies.pdf
+New File Found: True
+AttachmentID: 53131
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:06:01 PM
+FHDA MC 073114RE-136 CMDM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1415/Reimbursable Invoices/
+FHDA MC 073114RE-136 CMDM  and  Invoice Copies.pdf
+New File Found: True
+AttachmentID: 60147
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:06:19 PM
+FHDA MC 083113RE-114 CMDM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/
+FHDA MC 083113RE-114 CMDM  and  Invoice Copies.pdf
+New File Found: True
+AttachmentID: 53130
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:07:04 PM
+FHDA MC 083114RE-137 PM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1415/Reimbursable Invoices/
+FHDA MC 083114RE-137 PM  and  Invoice Copies.pdf
+New File Found: True
+AttachmentID: 60559
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:07:22 PM
+FHDA MC 083114RE-138 CMDM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1415/Reimbursable Invoices/
+FHDA MC 083114RE-138 CMDM  and  Invoice Copies.pdf
+New File Found: True
+AttachmentID: 60558
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:07:40 PM
+Charles Allen request to post Contingency note on A&F Report 2-21-14.docx
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Audit and Finance Reports/FY1314/
+Charles Allen request to post Contingency note on A and F Report 2-21-14.docx
+New File Found: True
+AttachmentID: 57119
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:07:57 PM
+BudgetCost_Report 2-11-10 A&FReport.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Budget Cost Reports - all campuses/FY09.10/De-Anza/
+BudgetCost_Report 2-11-10 A and FReport.pdf
+New File Found: True
+AttachmentID: 34619
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:13:36 PM
+FHDA MC 093014RE-139 PM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1415/Reimbursable Invoices/
+FHDA MC 093014RE-139 PM  and  Invoice Copies.pdf
+New File Found: True
+AttachmentID: 60800
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:13:58 PM
+FHDA MC 093014RE-140 CMDM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1415/Reimbursable Invoices/
+FHDA MC 093014RE-140 CMDM  and  Invoice Copies.pdf
+New File Found: True
+AttachmentID: 60799
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:16:57 PM
+FHDA MC 103113RE-117 PM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/
+FHDA MC 103113RE-117 PM  and  Invoice Copies.pdf
+New File Found: True
+AttachmentID: 55666
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+Board of Trustees Agenda Aug 3,2009_DRAFT.Rev2.doc
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Bond List Revisions/FY0910/Board meeting on 2009 08.03/
+Board of Trustees Agenda Aug 3,2009_DRAFT.Rev2.doc
+New File Found: False
+AttachmentID: 23567
+Char Found:  False
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+Board of Trustees Agenda Aug 31,2009_DRAFT.REV.doc
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Bond List Revisions/FY0910/Board meeting on 2009 08.31/
+Board of Trustees Agenda Aug 31,2009_DRAFT.REV.doc
+New File Found: False
+AttachmentID: 23566
+Char Found:  False
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+Board of Trustees Agenda Feb 02, 2009.Bond listrev.DRAFT.doc
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Bond List Revisions/FY0809/Board meeting on 2009 02.02/
+Board of Trustees Agenda Feb 02, 2009.Bond listrev.DRAFT.doc
+New File Found: False
+AttachmentID: 18971
+Char Found:  False
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+Board of Trustees Agenda Jan 20, 2009.DRAFT2.doc
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Bond List Revisions/FY0809/Board meeting on 2009 01.20/
+Board of Trustees Agenda Jan 20, 2009.DRAFT2.doc
+New File Found: False
+AttachmentID: 18587
+Char Found:  False
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+BudgetCost_Report.5.06.2010 A&F Update.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Budget Cost Reports - all campuses/FY09.10/Foothill & District/
+BudgetCost_Report.5.06.2010 A and F Update.pdf
+New File Found: True
+AttachmentID: 29807
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+DeAnza Current Schedule - August 1, 2013 08-26-13.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Master Schedule/FY1314/De-Anza/
+DeAnza Current Schedule - August 1, 2013 08-26-13.pdf
+New File Found: False
+AttachmentID: 54721
+Char Found:  False
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+DeAnza Current Schedule - Jan 31, 2013.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Master Schedule/FY1213/De-Anza/
+DeAnza Current Schedule - Jan 31, 2013.pdf
+New File Found: False
+AttachmentID: 54723
+Char Found:  False
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+DeAnza Current Schedule - March 31, 2013.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Master Schedule/FY1213/De-Anza/
+DeAnza Current Schedule - March 31, 2013.pdf
+New File Found: False
+AttachmentID: 54724
+Char Found:  False
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC 013114RE-123 PM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC 013114RE-123 PM  and  Invoice Copies.pdf
+New File Found: False
+AttachmentID: 57418
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC 013114RE-124 CMDM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC 013114RE-124 CMDM  and  Invoice Copies.pdf
+New File Found: False
+AttachmentID: 57417
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC 022814RE-126 CMDM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC 022814RE-126 CMDM  and  Invoice Copies.pdf
+New File Found: False
+AttachmentID: 58204
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC 033114RE-127 PM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC 033114RE-127 PM  and  Invoice Copies.pdf
+New File Found: False
+AttachmentID: 59123
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC 033114RE-128 CMDM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC 033114RE-128 CMDM  and  Invoice Copies.pdf
+New File Found: False
+AttachmentID: 59122
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC 043014RE-129 PM & Invoice Coopies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC 043014RE-129 PM  and  Invoice Coopies.pdf
+New File Found: False
+AttachmentID: 59385
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC 043014RE-130 CMDM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC 043014RE-130 CMDM  and  Invoice Copies.pdf
+New File Found: False
+AttachmentID: 59384
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC 053114RE-131 PM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC 053114RE-131 PM  and  Invoice Copies.pdf
+New File Found: False
+AttachmentID: 59829
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC 053114RE-132 CMDM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC 053114RE-132 CMDM  and  Invoice Copies.pdf
+New File Found: False
+AttachmentID: 59828
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC 063014RE-133 PM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC 063014RE-133 PM  and  Invoice Copies.pdf
+New File Found: False
+AttachmentID: 59936
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC 063014RE-134 CMDM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC 063014RE-134 CMDM  and  Invoice Copies.pdf
+New File Found: False
+AttachmentID: 59935
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC 093013RE-115 PM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC 093013RE-115 PM  and  Invoice Copies.pdf
+New File Found: False
+AttachmentID: 54679
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC 093013RE-116 CMDM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC 093013RE-116 CMDM  and  Invoice Copies.pdf
+New File Found: False
+AttachmentID: 54678
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC 103113RE-118 CMDM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/
+FHDA MC 103113RE-118 CMDM  and  Invoice Copies.pdf
+New File Found: True
+AttachmentID: 55667
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC 103114RE-141 PM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1415/Reimbursable Invoices/
+FHDA MC 103114RE-141 PM  and  Invoice Copies.pdf
+New File Found: True
+AttachmentID: 61060
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC 103114RE-142 CMDM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1415/Reimbursable Invoices/
+FHDA MC 103114RE-142 CMDM  and  Invoice Copies.pdf
+New File Found: True
+AttachmentID: 61059
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC 113013RE-119 PM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC 113013RE-119 PM  and  Invoice Copies.pdf
+New File Found: False
+AttachmentID: 55673
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC 113013RE-120 CMDM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC 113013RE-120 CMDM  and  Invoice Copies.pdf
+New File Found: False
+AttachmentID: 55672
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC 113014RE-143 PM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1415/Reimbursable Invoices/
+FHDA MC 113014RE-143 PM  and  Invoice Copies.pdf
+New File Found: True
+AttachmentID: 61313
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC 113014RE-144 CMDM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1415/Reimbursable Invoices/
+FHDA MC 113014RE-144 CMDM  and  Invoice Copies.pdf
+New File Found: True
+AttachmentID: 61312
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC 123113RE-121 PM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC 123113RE-121 PM  and  Invoice Copies.pdf
+New File Found: False
+AttachmentID: 56640
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC 123113RE-122 CMDM & Invoice Copies.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC 123113RE-122 CMDM  and  Invoice Copies.pdf
+New File Found: False
+AttachmentID: 56639
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 013114-87I IMPLEMENTATION CMDM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC JV 013114-87I IMPLEMENTATION CMDM  and  Timesheets.pdf
+New File Found: False
+AttachmentID: 56694
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 013114-87I IMPLEMENTATION PM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC JV 013114-87I IMPLEMENTATION PM  and  Timesheets.pdf
+New File Found: False
+AttachmentID: 56693
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 022814-88I IMPLEMENTATION CMDM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC JV 022814-88I IMPLEMENTATION CMDM  and  Timesheets.pdf
+New File Found: False
+AttachmentID: 57466
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 022814-88I IMPLEMENTATION PM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC JV 022814-88I IMPLEMENTATION PM  and  Timesheets.pdf
+New File Found: False
+AttachmentID: 57647
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 033114-89I IMPLEMENTATION CMDM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC JV 033114-89I IMPLEMENTATION CMDM  and  Timesheets.pdf
+New File Found: False
+AttachmentID: 58360
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 033114-89I IMPLEMENTATION PM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC JV 033114-89I IMPLEMENTATION PM  and  Timesheets.pdf
+New File Found: False
+AttachmentID: 58361
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 043014-90I IMPLEMENTATION CMDM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC JV 043014-90I IMPLEMENTATION CMDM  and  Timesheets.pdf
+New File Found: False
+AttachmentID: 59216
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 043014-90I IMPLEMENTATION PM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC JV 043014-90I IMPLEMENTATION PM  and  Timesheets.pdf
+New File Found: False
+AttachmentID: 59215
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 053114-91I IMPLEMENTATION CMDM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC JV 053114-91I IMPLEMENTATION CMDM  and  Timesheets.pdf
+New File Found: False
+AttachmentID: 59397
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 053114-91I IMPLEMENTATION PM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC JV 053114-91I IMPLEMENTATION PM  and  Timesheets.pdf
+New File Found: False
+AttachmentID: 59398
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 063012-68I IMPLEMENTATION PM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/
+FHDA MC JV 063012-68I IMPLEMENTATION PM  and  Timesheets.pdf
+New File Found: True
+AttachmentID: 41673
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 063014-92I IMPLEMENTATION CMDM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC JV 063014-92I IMPLEMENTATION CMDM  and  Timesheets.pdf
+New File Found: False
+AttachmentID: 59770
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 063014-92I IMPLEMENTATION PM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC JV 063014-92I IMPLEMENTATION PM  and  Timesheets.pdf
+New File Found: False
+AttachmentID: 59771
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 073113-81I IMPLEMENTATION CMDM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/
+FHDA MC JV 073113-81I IMPLEMENTATION CMDM  and  Timesheets.pdf
+New File Found: True
+AttachmentID: 52589
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 073113-81I IMPLEMENTATION PM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/
+FHDA MC JV 073113-81I IMPLEMENTATION PM  and  Timesheets.pdf
+New File Found: True
+AttachmentID: 52590
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 083113-82I IMPLEMENTATION CMDM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC JV 083113-82I IMPLEMENTATION CMDM  and  Timesheets.pdf
+New File Found: False
+AttachmentID: 53431
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 083113-82I IMPLEMENTATION PM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC JV 083113-82I IMPLEMENTATION PM  and  Timesheets.pdf
+New File Found: False
+AttachmentID: 53432
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 083114-94I IMPLEMENTATION CMDM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1415/
+FHDA MC JV 083114-94I IMPLEMENTATION CMDM  and  Timesheets.pdf
+New File Found: True
+AttachmentID: 60549
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 083114-94I IMPLEMENTATION PM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1415/
+FHDA MC JV 083114-94I IMPLEMENTATION PM  and  Timesheets.pdf
+New File Found: True
+AttachmentID: 60550
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 093013-83I IMPLEMENTATION CMDM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC JV 093013-83I IMPLEMENTATION CMDM  and  Timesheets.pdf
+New File Found: False
+AttachmentID: 54136
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 093013-83I IMPLEMENTATION PM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC JV 093013-83I IMPLEMENTATION PM  and  Timesheets.pdf
+New File Found: False
+AttachmentID: 54137
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 093014-95I IMPLEMENTATION CMDM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1415/
+FHDA MC JV 093014-95I IMPLEMENTATION CMDM  and  Timesheets.pdf
+New File Found: True
+AttachmentID: 60797
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 093014-95I IMPLEMENTATION PM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1415/
+FHDA MC JV 093014-95I IMPLEMENTATION PM  and  Timesheets.pdf
+New File Found: True
+AttachmentID: 60798
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 103113-84I IMPLEMENTATION CMDM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC JV 103113-84I IMPLEMENTATION CMDM  and  Timesheets.pdf
+New File Found: False
+AttachmentID: 54758
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 103113-84I IMPLEMENTATION PM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC JV 103113-84I IMPLEMENTATION PM  and  Timesheets.pdf
+New File Found: False
+AttachmentID: 54759
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 103114-96I IMPLEMENTATION CMDM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1415/
+FHDA MC JV 103114-96I IMPLEMENTATION CMDM  and  Timesheets.pdf
+New File Found: True
+AttachmentID: 61048
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 103114-96I IMPLEMENTATION PM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1415/
+FHDA MC JV 103114-96I IMPLEMENTATION PM  and  Timesheets.pdf
+New File Found: True
+AttachmentID: 61049
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 113013-85I IMPLEMENTATION CMDM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC JV 113013-85I IMPLEMENTATION CMDM  and  Timesheets.pdf
+New File Found: False
+AttachmentID: 55365
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 113013-85I IMPLEMENTATION PM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC JV 113013-85I IMPLEMENTATION PM  and  Timesheets.pdf
+New File Found: False
+AttachmentID: 55366
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 113014-97I IMPLEMENTATION CMDM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1415/
+FHDA MC JV 113014-97I IMPLEMENTATION CMDM  and  Timesheets.pdf
+New File Found: True
+AttachmentID: 61162
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 113014-97I IMPLEMENTATION PM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1415/
+FHDA MC JV 113014-97I IMPLEMENTATION PM  and  Timesheets.pdf
+New File Found: True
+AttachmentID: 61163
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 123113-86I IMPLEMENTATION CMDM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC JV 123113-86I IMPLEMENTATION CMDM  and  Timesheets.pdf
+New File Found: False
+AttachmentID: 55730
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+FHDA MC JV 123113-86I IMPLEMENTATION PM & Timesheets.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Gilbane Mass Invoice Process/FY1314/
+FHDA MC JV 123113-86I IMPLEMENTATION PM  and  Timesheets.pdf
+New File Found: False
+AttachmentID: 55731
+Char Found:  True
+Changed: False
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+MA.Noll&Tam.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Master Agreements/
+MA.Noll and Tam.pdf
+New File Found: True
+AttachmentID: 19447
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+MC BAI_Budget Trans_DA 39 & FH 41_10.7.13.FINAL.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Bond List Revisions/FY1314/Board meeting on 2013 10.07/
+MC BAI_Budget Trans_DA 39  and  FH 41_10.7.13.FINAL.pdf
+New File Found: True
+AttachmentID: 53652
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+Measure C_COC_Overhead Handout_Budget vs Actual FY06-07 & FY07-08_at 6-30-08_FINAL 2.xls
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Overhead/FY06-08/
+Measure C_COC_Overhead Handout_Budget vs Actual FY06-07  and  FY07-08_at 6-30-08_FINAL 2.xls
+New File Found: True
+AttachmentID: 23556
+Char Found:  True
+Changed: True
+--------------------------------------------
+
+1/9/2015 1:17:27 PM
+PG&E Rebates_Q1 FY13-14_Other Financing Sources-PGE Rebates thru_9-30-13.xls
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/Energy Efficiency Incentive Tracking Sheet/
+PG and E Rebates_Q1 FY13-14_Other Financing Sources-PGE Rebates thru_9-30-13.xls
+New File Found: True
+AttachmentID: 54720
+Char Found:  True
+Changed: True
+--------------------------------------------
+

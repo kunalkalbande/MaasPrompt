@@ -1,0 +1,261 @@
+body
+{
+    font-family: "Arial";
+    width: 100%;
+    height: 100%;
+
+}
+
+
+
+.anchorMenu {
+    font-size: 11pt;
+    margin-top:-10px;
+    width: 600px;
+    margin-left:180px;
+}
+
+.helpNavOptions{
+    background-color: #FFF;
+    border-width: 1px;
+    padding: 3px;
+    border-style:solid;
+    border-color: #183061;
+    border-radius: 5px;
+    color: #183061;
+}
+
+select  option{
+    background: #FFF;
+    color: #183061;
+}
+
+
+.toTopOfPage{
+    position: fixed;
+    margin-left: 850px;
+    margin-top: 310px;
+    max-width: 40px;
+    max-height: 40px;
+}
+
+
+.toTopOfPageCaption{
+    position: fixed;
+    margin-left: 860px;
+    margin-top: 350px;
+    color: #000;
+    font-size: 10pt;
+}
+
+.toTopOfPageCaption a{
+    text-decoration: none;
+}
+
+
+
+.toTopOfPageInsideContainer{
+    max-width: 40px;
+    max-height: 40px;
+    margin-left:10px;
+    
+}
+
+.toTopOfPageInsideContainerCaption{
+    color: #000;
+    font-size: 10pt;
+    margin-bottom: -50px;
+    margin-left:20px;
+    text-decoration: none;
+}
+
+a{
+    text-decoration: none;
+}
+
+
+.anchorMenu ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;  
+}
+
+.anchorMenu li{
+    list-style: none;
+    
+}
+
+.anchorMenu li a{
+    display: block;
+    color: #FFF;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+li.btn-nav {
+    float:left;
+    background-color: #666;
+    color: #FFF;
+}
+li.btn-nav {
+    float:left;
+    background-color: #666;
+    color: #FFF;
+}
+
+
+li.btn-nav a:focus, 
+li.btn-nav a:active,
+li.btn-nav a:target{
+    background-color: #4CAF50;
+    color: #FFF;
+    font-family: 'Segoe UI' , Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.btn-nav a:hover{
+    background-color: #555;
+    color: #FFF;
+        font-family: 'Segoe UI' , Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.helpTitleContainer
+{
+    text-align: left;
+    margin-left: 25px;
+    padding-top: 50px;
+    color: #666;
+}
+
+.helpSectionContainer
+{
+    background-color: #FFF;
+    height: 300px;
+    margin-right:-45px;
+    min-width:1200px;
+    padding-top: 50px;
+    clip-path: url(#svgPath);
+    -webkit-clip-path: polygon(0 0, 100% 0%, 100% 86%, 0% 100%);
+    clip-path: polygon(0 0, 100% 0%, 100% 86%, 0% 100%);
+    border-bottom-style:solid;
+    border-bottom-color: #0a3b61;
+    border-bottom-width:90px;
+}
+
+.helpSectionContainer h1
+{
+    font-size: 28pt;
+    font-family: 'Segoe UI' , Tahoma, Geneva, Verdana, sans-serif;
+    margin-top: -40px;
+}
+
+.helpContentContainer
+{
+    background-color: #FFF;
+    margin-top: -220px;
+    max-width: 700px;
+    font-size: 10pt;
+    margin-left: 50px;
+    margin-right: 200px;
+    min-width: 600px;
+    -webkit-box-shadow: 2px 10px 40px 0px rgba(0,0,0,0.10);
+    -moz-box-shadow: 2px 10px 40px 0px rgba(0,0,0,0.10);
+    box-shadow: 2px 10px 40px 0px rgba(0,0,0,0.10);
+    padding-right: 30px;
+    padding-bottom: 80px;
+    padding-left: 10px;
+    position: sticky;
+    margin-bottom: 100px;
+    -webkit-border-radius: 0 20px 0 0;
+    -moz-border-radius: 0 20px 0 0;
+    border-radius: 0 20px 0 0;
+}
+
+.helpContentContainer h2
+{
+    color: #fff;
+    margin-bottom: 50px;
+    background-color: #0060AA;
+    padding: 20px;
+    font-size: 24pt;
+    margin-right: -30px;
+    margin-left: -10px;
+    margin-top: -10px;
+    -webkit-border-radius: 0 20px 0 0;
+    -moz-border-radius: 0 20px 0 0;
+    border-radius: 0 20px 0 0;
+}
+
+.helpContentContainer h3
+{
+    color: #000;
+    font-size: 18pt;
+    margin-bottom: 50px;
+    margin-top: 50px;
+}
+
+.helpContentContainer hr
+{
+    color: #338AFF;
+    margin-top: 30px;
+}
+.helpContentContainer h4
+{
+    color: #338AFF;
+    font-size: 12pt;
+}
+
+.helpContentContainer h5
+{
+    color: #666;
+    font-style: italic;
+    font-size: 10pt;
+    margin-left: 8px;
+}
+
+.helpContentContainer p
+{
+    color: #000;
+    margin-left: 10px;
+}
+
+
+.RFIimgs
+{
+    -webkit-box-shadow: 9px 10px 17px 0px rgba(0,0,0,0.43);
+    -moz-box-shadow: 9px 10px 17px 0px rgba(0,0,0,0.43);
+    box-shadow: 9px 10px 17px 0px rgba(0,0,0,0.43);
+    margin-bottom: 20px;
+    margin-top: 20px;
+    background-color: transparent;
+    overflow: none;
+    display: block;
+    margin-right: 20rem;
+}
+
+.maasIMG
+{
+    -webkit-box-shadow: 9px 10px 10px 0px rgba(0,0,0,0.43);
+    -moz-box-shadow: 9px 10px 10px 0px rgba(0,0,0,0.43);
+    box-shadow: 9px 10px 10px 0px rgba(0,0,0,0.43);
+    margin-bottom: 20px;
+    margin-top: 20px;
+    background-color: transparent;
+    overflow: none;
+    display: block;
+    margin-left: 6rem;
+    display: none;
+}
+
+.promptIMG
+{
+    background-color: transparent;
+    overflow: none;
+    display: block;
+    max-width: 700px;
+    max-height: 150px;
+    padding-bottom: 50px;
+    width: 369px;
+    height: 75px;
+    margin-top: -85px;
+}
+

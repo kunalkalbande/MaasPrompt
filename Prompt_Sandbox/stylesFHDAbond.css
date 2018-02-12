@@ -1,0 +1,96 @@
+
+body
+{
+	padding-right: 0px;
+	padding-left: 0px;
+	font-size: 10px;
+	padding-bottom: 0px;
+	margin: 0px;
+	color: #000000;
+	padding-top: 0px;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+
+}
+
+A:link	{	
+	text-decoration:	none;
+	color:	#3333cc;
+	}	
+		
+A:visited	{	
+	text-decoration:	none;
+	color:	#333399;
+	}	
+		
+A:active	{	
+	text-decoration:	none;
+	color:	#333399;
+	}	
+		
+A:hover	{	
+	text-decoration:	underline;
+	color:	#3333cc;
+	}
+
+.smalltext
+{
+	font-size: 9px;
+	font-family: Verdana;
+}
+
+.PageTopTitle
+{
+	font-size: 24px;
+	color: #0000ff;
+	font-family: Verdana;
+}
+.MainProjectDescription
+{
+	border-right: black 1px solid;
+	padding-right: 5px;
+	border-top: black 1px solid;
+	padding-left: 5px;
+	font-size: 11pt;
+	padding-bottom: 5px;
+	border-left: black 1px solid;
+	padding-top: 5px;
+	border-bottom: black 1px solid;
+	font-family: Verdana;
+	background-color: mintcream;
+}
+.MainProjectTitle
+{
+	border-right: black 1px solid;
+	padding-right: 5px;
+	border-top: black 1px solid;
+	padding-left: 5px;
+	font-size: 14pt;
+	padding-bottom: 5px;
+	border-left: black 1px solid;
+	color: maroon;
+	padding-top: 5px;
+	border-bottom: black 1px solid;
+	font-family: Verdana;
+	background-color: mintcream;
+}
+.ProjectDataLabel
+{
+	font-weight: bold;
+	font-size: 9pt;
+	color: black;
+	font-family: Verdana;
+	font-variant: normal;
+}
+.ProjectDataValue
+{
+	font-size: 10pt;
+	color: blue;
+	font-family: Verdana;
+}
+.MaroonHeading
+{
+	font-weight: bold;
+	font-size: 12pt;
+	color: maroon;
+	font-family: Verdana;
+}

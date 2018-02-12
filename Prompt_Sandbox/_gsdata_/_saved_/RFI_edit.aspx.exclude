@@ -1,0 +1,341 @@
+<%@ Page Language="vb" %>
+
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
+<%@ Import Namespace="Prompt" %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<script runat="server">
+
+    Private nRFIID As Integer = 0
+    Private nProjectID As Integer = 0
+    Private strPhysicalPath As String = ""
+
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+        ProcLib.CheckSession(Page)
+        ProcLib.LoadPopupJscript(Page)
+
+        Session("PageID") = "RFIEdit"
+        
+        lblMessage.Text = ""
+
+        nRFIID = Request.QueryString("RFIID")
+        nProjectID = Request.QueryString("ProjectID")
+     
+        'set up help button
+        butHelp.Attributes.Add("onclick", "openPopup('help_view.aspx','pophelp',550,450,'yes');")
+        butHelp.NavigateUrl = "#"
+        
+  
+        If Not IsPostBack Then
+            
+            
+            'fill the from /to fields
+            Using db As New TeamMember
+                
+                With cboSubmittedToID
+                    .DataValueField = "ContactID"
+                    .DataTextField = "Name"
+                    .DataSource = db.GetExistingMembersForDropDowns(nProjectID)
+                    .DataBind()
+                End With
+                
+                With cboTransmittedByID
+                    .DataValueField = "ContactID"
+                    .DataTextField = "Name"
+                    .DataSource = db.GetExistingMembersForDropDowns(nProjectID)
+                    .DataBind()
+                End With
+                
+            End Using
+            
+            
+            Using db As New RFI
+                db.CallingPage = Page
+                If nRFIID = 0 Then
+                    butDelete.Visible = False
+                    txtRefNumber.Text = db.GetSuggestedNextRefNumber()
+                End If
+                db.GetRFIForEdit(nRFIID)
+                
+            End Using
+        End If
+        
+        lblxRFIID.Text = nRFIID
+
+        txtRefNumber.Focus()
+        
+
+    End Sub
+    
+
+    Private Sub butSave_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles butSave.Click
+    
+        If txtRefNumber.Text = "" Then
+            lblMessage.Text = "Please enter a Reference Number."
+            Exit Sub
+        End If
+        If txtReceivedOn.SelectedDate Is Nothing Then
+            lblMessage.Text = "Please enter a ReceivedOn Date."
+            Exit Sub
+        End If
+        If txtRequiredBy.SelectedDate Is Nothing Then
+            lblMessage.Text = "Please enter a RequiredBy Date."
+            Exit Sub
+        End If
+        If txtReceivedOn.SelectedDate > txtRequiredBy.SelectedDate Then
+            lblMessage.Text = "Required By data must be later than ReceivedOn Date."
+            Exit Sub
+        End If
+        If txtTitle.Text = "" Then
+            lblMessage.Text = "Please enter a Subject."
+            Exit Sub
+        End If
+        If txtQuestion.Text = "" Then
+            lblMessage.Text = "Please enter a Question."
+            Exit Sub
+        End If
+
+        Using db As New RFI
+            db.CallingPage = Page
+            db.SaveRFI(nProjectID, nRFIID)
+
+        End Using
+
+        Session("RtnFromEdit") = True
+        ProcLib.CloseAndRefreshRADNoPrompt(Page)
+    End Sub
+
+    Private Sub butDelete_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles butDelete.Click
+     
+        Using db As New RFI
+            db.CallingPage = Page
+            db.DeleteRFI(nProjectID, nRFIID)
+        End Using
+
+        Session("RtnFromEdit") = True
+        ProcLib.CloseAndRefreshRADNoPrompt(Page)
+    End Sub
+
+    
+  
+
+</script>
+
+<html>
+<head>
+    <title>RFI Edit</title>
+    <link href="Styles.css" type="text/css" rel="stylesheet" />
+
+    <script type="text/javascript" language="javascript">
+    function GetRadWindow() {
+        var oWindow = null;
+        if (window.RadWindow) oWindow = window.RadWindow;
+        else if (window.frameElement.radWindow) oWindow = window.frameElement.radWindow;
+        return oWindow;
+    }
+
+
+    </script>
+
+</head>
+<body>
+    <form id="Form1" method="post" runat="server">
+    <telerik:RadComboBox ID="cboRFIType" runat="server" Style="z-index: 505; left: 427px;
+        position: absolute; top: 71px; right: 913px;" Skin="Vista" 
+        Text="(Type)" Width="65px" Visible="False" TabIndex="6">
+        <Items>
+            <telerik:RadComboBoxItem runat="server" Text="RFI" Value="RFI" />
+            <telerik:RadComboBoxItem runat="server" Text="Pre-Bid" Value="Pre-Bid" />
+        </Items>
+    </telerik:RadComboBox>
+    <telerik:RadComboBox ID="cboStatus" runat="server" Style="z-index: 505; left: 70px;
+        position: absolute; top: 100px; right: 818px;" Skin="Vista"  TabIndex="7"
+        Text="(Status)">
+    </telerik:RadComboBox>
+    <telerik:RadScriptManager ID="RadScriptManager1" runat="server" />
+    <asp:HyperLink ID="butHelp" Style="z-index: 112; left: 539px; position: absolute;
+        top: 9px; height: 20px;" runat="server" ImageUrl="images/button_help.gif">HyperLink</asp:HyperLink>
+    <asp:ImageButton ID="butSave" Style="z-index: 113; left: 9px; position: absolute;
+        top: 481px" TabIndex="50" runat="server" ImageUrl="images/button_save.gif"></asp:ImageButton>
+    <asp:ImageButton ID="butDelete" Style="z-index: 107; left: 273px; position: absolute;
+        top: 482px" TabIndex="99" runat="server" 
+        ImageUrl="images/button_delete.gif">
+    </asp:ImageButton>
+    <asp:Label ID="lblMessage" Style="z-index: 105; left: 12px; position: absolute; top: 445px"
+        runat="server" Height="24px" Font-Bold="True" ForeColor="Red">Error Message</asp:Label>
+    <asp:Label ID="Label8" Style="z-index: 105; left: 13px; position: absolute; top: 243px;
+        right: 1494px; width: 110px;" runat="server" Height="24px">Submitted To:</asp:Label>
+    <asp:Label ID="Label7" Style="z-index: 105; left: 250px; position: absolute; top: 38px"
+        runat="server" Height="24px">Required By:</asp:Label>
+    <asp:Label ID="Label10" Style="z-index: 105; left: 13px; position: absolute; top: 292px"
+        runat="server" Height="24px">Answer:</asp:Label>
+    <asp:Label ID="Label11" Style="z-index: 105; left: 11px; position: absolute; top: 416px"
+        runat="server" Height="24px">Returned On:</asp:Label>
+    <asp:Label ID="Label16" Style="z-index: 105; left: 247px; position: absolute; top: 413px"
+        runat="server" Height="24px">Responded By:</asp:Label>
+    <asp:Label ID="Label9" Style="z-index: 105; left: 426px; position: absolute; top: 483px"
+        runat="server" Height="24px">ID:</asp:Label>
+    <asp:Label ID="Label6" Style="z-index: 105; left: 254px; position: absolute; top: 245px;
+        width: 122px;" runat="server" Height="24px">Transmitted By:</asp:Label>
+    <asp:Label ID="lblxRFIID" Style="z-index: 105; left: 445px; position: absolute; top: 483px"
+        runat="server" Height="24px"></asp:Label>
+    <asp:Label ID="Label12" Style="z-index: 105; left: 12px; position: absolute; top: 14px"
+        runat="server" Height="24px">RFI Number:</asp:Label>
+    <asp:Label ID="Label2" Style="z-index: 105; left: 11px; position: absolute; top: 40px"
+        runat="server" Height="24px">Received On:</asp:Label>
+    <telerik:RadDatePicker ID="txtRequiredBy" Style="z-index: 103; left: 336px; position: absolute;
+        top: 39px" runat="server" Width="120px" Skin="Web20" TabIndex="4">
+        <DateInput runat="server" Skin="WebBlue" Font-Size="13px" ForeColor="Blue" 
+            TabIndex="4">
+        </DateInput>
+        <Calendar runat="server" UseRowHeadersAsSelectors="False" UseColumnHeadersAsSelectors="False"
+            ViewSelectorText="x" Skin="Web20">
+             <SpecialDays> 
+            <telerik:RadCalendarDay Repeatable="Today"> 
+                <ItemStyle BackColor="LightBlue" /> 
+            </telerik:RadCalendarDay> 
+        </SpecialDays> 
+        </Calendar>
+        <DatePopupButton ImageUrl="" HoverImageUrl="" TabIndex="4"></DatePopupButton>
+    </telerik:RadDatePicker>
+    <telerik:RadDatePicker ID="txtReturnedOn" Style="z-index: 103; left: 89px; position: absolute;
+        top: 415px; right: 760px;" runat="server" Width="120px" Skin="Web20" 
+        TabIndex="30">
+        <DateInput runat="server" Skin="WebBlue" Font-Size="13px" ForeColor="Blue" 
+            TabIndex="30">
+        </DateInput>
+        <Calendar runat="server" UseRowHeadersAsSelectors="False" UseColumnHeadersAsSelectors="False"
+            ViewSelectorText="x" Skin="Web20">
+             <SpecialDays> 
+            <telerik:RadCalendarDay Repeatable="Today"> 
+                <ItemStyle BackColor="LightBlue" /> 
+            </telerik:RadCalendarDay> 
+        </SpecialDays> 
+        </Calendar>
+        <DatePopupButton ImageUrl="" HoverImageUrl="" TabIndex="30"></DatePopupButton>
+    </telerik:RadDatePicker>
+    <telerik:RadDatePicker ID="txtReceivedOn" Style="z-index: 103; left: 97px; position: absolute;
+        top: 39px; right: 1390px;" runat="server" Width="120px" Skin="Web20" 
+        TabIndex="3">
+        <DateInput runat="server" Skin="WebBlue" Font-Size="13px" ForeColor="Blue" 
+            TabIndex="3">
+        </DateInput>
+        <Calendar runat="server" UseRowHeadersAsSelectors="False" UseColumnHeadersAsSelectors="False"
+            ViewSelectorText="x" Skin="Web20">
+             <SpecialDays> 
+            <telerik:RadCalendarDay Repeatable="Today"> 
+                <ItemStyle BackColor="LightBlue" /> 
+            </telerik:RadCalendarDay> 
+        </SpecialDays> 
+        </Calendar>
+        <DatePopupButton ImageUrl="" HoverImageUrl="" TabIndex="3"></DatePopupButton>
+    </telerik:RadDatePicker>
+    <asp:TextBox ID="txtAnswer" Style="z-index: 103; left: 12px; position: absolute;
+        top: 315px; height: 81px; width: 484px;" runat="server" TabIndex="20" CssClass="EditDataDisplay"
+        TextMode="MultiLine"></asp:TextBox>
+    
+    
+    <telerik:RadComboBox ID="cboSubmittedToID" runat="server" Style="z-index: 7505;
+        left: 11px; position: absolute; top: 263px; right: 818px;" Skin="Vista" Text="(Submitted To)"
+        DropDownWidth="375px" MaxHeight="150px" AppendDataBoundItems="True" TabIndex="14">
+                                          <HeaderTemplate>
+                                <table style="width: 415px; text-align: left">
+                                    <tr>
+                                        <td style="width: 125px;">
+                                            Name
+                                        </td>
+                                        <td style="width: 125px;">
+                                            Company
+                                        </td>
+                                        <td style="width: 125px;">
+                                            Group
+                                        </td>
+                                    </tr>
+                                </table>
+                            </HeaderTemplate>
+                            <ItemTemplate>
+                                <table style="width: 415px; text-align: left">
+                                    <tr>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "Name")%>
+                                        </td>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "Company")%>
+                                        </td>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "TeamGroupName")%>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </ItemTemplate>
+        
+    </telerik:RadComboBox>
+    
+    
+    <telerik:RadComboBox ID="cboTransmittedByID" runat="server" Style="z-index: 7505;
+        left: 254px; position: absolute; top: 263px; right: 1195px;" Skin="Vista" Text="(Transmitted By)"
+        DropDownWidth="375px" TabIndex="16"  MaxHeight="150px">
+                                          <HeaderTemplate>
+                                <table style="width: 415px; text-align: left">
+                                    <tr>
+                                        <td style="width: 125px;">
+                                            Name
+                                        </td>
+                                        <td style="width: 125px;">
+                                            Company
+                                        </td>
+                                        <td style="width: 125px;">
+                                            Group
+                                        </td>
+                                    </tr>
+                                </table>
+                            </HeaderTemplate>
+                            <ItemTemplate>
+                                <table style="width: 415px; text-align: left">
+                                    <tr>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "Name")%>
+                                        </td>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "Company")%>
+                                        </td>
+                                        <td style="width: 125px;">
+                                            <%#DataBinder.Eval(Container.DataItem, "TeamGroupName")%>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </ItemTemplate>
+        
+    </telerik:RadComboBox>
+   
+   
+   
+    <asp:Label ID="Label5" Style="z-index: 105; left: 14px; position: absolute; top: 158px"
+        runat="server" Height="24px">Question:</asp:Label>
+    <asp:Label ID="Label15" Style="z-index: 105; left: 16px; position: absolute; top: 103px"
+        runat="server" Height="24px">Status:</asp:Label>
+    <asp:Label ID="Label13" Style="z-index: 105; left: 388px; position: absolute; top: 70px"
+        runat="server" Height="24px" Visible="False">Type:</asp:Label>
+    <asp:Label ID="Label14" Style="z-index: 105; left: 11px; position: absolute; top: 71px"
+        runat="server" Height="24px">Title:</asp:Label>
+    <asp:Label ID="Label3" Style="z-index: 105; left: 15px; position: absolute; top: 137px"
+        runat="server" Height="24px">Trade:</asp:Label>
+    <asp:TextBox ID="txtTitle" Style="z-index: 103; left: 65px; position: absolute;
+        top: 70px; width: 292px;" runat="server" Height="24px" TabIndex="5" 
+        CssClass="EditDataDisplay"></asp:TextBox>
+    <asp:TextBox ID="txtRefNumber" Style="z-index: 103; left: 97px; position: absolute;
+        top: 8px; width: 135px;" runat="server" Height="24px" TabIndex="1" 
+        CssClass="EditDataDisplay"></asp:TextBox>
+    <asp:TextBox ID="txtRespondedBy" Style="z-index: 103; left: 335px; position: absolute;
+        top: 413px; width: 167px;" runat="server" Height="24px" TabIndex="40" 
+        CssClass="EditDataDisplay"></asp:TextBox>
+    <asp:TextBox ID="txtQuestion" Style="z-index: 103; left: 13px; position: absolute;
+        top: 178px; height: 60px; width: 484px;" runat="server" TabIndex="12" CssClass="EditDataDisplay"
+        TextMode="MultiLine"></asp:TextBox>
+    <asp:TextBox ID="txtTrade" Style="z-index: 103; left: 69px; position: absolute;
+        top: 133px; width: 195px;" runat="server" Height="24px" TabIndex="10" 
+        CssClass="EditDataDisplay"></asp:TextBox>
+    </form>
+</body>
+</html>

@@ -1,0 +1,166 @@
+/* RadSplitter for ASP.NET AJAX - Windows7 Skin */
+
+/* Borders */
+.RadSplitter_Prompt,
+.RadSplitter_Prompt .rspPaneTabContainer,
+
+/* Vertical RadSplitter items */
+.RadSplitter_Prompt .rspPane, 
+.RadSplitter_Prompt .rspResizeBar,
+.RadSplitter_Prompt .rspSlideContainerResize,
+
+/* Horizontal RadSplitter items */
+.RadSplitter_Prompt .rspPaneHorizontal,
+.RadSplitter_Prompt .rspResizeBarHorizontal,
+.RadSplitter_Prompt .rspSlideContainerResizeHorizontal
+{
+	border-color:#c2cedb;
+}
+
+/* RadSplitBar/RadSlidingPane resize elements */
+.RadSplitter_Prompt .rspResizeBar,
+.RadSplitter_Prompt .rspSlideContainerResize
+{
+	background:#ececec url('Splitter/ResizeBarVerticalSprites.gif') repeat-y 0 0;
+    border-right-color:#c2cedb;
+}
+
+.RadSplitter_Prompt .rspResizeBarOver,
+.RadSplitter_Prompt .rspSlideContainerResizeOver
+{
+    background-position:-4px 0;
+}
+
+.RadSplitter_Prompt .rspResizeBarHorizontal,
+.RadSplitter_Prompt .rspSlideContainerResizeHorizontal
+{
+	background:#ececec url('Splitter/ResizeBarHorizontalSprites.gif') repeat-x 0 0;
+    border-bottom-color:#c2cedb;
+}
+
+.RadSplitter_Prompt .rspResizeBarOverHorizontal,
+.RadSplitter_Prompt .rspSlideContainerResizeOverHorizontal
+{
+    background-position:0 -4px;
+}
+
+/* RadSlidingPane tab */
+.RadSplitter_Prompt .rspPaneTabContainer,
+/* RadSlidingPane buttons */
+.RadSplitter_Prompt .rspSlideHeaderDockIcon,
+.RadSplitter_Prompt .rspSlideHeaderUndockIcon,
+.RadSplitter_Prompt .rspSlideHeaderCollapseIcon,
+/* RadSplitBar buttons */
+.RadSplitter_Prompt .rspCollapseBarExpand,
+.RadSplitter_Prompt .rspCollapseBarCollapse,
+
+.RadSplitter_Prompt .rspCollapseBarHorizontalExpand,
+.RadSplitter_Prompt .rspCollapseBarHorizontalCollapse
+{
+    background-image:url('Splitter/ExpandCollapseBarsCommands.gif');
+    background-repeat:no-repeat;
+}
+
+/* RadSlidingPane tab */
+.RadSplitter_Prompt .rspPaneTabContainer
+{
+    background-position:-81px 0;
+    background-repeat:repeat-y;
+}
+
+/* RadSplitBar buttons */
+.RadSplitter_Prompt .rspCollapseBarCollapse
+{	
+	background-position:0 0;
+}
+.RadSplitter_Prompt .rspCollapseBarCollapseOver
+{
+    background-position:-192px 0;
+}
+
+.RadSplitter_Prompt .rspCollapseBarExpand
+{	
+	background-position:-4px 0;
+}
+.RadSplitter_Prompt .rspCollapseBarExpandOver
+{
+    background-position:-196px 0;
+}
+
+.RadSplitter_Prompt .rspCollapseBarHorizontalExpand
+{
+    background-position:-8px -4px;
+}
+.RadSplitter_Prompt .rspCollapseBarHorizontalExpandOver
+{
+    background-position:-8px -12px;
+}
+
+.RadSplitter_Prompt .rspCollapseBarHorizontalCollapse
+{
+    background-position:-8px 0;
+}
+.RadSplitter_Prompt .rspCollapseBarHorizontalCollapseOver
+{
+    background-position:-8px -8px;
+}
+
+/* RadSlidingPane buttons */
+.RadSplitter_Prompt .rspSlideHeaderUndockIcon
+{
+	background-position:-50px 0;
+}
+
+.RadSplitter_Prompt .rspSlideHeaderDockIcon
+{
+	background-position:-35px 0;
+}
+
+.RadSplitter_Prompt .rspSlideHeaderCollapseIcon
+{
+	background-position:-65px 0;
+}
+
+/* RadSlidingPane header */
+.RadSplitter_Prompt .rspSlideHeader, 
+/* RadSlidingPane title */
+.RadSplitter_Prompt .rspSlideTitleContainer,
+/* RadSlidingPane tab, SlideDirection=Top/Bottom */
+.RadSplitter_Prompt .rspBottom .rspPaneTabContainer,
+.RadSplitter_Prompt .rspTop .rspPaneTabContainer
+{
+	background-image:url('Splitter/slideTitleContainerBgr.gif');
+	background-repeat:repeat-x;
+}
+
+.RadSplitter_Prompt .rspBottom .rspPaneTabContainer,
+.RadSplitter_Prompt .rspTop .rspPaneTabContainer
+{
+    background-position:0 -1px;
+}
+
+/* RadSlidingPane header elements */
+.RadSplitter_Prompt .rspSlideTitleContainer,
+.RadSplitter_Prompt .rspSlideHeaderIconWrapper
+{
+	border-bottom:solid 1px #c2cedb;
+}
+
+/* RadSlidingPane title text */
+.RadSplitter_Prompt .rspSlideTitle,
+/* RadSlidingPane tab text */
+.RadSplitter_Prompt .rspPaneTabText
+{
+	font:normal 10px "Segoe UI", Arial, Sans-serif;
+	color:#000;
+}
+.RadSplitter_Prompt .rspSlideTitle
+{	
+	font-size:12px;
+}
+
+/* RadSlidingPane content - this element should not be transparent as it shows above content in adjacent RadPanes */
+.RadSplitter_Prompt .rspSlideContent
+{
+	background-color:#fff;
+}

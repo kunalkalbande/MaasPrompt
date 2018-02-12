@@ -1,0 +1,10 @@
+body, table{background:white;font-family:"Segoe UI", Arial, Helvetica, sans-serif;color:#000;width:100%;font-size:12px;overflow:visible;}
+.printpage{width:720px;margin:30px auto 0 auto;}
+.hdprint{font-size:18px;font-weight:bold;display:block;margin:0 auto;}
+tr{white-space:normal;}
+th, td{padding:3px 5px;border-bottom:1px #e7e7e7 solid;background:#fff;white-space:normal;}
+.noshow, .addbtn, .editbtn, .id_display, .widgeteditbtn, .widgetaddbtn {display:none;text-indent:-9999px;}
+.notes_tb{width:720px;}
+ul, li{list-style-type:none;margin:0;padding:0;float:left;}
+.widgetbudgetoverviewtitle, .widgetcontractoverviewtitle{font-weight:bold;}
+a{text-decoration:none;color:#000;}

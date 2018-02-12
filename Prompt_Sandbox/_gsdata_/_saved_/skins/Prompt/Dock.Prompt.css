@@ -1,0 +1,37 @@
+.RadDock_Prompt {margin:5px;}
+.RadDock_Prompt .rdMiddle .rdLeft,
+.RadDock_Prompt .rdMiddle .rdRight
+{
+	background-image: url('Dock/VerticalSprite.gif');
+}
+
+.RadDock_Prompt .rdTop .rdLeft,
+.RadDock_Prompt .rdTop .rdRight,
+.RadDock_Prompt .rdTop .rdCenter,
+.RadDock_Prompt .rdBottom .rdLeft,
+.RadDock_Prompt .rdBottom .rdRight,
+.RadDock_Prompt .rdBottom .rdCenter
+{
+	background-image: url('Dock/HorizontalSprite.gif');
+}
+
+.RadDock_Prompt .rdCenter .rdCommands a span
+{	z-index:9999;
+	background-image: url('Dock/CommandSprite.gif');
+}
+
+.RadDock_Prompt .rdMiddle .rdCenter,
+.RadDock_Prompt .rdBottom .rdCenter
+{
+	background-color: #fff;
+}
+
+.RadDock_Prompt .rdContent
+{
+
+}
+
+.RadDock_Prompt em
+{
+	color: #000;
+}

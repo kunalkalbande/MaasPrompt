@@ -1,0 +1,1844 @@
+<%@ Page Language="vb" %>
+
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
+<%@ Import Namespace="Prompt" %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<script runat="server">
+    
+    '**** Notes *******
+    ' This screen uses AJAX extensively which can be tricky. Some documentation:
+    '
+    ' Workflow Update - the workflow screen (routing) is called in a RAD popup window. This window allows
+    ' users to route the transaction (approve/reject) to next person in workflow.
+    ' Once transaction is assigned to new person workflow status is updated. To get this to work via 
+    ' Ajax and prevent entire transaction screen from relaod once workflow status is updated, several steps
+    ' are required in both the calling page (this one) and the popup window (workflow_route):
+    '
+    ' In calling page:
+    '   1. Add hidden button to handle a click event
+    '   2. Change Ajax setting in RADAJaxManager to designate what control gets updated when this click event is fired
+    '   3. Add Jscript function to handle call from popup page
+    '   4. Add click event for #1 above and code to execute.
+    '
+    '   In Popup:
+    '   1. Add dummy label control (blank) to assign dynamic jscript to - this can also be used to handle alert windows as is the 
+    '       case in the workflow popup window.
+    '   2. Add JScript funciton to call the #3 item in the "calling page" list above.
+    '   3. On post back inject jscript into text property of alert button to initiate sequence (call alert or calling page function)
+    '
+    '   NOTE: The above has also been implemeted for the linked attachments popup
+    '
+    '
+   
+    Private ContractID As Integer = 0
+    Private TransID As Integer = 0
+    Private ProjectID As Integer = 0
+    Private RetentionPercent As Double = 0
+    Private dLastFiscalYearEnd As Date
+    Private bEnabled As Boolean = True
+    
+    Private bAllowObjectCodeChange As Boolean = False
+    Private bTurnOffValidation As Boolean = False
+    Private bDisableObjectCodeFilter As Boolean = False   'used for legacy conversion to allow change/assignment of object code
+    
+    'for custom JCAF column names if used
+    Private sDonationColumnName As String = ""
+    Private sHazmatColumnName As String = ""
+    Private sGrantColumnName As String = ""
+    Private sMaintColumnName As String = ""
+     
+    Private sAssignedWorkflowRoleType As String = ""    'to hold currently assigned workflow role type for this transaction
+    Private nTransactionTotal As Double = 0
+    
+      
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+          
+        If ProcLib.CheckExpiredSessionForPopup(Page) Then    'session died so close the page - this is to prevent orphaned popups
+            ProcLib.CloseAndRefresh(Page)
+        End If
+        
+        'Get the custom JCAF column name if any
+        Using db1 As New PromptDataHelper
+            db1.FillReader("SELECT * FROM Districts WHERE DistrictID = " & Session("DistrictID"))
+            While db1.Reader.Read
+                If Not IsDBNull(db1.Reader("JCAFDonationColumnName")) Then
+                    If db1.Reader("JCAFDonationColumnName") <> "" Then
+                        sDonationColumnName = db1.Reader("JCAFDonationColumnName")   'use xx to have other routines ignore this label
+                    End If
+                End If
+                If Not IsDBNull(db1.Reader("JCAFGrantColumnName")) Then
+                    If db1.Reader("JCAFGrantColumnName") <> "" Then
+                        sGrantColumnName = db1.Reader("JCAFGrantColumnName")   'use xx to have other routines ignore this label
+                    End If
+                End If
+                If Not IsDBNull(db1.Reader("JCAFHazmatColumnName")) Then
+                    If db1.Reader("JCAFHazmatColumnName") <> "" Then
+                        sHazmatColumnName = db1.Reader("JCAFHazmatColumnName")   'use xx to have other routines ignore this label
+                    End If
+                End If
+                If Not IsDBNull(db1.Reader("JCAFMaintColumnName")) Then
+                    If db1.Reader("JCAFMaintColumnName") <> "" Then
+                        sMaintColumnName = db1.Reader("JCAFMaintColumnName")   'use xx to have other routines ignore this label
+                    End If
+                End If
+            End While
+        End Using
+
+        
+        Page.ClientScript.RegisterHiddenField("__EVENTTARGET", butSave.ClientID)
+
+        lblMessage.Text = ""
+        lblAllocationMessage.Text = ""
+ 
+      
+        TransID = Request.QueryString("ID")
+        ProjectID = Request.QueryString("ProjectID")
+        ContractID = Request.QueryString("ContractID")
+        
+        If Request.QueryString("CollegeID") <> "" Then   'HACK - incase this screen is called from dashboard or search need to set session var college id
+            Session("CollegeId") = Request.QueryString("CollegeID")
+        End If
+ 
+        
+        'Get the parent contract info and validation flags
+        Using db As New promptTransaction
+            db.CallingPage = Page
+
+            db.SetParentContract(ContractID)
+            ProjectID = db.ParentContract.ProjectID
+            
+            bDisableObjectCodeFilter = db.DisableObjectCodeFilter
+            bAllowObjectCodeChange = db.AllowObjectCodeChange
+            
+            bTurnOffValidation = db.TurnOffValidation
+            If db.IsPassthroughProject(ProjectID) Then   'turn off validation for passthrough projects
+                bTurnOffValidation = True
+            End If
+        End Using
+        
+        lstObjectCode.Enabled = False
+  
+          
+        'Configure visiblility of Workflow Panel if enabled                    
+        If HttpContext.Current.Session("EnableWorkflow") = "1" Then
+            lblWorkflowScenerio.Visible = True
+            lstxWorkflowScenerioID.Visible = True
+            panelWorkflow.Visible = True
+        Else                'turn off workflow info
+            panelWorkflow.Visible = False
+            lblWorkflowScenerio.Visible = False
+            lstxWorkflowScenerioID.Visible = False
+        End If
+ 
+        If IsPostBack And Session("passback") = "" Then   'only do the following on post back or pass back
+            TransID = lblID.Text
+        Else  'only do the following on first load
+ 
+            Using db As New promptTransaction
+                db.CallingPage = Page
+
+                If Request.QueryString("new") = "Inv" Then    'load new record for add
+                    db.GetNewTransaction(ContractID)   'loads default values to record from parent contract
+                    ProjectID = db.ParentContract.ProjectID
+                    TransID = 0
+                    lnkShowLastUpdateInfo.Visible = False
+
+                    butFlag.Visible = False
+                    panelWorkflow.Visible = False     'hide workflow on new transaction
+
+                Else     'Existing transaction so slightly different configration
+                                       
+                    'load existing transaction record
+                    db.GetExistingTransaction(TransID, ContractID)   'loads existing trans record
+     
+                    lstxWorkflowScenerioID.SelectedValue = db.WorkflowScenerioID
+                    nTransactionTotal = db.TotalGrossAmount
+            
+                    LoadLinkedAttachments()
+                    
+                    GetCurrentWorkflowStatus()
+                    
+                    'Configure the RAD LastUpdate Popup for existing transaction
+                    SetUpRadWindowsForExistingTransaction()
+ 
+                    lnkShowLastUpdateInfo.Attributes("onclick") = "return ShowLastUpdateInfo(this,'" & TransID & "','Transaction');"
+                    lnkShowLastUpdateInfo.NavigateUrl = "#"
+                    
+                    butFlag.Attributes("onclick") = "return ShowFlag('" & TransID & "');"
+                    butFlag.NavigateUrl = "#"
+                    
+                End If
+                
+                'POLine Combo Box
+                If Session("DistrictID") = 55 Then   'HACK: for FHDA only
+                    cboPOLineNumber.AllowCustomText = False
+                    db.GetFRSPOLineNumbers(cboPOLineNumber, txtPurchaseOrderNumber.Text)
+                    
+                Else
+                    'for now hide
+                    cboPOLineNumber.Visible = False
+                    lblPoline.Visible = False
+                    'cboPOLineNumber.Width = Unit.Pixel(75)
+                    'cboPOLineNumber.Height = Unit.Pixel(25)
+                End If
+                
+                lblID.Text = TransID
+                dLastFiscalYearEnd = db.ParentContract.LastFiscalYearEnd
+                
+                
+                                 
+            End Using
+            
+            'Set up workflow buttons              
+            lnkShowWorkflowHistory.Attributes("onclick") = "return ShowWorkflowHistory('" & TransID & "');"
+            lnkShowWorkflowHistory.NavigateUrl = "#"
+   
+            SetUpRadWindows()
+            
+ 
+            'set up help button
+            Session("PageID") = "TransactionEdit"
+            butHelp.Attributes("onclick") = "return ShowHelp();"
+            butHelp.NavigateUrl = "#"
+          
+            'set up attachments button
+            lnkManageAttachments.Attributes("onclick") = "return ManageAttachments('" & TransID & "','Transaction');"
+            lnkManageAttachments.NavigateUrl = "#"
+            
+            'set up add new contractor link
+            lnkAddNew.Attributes("onclick") = "return AddContractor();"
+
+            
+            'HACK --------
+                       
+            If Session("DistrictID") <> 55 Then  ' only for fhda now
+                lstCode1099.Visible = False
+                lbl1099code1.Visible = False
+                
+                lstVerified.Visible = False
+                lblVerified1.Visible = False
+            End If
+                                
+            ViewState.Add("OldStatusValue", lstStatus.SelectedValue)
+            'statusOldValue.Value = lstStatus.SelectedValue    'to save value for validation
+            
+            txtInvoiceDate.Focus()
+             
+        End If
+
+        'check for passback value from contractor select and if there, add entry to dropdown and select
+        If Session("passback") <> "" Then
+            Dim i As New ListItem
+            i.Text = Session("passback")
+            i.Value = Session("passbackID")
+            lstContractorID.Items.Add(i)
+            lstContractorID.SelectedValue = i.Value
+            Session("passback") = ""
+            Session("passbackID") = ""
+        End If
+
+        'Lock Down for Read Only
+        If IsDate(txtInvoiceDate.SelectedDate) Then
+            If txtInvoiceDate.SelectedDate <= dLastFiscalYearEnd Then  'locks down controls if appropriate
+                bEnabled = False
+                lblMessage.Text = "Note: Transaction is View Only because Invoice Date is in past Fiscal Year."
+            End If
+        End If
+       
+                    
+        Using db As New EISSecurity
+            db.DistrictID = Session("DistrictID")
+            db.CollegeID = Session("CollegeID")
+            db.UserID = Session("UserID")
+            db.ProjectID = Request.QueryString("ProjectID")
+            If db.FindUserPermission("Transactions", "Write") Then
+                bEnabled = True
+            Else
+                bEnabled = False
+            End If
+        End Using
+        
+        'NOTE -  we may want to enhance this so cannot change transactions submitted to district or Paid.
+        'If lstStatus.SelectedValue = "Payment Pending" Or lstStatus.SelectedValue = "Paid" Then
+        '    bEnabled = False
+        'End If
+       
+               
+              
+        'Check for Object Code changeability
+        If bAllowObjectCodeChange = True Then
+            lstObjectCode.Enabled = True
+        Else
+            lstObjectCode.Enabled = False
+        End If
+   
+        BuildAllocationTable() 'NOTE: WE Do this here so we can tell if read only page before creating allocation cells
+
+        If bEnabled = False Then
+            butDelete.Visible = False
+            Dim c As Control = Me.FindControl("Form1")
+            Dim cc As Control
+            For Each cc In c.Controls
+                If TypeOf cc Is System.Web.UI.WebControls.TextBox Then
+                    CType(cc, System.Web.UI.WebControls.TextBox).Enabled = False
+                End If
+                If TypeOf cc Is DropDownList Then
+                    CType(cc, DropDownList).Enabled = False
+                End If
+                If TypeOf cc Is Telerik.Web.UI.RadDatePicker Then
+                    CType(cc, Telerik.Web.UI.RadDatePicker).Enabled = False
+                End If
+                If TypeOf cc Is Telerik.Web.UI.RadNumericTextBox Then
+                    CType(cc, Telerik.Web.UI.RadNumericTextBox).Enabled = False
+                End If
+                If TypeOf cc Is CheckBox Then
+                    CType(cc, CheckBox).Enabled = False
+                End If
+                If TypeOf cc Is Telerik.Web.UI.RadComboBox Then
+                    CType(cc, Telerik.Web.UI.RadComboBox).Enabled = False
+                End If
+            Next
+
+            'lock down contractor add
+            lnkAddNew.Visible = False
+            lnkOverride.Visible = False
+            butSave.ImageUrl = "images/button_close.gif"
+            
+            lnkManageAttachments.Visible = False
+            
+        End If
+
+        'Set Due Date if not set already
+        If Not IsDate(txtDueDate.SelectedDate) Then
+            txtDueDate.SelectedDate = Format(DateAdd(DateInterval.Day, 30, Now), "MM/dd/yyyy")
+        End If
+ 
+    End Sub
+    
+    Private Sub GetCurrentWorkflowStatus()
+        
+        If HttpContext.Current.Session("EnableWorkflow") = "1" Then       'get the limits and flags for approval amounts
+
+            lstxWorkflowScenerioID.Enabled = True
+            
+            Dim bMaxWorkflowApprovalOk As Boolean = False
+            Dim nMaxWorkflowApprovalAmount As Double = 0
+        
+            Using rs As New promptWorkflow
+                lblCurrentWorkflowOwner.Text = rs.GetCurrentWorkflowOwner(TransID)
+                sAssignedWorkflowRoleType = rs.TransactionWorkflowRoleType
+
+                Dim WorkflowScenerioID As Integer = 0
+                If lstxWorkflowScenerioID.Items.Count > 0 Then
+                    WorkflowScenerioID = lstxWorkflowScenerioID.SelectedValue
+                End If
+                
+                nTransactionTotal = rs.TransactionTotalAmount
+                
+                Dim nmax As Double = rs.GetMaxApprovalLevel(WorkflowScenerioID)
+                If nmax >= nTransactionTotal Then
+                    bMaxWorkflowApprovalOk = True
+                End If
+         
+                If rs.IsCurrentlyInWorkflow Then  'Check if in workflow already and if so disable scenerio selection
+                    lstxWorkflowScenerioID.Enabled = False
+                Else
+                    lstxWorkflowScenerioID.Enabled = True
+                End If
+                       
+                If lstxWorkflowScenerioID.Items.Count = 0 Then
+                    If lstStatus.Text <> "Paid" Then
+                        lblMessage.Text = "Warning: To enable workflow, please assign scenerio(s) to parent contract."
+                        lblMessage.Visible = True
+                        lstxWorkflowScenerioID.Enabled = False
+                    End If
+        
+                ElseIf bMaxWorkflowApprovalOk = False Then
+                    If lstStatus.SelectedItem.Text <> "Paid" Then
+                        lblMessage.Text = "Warning: Transaction amount is " & FormatCurrency(nTransactionTotal) & " but Workflow Scenerio has limit of " & FormatCurrency(nMaxWorkflowApprovalAmount)
+                        lblMessage.Visible = True
+                        lstxWorkflowScenerioID.Enabled = True
+                    End If
+                
+                ElseIf lstStatus.SelectedItem.Text = "Paid" Or lblCurrentWorkflowOwner.Text = "Complete" Then   'disable
+                    lstxWorkflowScenerioID.Enabled = False
+                
+                End If
+            
+ 
+            End Using
+        
+                    
+        End If
+        
+    End Sub
+      
+    
+    Private Sub LoadLinkedAttachments()
+        'get the linked attachements
+        lstAttachments.Items.Clear()
+        Using db As New promptTransaction
+            Dim rs As DataTable = db.GetLinkedAttachments(TransID)
+            If rs.Rows.Count > 0 Then
+                For Each Row As DataRow In rs.Rows
+                    Dim li As New ListItem
+                    li.Text = Row("FileName")
+                    li.Value = Row("AttachmentID")
+                    li.Attributes("ondblclick") = "return OpenAttachment('" & li.Value & "');"   'NOTE:Does not work in IE for some reason
+                    lstAttachments.Items.Add(li)
+                Next
+
+            Else '
+                If HttpContext.Current.Session("EnableWorkflow") = "1" Then   'turn off workflow info
+                    lstAttachments.Items.Add("(To EnableWorkflow Attach Invoice)")
+                    
+                Else
+                    lstAttachments.Items.Add("No Attachments Found")
+                End If
+                
+            End If
+        End Using
+        
+ 
+       
+    End Sub
+    
+ 
+    
+    Private Sub SetUpRadWindowsForExistingTransaction()
+        With RadPopups
+            .Skin = "Office2007"
+            .VisibleOnPageLoad = False
+                         
+            Dim ww As New Telerik.Web.UI.RadWindow
+            ww = New Telerik.Web.UI.RadWindow
+            With ww
+                .ID = "OpenAttachmentWindow"
+                .NavigateUrl = ""
+                .Title = "Open Attachment"
+                .Width = 500
+                .Height = 300
+                .Top = 200
+                .Left = 20
+                .Modal = False
+                .VisibleStatusbar = True
+                .ReloadOnShow = True
+                .Behaviors = WindowBehaviors.Close + WindowBehaviors.Move
+            End With
+            .Windows.Add(ww)
+                        
+                        
+            ww = New Telerik.Web.UI.RadWindow
+            With ww
+                .ID = "ShowLastUpdateInfo"
+                .NavigateUrl = ""
+                .Title = ""
+                .Width = 350
+                .Height = 150
+                .Top = 200
+                .Left = 20
+                .Modal = False
+                .VisibleStatusbar = True
+                .ReloadOnShow = True
+                .Behaviors = WindowBehaviors.Close + WindowBehaviors.Move
+            End With
+            .Windows.Add(ww)
+                        
+            ww = New Telerik.Web.UI.RadWindow
+            With ww
+                .ID = "ShowWorkflowHistory"
+                .NavigateUrl = ""
+                .Title = ""
+                .Width = 500
+                .Height = 250
+                .Top = 200
+                .Left = 20
+                .Modal = False
+                .VisibleStatusbar = True
+                .ReloadOnShow = True
+                .Behaviors = WindowBehaviors.Close + WindowBehaviors.Move
+            End With
+            .Windows.Add(ww)
+                        
+            ww = New Telerik.Web.UI.RadWindow
+            With ww
+                .ID = "ShowRouteTransaction"
+                .NavigateUrl = ""
+                .Title = ""
+                .Width = 500
+                .Height = 300
+                .Top = 200
+                .Left = 20
+                .Modal = False
+                .VisibleStatusbar = True
+                .ReloadOnShow = True
+                .Behaviors = WindowBehaviors.Close + WindowBehaviors.Move
+            End With
+            .Windows.Add(ww)
+                        
+            'Configure Flag Window
+            ww = New Telerik.Web.UI.RadWindow
+            With ww
+                .ID = "ShowFlag"
+                .NavigateUrl = ""
+                .Title = ""
+                .Width = 500
+                .Height = 250
+                .Top = 200
+                .Left = 20
+                .Modal = False
+                .VisibleStatusbar = True
+                .ReloadOnShow = True
+                .Behaviors = WindowBehaviors.Close + WindowBehaviors.Move
+            End With
+            .Windows.Add(ww)
+
+        End With
+    End Sub
+    
+    Private Sub SetUpRadWindows()
+        With RadPopups
+            .Skin = "Office2007"
+            .VisibleOnPageLoad = False
+            Dim ww As New Telerik.Web.UI.RadWindow
+            With ww
+                .ID = "ShowHelp"
+                .NavigateUrl = ""
+                .Title = ""
+                .Width = 450
+                .Height = 550
+                .Top = 20
+                .Left = 20
+                .Modal = False
+                .VisibleStatusbar = True
+                .ReloadOnShow = True
+                .Behaviors = WindowBehaviors.Close + WindowBehaviors.Move
+            End With
+            .Windows.Add(ww)
+           
+            ww = New Telerik.Web.UI.RadWindow
+            With ww
+                .ID = "AddContractor"
+                .NavigateUrl = ""
+                .Title = ""
+                .Width = 550
+                .Height = 650
+                .Top = 200
+                .Left = 20
+                .Modal = False
+                .VisibleStatusbar = True
+                .ReloadOnShow = True
+                .Behaviors = WindowBehaviors.Close + WindowBehaviors.Move
+            End With
+            .Windows.Add(ww)
+              
+                
+            ww = New Telerik.Web.UI.RadWindow
+            With ww
+                .ID = "ShowJCAFNotes"
+                .NavigateUrl = ""
+                .Title = ""
+                .Width = 350
+                .Height = 350
+                .Top = 200
+                .Left = 20
+                .Modal = False
+                .VisibleStatusbar = True
+                .ReloadOnShow = True
+                .Behaviors = WindowBehaviors.Close + WindowBehaviors.Move
+            End With
+            .Windows.Add(ww)
+                
+            ww = New Telerik.Web.UI.RadWindow
+            With ww
+                .ID = "ManageAttachments"
+                .NavigateUrl = ""
+                .Title = ""
+                .Width = 500
+                .Height = 450
+                .Top = 200
+                .Left = 20
+                .Modal = False
+                .VisibleStatusbar = True
+                .ReloadOnShow = True
+                .Behaviors = WindowBehaviors.Close + WindowBehaviors.Move
+            End With
+            .Windows.Add(ww)
+           
+ 
+        End With
+    End Sub
+    
+    Private Sub BuildAllocationTable()
+   
+        With tblAlloc
+            .Rows.Clear()
+            .Width = Unit.Percentage(95)
+        End With
+
+        Dim r1 As New TableRow
+        Dim r1c1 As New TableCell
+
+        With r1c1
+            .Text = "<b><u>Allocation</b></u>"
+            .ColumnSpan = 4
+            .HorizontalAlign = HorizontalAlign.Center
+            .CssClass = "smalltext"
+        End With
+        r1.Cells.Add(r1c1)
+        tblAlloc.Rows.Add(r1)
+
+
+        'build header row
+        Dim r2 As New TableRow
+        Dim r2c1 As New TableCell
+        Dim r2c2 As New TableCell
+        Dim r2c3 As New TableCell
+        Dim r2c4 As New TableCell
+
+        r2c1.Width = Unit.Percentage(30)
+        r2c1.Text = "Budget Line"
+        r2.Cells.Add(r2c1)
+
+        r2c2.Width = Unit.Percentage(20)
+        r2c2.Text = "Source"
+        r2.Cells.Add(r2c2)
+
+        r2c3.Width = Unit.Percentage(20)
+        r2c3.Text = "Amount"
+        r2c3.HorizontalAlign = HorizontalAlign.Right
+        r2.Cells.Add(r2c3)
+
+        r2c4.Width = Unit.Percentage(20)
+        r2c4.Text = "Obj Code Alloc Bal"
+        r2c4.HorizontalAlign = HorizontalAlign.Right
+        r2.Cells.Add(r2c4)
+
+        r2.CssClass = "smalltext"
+        r2.BackColor = Color.Silver
+
+        tblAlloc.Rows.Add(r2)
+
+        Dim sCurrGroup As String = ""
+
+        'Get the Detail Items for this Transaction
+        Dim rsDet As DataTable
+        Dim rsAlloc As DataTable
+        Using db As New promptTransaction
+            db.CallingPage = Page
+            db.SetDistrictValidationFlags()
+            rsDet = db.GetTransactionDetailRecords(TransID)  'get  existing detail records
+            rsAlloc = db.GetAllocationRecords(ProjectID, ContractID) 'Get the budget items (with values > 0) and matching object code for contract
+            'and loop through for allocation
+
+            RetentionPercent = db.ParentContract.RetentionPercent  'same for all records as stored in contract record
+            AllocationRetPercent.Value = RetentionPercent   'hidden field for javascript calcs
+            
+            
+        End Using
+  
+        For Each row As DataRow In rsAlloc.Rows()
+ 
+            If sCurrGroup <> ProcLib.CheckNullDBField(row("BudgetGroup")) Then
+                sCurrGroup = row("BudgetGroup")
+                'build header row
+                Dim r3 As New TableRow
+                Dim r3c1 As New TableCell
+
+                With r3c1
+                    .Width = Unit.Percentage(100)
+                    .ColumnSpan = 4
+                    .Text = "<b>" & sCurrGroup & "</b>"
+                End With
+
+                With r3
+                    .Cells.Add(r3c1)
+                    .CssClass = "smalltext"
+
+                End With
+
+                tblAlloc.Rows.Add(r3)
+
+            End If
+
+  
+            'build detail row
+            Dim r4 As New TableRow
+            Dim r4c1 As New TableCell
+            Dim r4c2 As New TableCell
+            Dim r4c3 As New TableCell
+            Dim r4c4 As New TableCell
+      
+            'Customize the description if customized JCAF column names are used
+            Dim sDescr As String = row("Description")
+            If sDescr.Contains("- Grant") And sGrantColumnName <> "" Then
+                sDescr = sDescr.Replace("- Grant", " - " & sGrantColumnName)
+            End If
+            If sDescr.Contains("- Donation") And sDonationColumnName <> "" Then
+                sDescr = sDescr.Replace("- Donation", " - " & sDonationColumnName)
+            End If
+            If sDescr.Contains("- Maint") And sMaintColumnName <> "" Then
+                sDescr = sDescr.Replace("- Maint", " - " & sMaintColumnName)
+            End If
+            If sDescr.Contains("- Grant") And sHazmatColumnName <> "" Then
+                sDescr = sDescr.Replace("- Hazmat", " - " & sHazmatColumnName)
+            End If
+            
+            With r4c1
+                .Wrap = False
+                .Text = sDescr
+                .ForeColor = Color.DarkBlue
+            End With
+            
+            'Check for Notes and add link to description if present -- NOTE: ONly in ObjectCodeFiltered status
+            If bDisableObjectCodeFilter = False Then
+                Dim strNote As String = Trim(ProcLib.CheckNullDBField(row("Note")))
+                If strNote <> "" Then   'there is a note so add the image and hover window code
+                    Dim strNoteParms As String = "Notes:" & ProjectID & ":" & row("ColumnName")    'concatonate the popup type, projectID and field name to use for hover window parm
+                    Dim strNoteLink As String = ""
+                    strNoteLink = "<span id='qqq1' onclick=""return ShowJCAFNotes('" & strNoteParms & "')"";>"
+                    strNoteLink = strNoteLink & "<img src='images/prompt_note.gif' width='15' height='14'></span>"
+
+                    r4c1.Text = r4c1.Text & "&nbsp;&nbsp" & strNoteLink
+                End If
+            End If
+            
+            With r4c2
+                .Text = row("Source")
+                .ForeColor = Color.DarkBlue
+            End With
+
+            Dim ctrlEdit As New Telerik.Web.UI.RadNumericTextBox 'create text box and fill with current value
+            With ctrlEdit
+                
+                If Not bTurnOffValidation Then
+                    .ClientEvents.OnValueChanging = "CheckAllocation"            'to test that amount entered is not > than element remaining bal
+                Else
+                    .ClientEvents.OnValueChanged = "RecalcOnly"                 'just recalc
+                End If
+
+                .ID = "txxt" & row("ColumnName")
+
+                .Width = Unit.Point(65)
+                .TabIndex = 99
+   
+                For Each r As DataRow In rsDet.Rows()
+                    If r.Item("BudgetLineName") = row("ColumnName") Then
+                        .Text = FormatNumber(r.Item("Amount"), 2, TriState.False, TriState.False, TriState.False)
+                        Exit For
+                    End If
+                Next
+                .Enabled = bEnabled
+                .Type = Telerik.Web.UI.NumericType.Currency
+                
+            End With
+
+            'add ajax support to this control
+            'RadAjaxManager1.AjaxSettings.AddAjaxSetting(RadAjaxManager1, ctrlEdit, Nothing)
+            
+            With r4c3
+                .Controls.Add(ctrlEdit)
+                .HorizontalAlign = HorizontalAlign.Right
+            End With
+            
+            'build aval alloc label
+            Dim nBal As Double = 0
+            If bDisableObjectCodeFilter = False Then
+                nBal = row("RemainingAllocBalance")
+            Else
+                nBal = row("BudgetAmount") - IIf(IsDBNull(row("TransTotal")), 0, row("TransTotal"))
+            End If
+ 
+            Dim ctrlBal As New HyperLink
+        
+            With ctrlBal
+                .Text = FormatCurrency(nBal)
+                .ToolTip = "This is the remaining balance allocated to this JCAF line for this Object Code."
+                If Not bTurnOffValidation Then
+                    If Not IsDBNull(row("Check14DField")) Then      'Check 14D status
+                        Dim s14Dfld As String = row("Check14DField")
+                        If row(s14Dfld) <> "1" Then   '14D is not there for this field
+                            .Text = .Text & " (14D!)"
+                            ctrlEdit.Enabled = False
+                            ctrlEdit.ToolTip = "You cannot allocate to this item until 14D is recieved."
+
+                        End If
+                    End If
+                End If
+                
+                .NavigateUrl = "http://216.129.104.66/q34jf8sfa?/PromptReports/info_AllocationDetail&ProjID=" & ProjectID & "&bucket=" & row("ColumnName")
+                .Target = "_blank"
+                If nBal < 0 Then
+                    .ForeColor = Color.Red
+                End If
+                .ID = "lnk" & row("ColumnName")
+
+                .Enabled = bEnabled
+
+            End With
+            
+            'add ajax support to this control
+            RadAjaxManager1.AjaxSettings.AddAjaxSetting(RadAjaxManager1, ctrlBal, Nothing)
+            
+                     
+            With r4c4
+                .Controls.Add(ctrlBal)
+                .HorizontalAlign = HorizontalAlign.Right
+                .ToolTip = "This balance is the original JCAF balance for this budget item minus all posted transactions to this budget item. "
+                .ToolTip = .ToolTip & "The NET remaining amount. Click on this number for a report of all posted allocations."
+
+            End With
+
+            With r4
+                .Cells.Add(r4c1)
+                .Cells.Add(r4c2)
+                .Cells.Add(r4c3)
+                .Cells.Add(r4c4)
+                .CssClass = "ViewDataDisplay"
+            End With
+
+            tblAlloc.Rows.Add(r4)
+
+        Next
+
+        '------------- Totals ------------------
+        Dim nGross As Double = 0
+        Dim nRet As Double = 0
+        Dim nPayable As Double = 0
+        
+        Dim nTaxAmount As Double = 0
+        
+        If TransID > 0 Then  'only get for existing
+            Using db As New promptTransaction
+                db.GetTransactionTotals(TransID)
+                nGross = db.TotalGrossAmount
+                nRet = db.TotalRetentionAmount
+                nPayable = db.TotalPayableAmount
+                nTaxAmount = db.TaxAmount
+            End Using
+        End If
+   
+        'build Totals rows
+        Dim r5 As New TableRow
+        Dim r5c1 As New TableCell
+
+        With r5c1
+            .Width = Unit.Percentage(100)
+            .ColumnSpan = 4
+            .Text = "<hr size=1>"
+        End With
+
+        r5.Cells.Add(r5c1)
+        tblAlloc.Rows.Add(r5)
+
+        'add gross amount
+        Dim r6 As New TableRow
+        Dim r6c1 As New TableCell
+        Dim r6c1a As New TableCell
+        Dim r6c2 As New TableCell
+        Dim r6c3 As New TableCell
+        
+        
+        'Add the Tax Amount  
+        
+        Dim ctrlTax As New Telerik.Web.UI.RadNumericTextBox    'create text box
+        With ctrlTax
+            .ID = "txtTaxAdjustmentAmount"
+            .Width = Unit.Point(65)
+            .Text = FormatNumber(nTaxAmount, 2, TriState.False, TriState.False, TriState.False)
+            .TabIndex = 99
+            .Enabled = bEnabled
+        End With
+        
+    
+        
+        With r6c1a
+            .ColumnSpan = 1
+            .HorizontalAlign = HorizontalAlign.Left
+            .Text = ""
+            .ForeColor = Color.DarkBlue
+            .CssClass = "smalltext"
+            
+            Dim lblTax As New Label
+            lblTax.Text = "Tax Adj Amount:"
+            .Controls.Add(lblTax)
+            .Controls.Add(ctrlTax)
+        End With
+
+   
+        
+        
+        'Add the Gross AMount
+        With r6c1
+            .ColumnSpan = 1
+            .HorizontalAlign = HorizontalAlign.Right
+            .Text = "Gross Amount:"
+            .ForeColor = Color.DarkBlue
+            .CssClass = "smalltext"
+        End With
+
+        Dim ctrlGross As New Telerik.Web.UI.RadNumericTextBox    'create text box
+        With ctrlGross
+            .ID = "txtTotalAmount"
+            .Width = Unit.Point(65)
+            .Text = FormatNumber(nGross, 2, TriState.False, TriState.False, TriState.False)
+            .TabIndex = 99
+            .Enabled = False
+        End With
+   
+        
+        'add ajax support to this control
+        RadAjaxManager1.AjaxSettings.AddAjaxSetting(RadAjaxManager1, ctrlGross, Nothing)
+
+        
+        
+        With r6c2
+            .Controls.Add(ctrlGross)
+            .HorizontalAlign = HorizontalAlign.Right
+        End With
+        With r6c3
+            .Text = "."
+            .HorizontalAlign = HorizontalAlign.Right
+        End With
+        With r6
+            .Cells.Add(r6c1a)
+            .Cells.Add(r6c1)
+            .Cells.Add(r6c2)
+            .Cells.Add(r6c3)
+        End With
+        tblAlloc.Rows.Add(r6)
+
+        'add Retention amount
+        Dim r7 As New TableRow
+        Dim r7c1 As New TableCell
+        Dim r7c2 As New TableCell
+        Dim r7c3 As New TableCell
+        With r7c1
+            .ColumnSpan = 2
+            .HorizontalAlign = HorizontalAlign.Right
+            .Text = "Retention Amount:"
+            .ForeColor = Color.DarkBlue
+            .CssClass = "smalltext"
+        End With
+
+        Dim ctrlRet As New Telerik.Web.UI.RadNumericTextBox    'create text box
+        With ctrlRet
+            .ID = "txtRetentionAmount"
+            .Width = Unit.Point(65)
+            .Text = FormatNumber(nRet, 2, TriState.False, TriState.False, TriState.False)
+            .TabIndex = 99
+            .ClientEvents.OnValueChanged = "RecalcRetentionChange" 'just recalc if control is enable which means user override
+            .Enabled = False
+        End With
+ 
+        
+        With r7c2
+            .Controls.Add(ctrlRet)
+            .HorizontalAlign = HorizontalAlign.Right
+        End With
+
+        Dim ctrlRetPercent As New Label   'create number display for ret percentage
+        With ctrlRetPercent
+            .ID = "lblRetentionPercent"
+            .Text = RetentionPercent
+            .CssClass = "smalltext"
+        End With
+        Dim ctrlRetPercent1 As New Label   'create additional display for ret percentage
+        With ctrlRetPercent1
+            .ID = "lblRetentionAdditional"
+            .Text = "% &nbsp;&nbsp;&nbsp;"
+            .CssClass = "smalltext"
+        End With
+
+        'Get Retention Override
+        Dim bRetOverride As Boolean = False
+        Using rs1 As New PromptDataHelper
+            With rs1
+                'get retention percent
+                .FillReader("SELECT AllowRetentionOverride FROM Transactions WHERE TransactionID = " & TransID)
+                While .Reader.Read
+                    If Not IsDBNull(.Reader("AllowRetentionOverride")) Then
+                        bRetOverride = .Reader("AllowRetentionOverride")
+                    End If
+                End While
+                .Reader.Close()
+            End With
+        End Using
+        
+        Dim ctrlRecalcRet As New CheckBox   'create recalc link
+        With ctrlRecalcRet
+            .ID = "chkAllowRetentionOverride"
+            .Attributes("onclick") = "return EnableRetentionOverride(this);"
+            .Checked = bRetOverride
+            .Text = "Override"
+            .CssClass = "smalltext"
+            .ToolTip = "This will allow you to override the retention recalculation from the on the default percentage."
+            .Enabled = bEnabled
+        End With
+
+        With r7c3
+            .HorizontalAlign = HorizontalAlign.Left
+            .Controls.Add(ctrlRetPercent)
+            .Controls.Add(ctrlRetPercent1)
+            .Controls.Add(ctrlRecalcRet)
+        End With
+
+
+        With r7
+            .Cells.Add(r7c1)
+            .Cells.Add(r7c2)
+            .Cells.Add(r7c3)
+        End With
+        tblAlloc.Rows.Add(r7)
+
+        'add Payable amount
+        Dim r8 As New TableRow
+        Dim r8c1 As New TableCell
+        Dim r8c2 As New TableCell
+        Dim r8c3 As New TableCell
+        With r8c1
+            .ColumnSpan = 2
+            .HorizontalAlign = HorizontalAlign.Right
+            .Text = "Payable Amount:"
+            .CssClass = "smalltext"
+            .ForeColor = Color.DarkBlue
+        End With
+
+        Dim ctrlTot As New Telerik.Web.UI.RadNumericTextBox
+        With ctrlTot
+            .ID = "txtPayableAmount"
+            .Width = Unit.Point(65)
+            .Text = FormatNumber(nPayable, 2, TriState.False, TriState.False, TriState.False)
+            .TabIndex = 99
+            .Enabled = False
+        End With
+        
+        RadAjaxManager1.AjaxSettings.AddAjaxSetting(RadAjaxManager1, ctrlTot, Nothing)
+
+        With r8c2
+            .Controls.Add(ctrlTot)
+            .HorizontalAlign = HorizontalAlign.Right
+        End With
+        With r8c3
+            .Text = "."
+            .HorizontalAlign = HorizontalAlign.Right
+        End With
+        With r8
+            .Cells.Add(r8c1)
+            .Cells.Add(r8c2)
+            .Cells.Add(r8c3)
+        End With
+        tblAlloc.Rows.Add(r8)
+
+    End Sub
+
+    Private Sub butSave_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles butSave.Click
+
+        If bEnabled = True Then  'save transaction
+
+            Using db As New promptTransaction
+                db.CallingPage = Page
+                Dim sNewInvNumber As String = DirectCast(Form.FindControl("txtInvoiceNumber"), TextBox).Text
+                Dim result As String = db.ValidateForDuplicateInvoiceNumber(txtInvoiceNumber.Text, TransID, ContractID)
+                If result <> "" Then
+                    lblMessage.Text = result
+                    Exit Sub
+                Else
+                    Dim sval As String = cboPOLineNumber.SelectedValue
+                    Dim stxt As String = cboPOLineNumber.Text
+                    db.SaveTransaction(TransID)
+                End If
+            End Using
+            
+            Session("RtnFromEdit") = True
+            ProcLib.CloseAndRefresh(Page)
+                        
+        Else
+            ProcLib.CloseOnly(Page)
+        End If
+    End Sub
+
+    Private Sub butDelete_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles butDelete.Click
+        Using db As New promptTransaction
+            db.DeleteTransaction(TransID)
+        End Using
+        Session("RtnFromEdit") = True
+        ProcLib.CloseAndRefresh(Page)
+
+    End Sub
+
+    Protected Sub lstStatus_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+        
+        Dim msg As String = ""
+        If Session("DistrictID") = 55 Then 'HACK - only for FHDA at the moment
+            If lstStatus.SelectedValue = "FDO Approved" Then
+           
+                If txtInvoiceNumber.Text = "" Or Not IsDate(txtDueDate.SelectedDate) Or txtPurchaseOrderNumber.Text = "" Or txtAccountNumber.Text = "" Then
+                    msg = "Please enter an Invoice Number, Due Date, P.O. Number and Account Number to approve payment."
+                Else  'then check contractor
+                    Using db As New promptTransaction
+                        If Not db.ValidateDistrictContractorID(lstContractorID.SelectedValue) Then
+                            msg = "The Contractor you have selected must have a valid District Contractor ID assigned to it to approve payment."
+                        End If
+                        
+                        'check for valid retention account number and valid tax account number if needed
+                        Dim ctrlTax As Telerik.Web.UI.RadNumericTextBox = Form.FindControl("txtTaxAdjustmentAmount")
+                        Dim ctrlRet As Telerik.Web.UI.RadNumericTextBox = Form.FindControl("txtRetentionAmount")
+                        Dim retamt As Double = ctrlRet.Value
+                        Dim taxamt As Double = ctrlTax.Value
+                        If retamt > 0 Or taxamt > 0 Then
+                            'check that project has tax account and/or retention account assigned
+                            Dim result As String = db.ValidateProjectRetentionAndTaxAccounts(ProjectID)
+                            If taxamt > 0 And result.Contains("Tax") = False Then
+                                msg = "Project Edit screen must have Tax Acct Assigned to approve payment."
+                            End If
+                            If retamt > 0 And result.Contains("Retention") = False Then
+                                msg = "Project Edit screen must have Retention Acct Assigned to approve payment."
+                            End If
+                        End If
+                        
+                        'Transaction must be assigned to Workflow scenerio
+                        If lstxWorkflowScenerioID.SelectedValue = 0 Then
+                            msg = "Transaction must be assigned to workflow scenerio before FDO Approval."
+                        End If
+                        
+                        'If Scenario is FFE then check REcd date
+                        If db.IsFFEScenario(lstxWorkflowScenerioID.SelectedValue) = True Then
+                            If Not IsDate(txtFandEReceivedDate.SelectedDate) Then
+                                msg = "FF&E Transactions must have a F and E Received date for FDO Approval"
+                            End If
+                            
+                        End If
+
+                    End Using
+                End If
+            End If
+        End If
+        
+        If bTurnOffValidation = False Then
+            If lstStatus.SelectedValue = "Paid" Then   'make sure proper fields entered
+          
+                If Not IsDate(txtDatePaid.SelectedDate) Or txtCheckNumber.Text = "" Then
+                    msg = "Please enter a Paid Date and Check Number to mark as paid."
+                End If
+            End If
+        End If
+ 
+        
+        If msg <> "" Then    'error so return to old value and set focus and warn
+            lblMessage.Text = msg
+            lstStatus.SelectedValue = ViewState("OldStatusValue").ToString
+            lstStatus.Focus()
+        End If
+    
+        ViewState.Add("OldStatusValue", lstStatus.SelectedValue)
+        
+          
+    End Sub
+
+    Protected Sub lnkOverride_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+        'This allows the status to be changed
+        lstStatus.Enabled = True
+    End Sub
+    
+
+    Protected Sub AttachmentsPopup_AjaxHiddenButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles AttachmentsPopup_AjaxHiddenButton.Click
+        'This is method used to handle the workflow popup close to update the linked attachments list 
+        LoadLinkedAttachments()
+       
+    End Sub
+    
+    Protected Sub lstxWorkflowScenerioID_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+        
+        If HttpContext.Current.Session("EnableWorkflow") = "1" And bEnabled = True Then   'Check to see if we need to enable
+            If lstStatus.SelectedItem.Text <> "Paid" Then
+                Dim nTransAmt As Double = DirectCast(Form.FindControl("txtTotalAmount"), Telerik.Web.UI.RadNumericTextBox).Value
+                Dim result As String = ""
+                Using rs As New promptTransaction
+                    result = rs.UpdateWorkflowScenerio(TransID, lstxWorkflowScenerioID.SelectedValue, nTransAmt)
+                
+                    If result = "fail" Then
+                        lblMessage.Text = "Warning: Selected Workflow Scenario does not contain Owner with appropriate approval level."
+                        lblMessage.Visible = True
+                    Else
+                        lblMessage.Text = ""
+                        lblMessage.Visible = False
+                        lblCurrentWorkflowOwner.Text = rs.CurrentWorkflowOwner
+                    End If
+                End Using
+                
+                If lstStatus.SelectedValue = "FDO Approved" Then   'check that selection is not to none
+                    If lstxWorkflowScenerioID.SelectedValue = 0 Then
+                        lblMessage.Text = "Warning: FDO Approved Transactions must be assinged a Workflow Scenario."
+                        lblMessage.Visible = True
+                    End If
+                End If
+            End If
+        End If
+        
+        GetCurrentWorkflowStatus()
+      
+    End Sub
+
+   
+   
+</script>
+
+<html>
+<head>
+    <title>Prompt - Edit Transaction</title>
+    <link href="Styles.css" type="text/css" rel="stylesheet" />
+
+
+<telerik:RadCodeBlock ID="RadCodeBlock1" runat="server">
+<script type="text/javascript" language="javascript">
+        // this is the actual script for loading the RAD window popup objects from attribute assigned to page elements
+    	    
+       function ShowLastUpdateInfo(oButton, id, rectype)     //for LastUpdate info display
+        {
+
+            var oWnd = window.radopen("show_last_update_info.aspx?ID=" + id + "&RecType=" + rectype, "ShowLastUpdateInfo"); 
+            return false;
+        } 
+        
+       function ShowHelp()     //for help display
+        {
+
+            var oWnd = window.radopen("help_view.aspx?WinType=RAD", "ShowHelp"); 
+            return false;
+        } 
+        
+       function ShowFlag(id)     //for Flag display
+        {
+           
+            var oWnd = window.radopen("flag_edit.aspx?ParentRecID=" + id + "&ParentRecType=Transaction&WinType=RAD", "ShowFlag"); 
+            return false;
+    
+        } 
+        
+       function ShowWorkflowHistory(id)     //for Workflow History display
+        {
+           
+            var oWnd = window.radopen("workflow_history_view.aspx?TransactionID=" + id , "ShowWorkflowHistory"); 
+            return false;
+    
+        } 
+        
+ 
+      function AddContractor()     //for adding contractor on the fly
+        {
+
+            var oWnd = window.radopen("contractor_edit.aspx?new=y&passback=y&WinType=RAD", "AddContractor"); 
+            return false;
+        } 
+        
+       function ShowJCAFNotes(parms)     //for jcaf notes 
+        {
+
+            var oWnd = window.radopen("budget_view_popup.aspx?parms=" + escape(parms), "ShowJCAFNotes"); 
+            return false;
+        } 
+          
+       
+       function ManageAttachments(id,rectype)     //for managing attachments 
+        {
+
+            var oWnd = window.radopen("attachments_manage_linked.aspx?ParentRecID=" + id + "&ParentType=" + rectype , "ManageAttachments"); 
+            return false;
+        }    
+          
+      
+         function OpenAttachment(id)     //for opening attachments 
+        {
+
+            var oWnd = window.radopen("attachment_get_linked.aspx?ID=" + id , "OpenAttachmentWindow"); 
+            return false;
+        }  
+          
+
+
+      function DisableSave()     //for diabling save to allow recalc 
+        {
+
+           document.getElementById('butSave').disabled =true;
+            
+        } 
+        function EnableSave()     //for diabling save to allow recalc 
+        {
+
+           document.getElementById('butSave').disabled =false;
+            
+        } 
+        
+ 		
+		//For handling ajax post back from Attachment Manage RAD Popup
+        function HandleAjaxPostbackFromAttachmentsPopup()
+		{
+			var oButton = document.getElementById("<%=AttachmentsPopup_AjaxHiddenButton.ClientID%>");
+			oButton.click();
+
+}
+
+
+
+function CheckAllocation(sender, eventArgs) {
+
+    // called by dynamic allocation textboxes to validate the entry and perform recalc
+    var sCtrlID = sender.get_id();                      // get the current textbox control id
+    var sNewVal = eventArgs.get_newValue();             // get the new value
+    var sOldVal = eventArgs.get_oldValue();             // get the old value
+       
+    if (sOldVal == "") {                                // MAKE ZERO IF BLANK
+        sOldVal = 0;
+    }
+    if (sNewVal == "") {
+        sNewVal = 0;
+    }
+
+   var lnkCtrl = sCtrlID.replace("txxt", "lnk");       //get the name of the corresponding remaining bal link for this item
+   var objRemBal = document.getElementById(lnkCtrl);          // get ref to the rem bal link control
+   var nBalRem = objRemBal.innerHTML;                         // get the text in the hyperlink
+   nBalRem = nBalRem.slice(1);                                  // remove $ start of string
+   nBalRem = nBalRem.replace(/,/g, '');                           //remove commas if any -- the //g are regular expressions which mean all occurances
+   var nNewRemainingAllocBal = parseFloat(nBalRem) + parseFloat(sOldVal) - parseFloat(sNewVal);
+   
+   if (nNewRemainingAllocBal < 0) {
+       alert('Sorry, the new amount entered would be greater than the remaining amount for the allocation line.');
+       eventArgs.set_cancel(true);
+       window.setTimeout(function() { sender.focus(); }, 50);
+       return false;
+    }
+
+   //Remaining bal on line is good, so check that change is not going below contract balance
+        
+   var objContractBal = document.getElementById('lblContractBalance');
+   var sContractBal = objContractBal.innerHTML;
+   sContractBal = sContractBal.slice(1);                               // remove $ sign
+   sContractBal = sContractBal.replace(/,/g, '');                         // remove comma if any -- the //g are regular expressions which mean all occurances
+   var nNewContractBal = parseFloat(sContractBal) + parseFloat(sOldVal) - parseFloat(sNewVal);
+
+   if (nNewContractBal < 0) {
+       alert('Sorry, the new amount entered would reduce the remaining Contract Balance to less than zero.');
+       eventArgs.set_cancel(true);
+       window.setTimeout(function() { sender.focus(); }, 50);
+       return false;
+   }
+
+    //All is good so update the remaininbal on the allocation and the contract balance
+   objRemBal.innerHTML = '$' + nNewRemainingAllocBal.toFixed(2)
+   objContractBal.innerHTML = '$' + nNewContractBal.toFixed(2)
+
+ 
+   // recalculate totals
+
+   var objTotalAmount = $find("txtTotalAmount");
+   var objRetAmount = $find("txtRetentionAmount");
+   var objRetOverride = document.getElementById('chkAllowRetentionOverride');
+   var objRetentionPercent = document.getElementById('AllocationRetPercent');
+   var objPayableAmount = $find("txtPayableAmount");
+   
+   var sOldTotalAmount = objTotalAmount.get_displayValue();
+   var sOldRetAmount = objRetAmount.get_displayValue();
+
+
+   sOldTotalAmount = sOldTotalAmount.replace(/,/g, '');                         // remove comma if any -- the //g are regular expressions which mean all occurances
+   sOldRetAmount = sOldRetAmount.replace(/,/g, '');                         // remove comma if any -- the //g are regular expressions which mean all occurances
+
+   var bRetOverride = objRetOverride.checked;
+   var sRetPerc = objRetentionPercent.value;
+        
+    if (sOldTotalAmount == "") {                                // MAKE ZERO IF BLANK
+        sOldTotalAmount = 0;
+    }
+     if (sOldRetAmount == "") {
+        sOldRetAmount = 0;
+    }
+    var nNewTotalAmount = parseFloat(sOldTotalAmount) - parseFloat(sOldVal) + parseFloat(sNewVal)
+    var nNewRetAmount = 0;
+    var nNewPayableAmount = 0;
+
+
+    if (bRetOverride == true) {                  //  user put in manual retention amount so use that in payable calc
+        nNewPayableAmount = nNewTotalAmount - parseFloat(sOldRetAmount);
+    }
+    else {
+        if (sRetPerc > 0) {
+            sRetPerc = sRetPerc / 100;
+            nNewRetAmount = Math.round((nNewTotalAmount * sRetPerc) * 100) / 100;
+        }
+        //get rid of rounding errors
+        nNewPayableAmount = Math.round((nNewTotalAmount - nNewRetAmount) * 100) / 100;
+        objRetAmount.set_value(nNewRetAmount);
+    }
+
+    objTotalAmount.set_value(nNewTotalAmount);
+    objPayableAmount.set_value(nNewPayableAmount);
+}
+
+
+    function RecalcOnly(sender, eventArgs) {
+
+        //called by dynamic allocation textboxes to perform recalc
+
+        var sCtrlID = sender.get_id();                      // get the current textbox control id
+        var sNewVal = eventArgs.get_newValue();             // get the new value
+        var sOldVal = eventArgs.get_oldValue();             // get the old value
+ 
+        if (sOldVal == "") {                                // MAKE ZERO IF BLANK
+            sOldVal = 0;
+        }
+        if (sNewVal == "") {
+            sNewVal = 0;
+        }
+
+        var lnkCtrl = sCtrlID.replace("txxt", "lnk");       //get the name of the corresponding remaining bal link for this item
+        var objRemBal = document.getElementById(lnkCtrl);          // get ref to the rem bal link control
+        var nBalRem = objRemBal.innerHTML;                         // get the text in the hyperlink
+        nBalRem = nBalRem.slice(1);                                  // remove $ start of string
+        nBalRem = nBalRem.replace(/,/g, '');                           //remove commas if any -- the //g are regular expressions which mean all occurances
+        var nNewRemainingAllocBal = parseFloat(nBalRem) + parseFloat(sOldVal) - parseFloat(sNewVal);
+
+        var objContractBal = document.getElementById('lblContractBalance');
+        var sContractBal = objContractBal.innerHTML;
+        sContractBal = sContractBal.slice(1);                               // remove $ sign
+        sContractBal = sContractBal.replace(/,/g, '');                         // remove comma if any -- the //g are regular expressions which mean all occurances
+        var nNewContractBal = parseFloat(sContractBal) + parseFloat(sOldVal) - parseFloat(sNewVal);
+
+        objRemBal.innerHTML = '$' + nNewRemainingAllocBal.toFixed(2)
+        objContractBal.innerHTML = '$' + nNewContractBal.toFixed(2)
+
+        // recalculate totals
+
+        var objTotalAmount = $find("txtTotalAmount");
+        var objRetAmount = $find("txtRetentionAmount");
+        var objRetOverride = document.getElementById('chkAllowRetentionOverride');
+        var objRetentionPercent = document.getElementById('AllocationRetPercent');
+        var objPayableAmount = $find("txtPayableAmount");
+        
+        var sOldTotalAmount = objTotalAmount.get_displayValue();
+        var sOldRetAmount = objRetAmount.get_displayValue();
+
+        sOldTotalAmount = sOldTotalAmount.replace(/,/g, '');                         // remove comma if any -- the //g are regular expressions which mean all occurances
+        sOldRetAmount = sOldRetAmount.replace(/,/g, '');                         // remove comma if any -- the //g are regular expressions which mean all occurances
+        
+        var bRetOverride = objRetOverride.checked;
+        var sRetPerc = objRetentionPercent.value;
+
+
+        if (sOldTotalAmount == "") {                                // MAKE ZERO IF BLANK
+            sOldTotalAmount = 0;
+        }
+        if (sOldRetAmount == "") {
+            sOldRetAmount = 0;
+        }
+
+
+        var nNewTotalAmount = parseFloat(sOldTotalAmount) - parseFloat(sOldVal) + parseFloat(sNewVal)
+        var nNewRetAmount = 0;
+        var nNewPayableAmount = 0;
+
+        if (bRetOverride == true) {                         //  user put in manual retention amount so use that in payable calc
+            nNewPayableAmount = nNewTotalAmount - parseFloat(sOldRetAmount);
+        }
+        else {
+            if (sRetPerc > 0) {
+                sRetPerc = sRetPerc / 100;
+                nNewRetAmount = nNewTotalAmount * sRetPerc;
+            }
+
+            nNewPayableAmount = nNewTotalAmount - nNewRetAmount;
+            objRetAmount.set_value(nNewRetAmount);
+
+        }
+
+        objTotalAmount.set_value(nNewTotalAmount);
+        objPayableAmount.set_value(nNewPayableAmount);
+
+    }
+
+
+    function EnableRetentionOverride(ctrl) {
+        
+        var objRetAmount = $find("txtRetentionAmount");
+        if (ctrl.checked == true) {
+            objRetAmount.enable();
+            objRetAmount.focus();
+        }
+        else {
+            objRetAmount.disable();
+        }
+    }
+
+ 
+
+
+    function RecalcRetentionChange(sender, eventArgs) {
+
+        //called by dynamic allocation textboxes to perform recalc
+
+        var objRetAmount = $find("txtRetentionAmount");
+        if (objRetAmount.get_enabled() == false) {
+            return false;
+        }
+        
+        var sCtrlID = sender.get_id();                      // get the current textbox control id
+        var sNewVal = eventArgs.get_newValue();             // get the new value
+        var sOldVal = eventArgs.get_oldValue();             // get the old value
+
+        if (sOldVal == "") {                                // MAKE ZERO IF BLANK
+            sOldVal = 0;
+        }
+        if (sNewVal == "") {
+            sNewVal = 0;
+        }
+
+        // recalculate totals
+        var objTotalAmount = $find("txtTotalAmount");
+        var objRetAmount = $find("txtRetentionAmount");
+        var objPayableAmount = $find("txtPayableAmount");
+        
+        var sOldTotalAmount = objTotalAmount.get_displayValue();
+        var sOldRetAmount = objRetAmount.get_displayValue();
+
+        sOldTotalAmount = sOldTotalAmount.replace(/,/g, '');                         // remove comma if any -- the //g are regular expressions which mean all occurances
+        sOldRetAmount = sOldRetAmount.replace(/,/g, '');                         // remove comma if any -- the //g are regular expressions which mean all occurances
+
+        if (sOldTotalAmount == "") {                                // MAKE ZERO IF BLANK
+            sOldTotalAmount = 0;
+        }
+        if (sOldRetAmount == "") {
+            sOldRetAmount = 0;
+        }
+        var nNewTotalAmount = parseFloat(sOldTotalAmount) - parseFloat(sOldVal) + parseFloat(sNewVal)
+        if (nNewTotalAmount < sOldRetAmount) {
+            alert('Warning: Retention amount is greater than Total Amount of Transaction.');
+
+        }
+
+        var nNewPayableAmount = parseFloat(sOldTotalAmount) - parseFloat(sNewVal);
+        objPayableAmount.set_value(nNewPayableAmount);
+
+    }
+
+   
+    </script>
+    </telerik:RadCodeBlock>
+
+</head>
+<body>
+  
+    <form id="Form1" method="post" runat="server" > 
+     <telerik:RadScriptManager ID="RadScriptManager1" runat="server" />
+    <asp:Label ID="Label1" Style="z-index: 100; left: 243px; position: absolute; top: 80px"
+        runat="server">Inv. Received:</asp:Label>
+    &nbsp;
+    <asp:Label ID="lblContractTotal" Style="z-index: 101; left: 246px; position: absolute;
+        top: 556px" runat="server" Width="120px" CssClass="ViewDataDisplay">999999.99</asp:Label>
+    <asp:Label ID="Label19" Style="z-index: 102; left: 158px; position: absolute; top: 557px"
+        runat="server">Contract Total: </asp:Label>
+    <table id="Table1" style="z-index: 161; left: 8px; position: absolute; top: 8px;
+        height: 2px" cellspacing="1" cellpadding="1" width="96%" border="0">
+        <tr height="1">
+            <td style="height: 6px" valign="top">
+                <asp:Label ID="Label17" runat="server" CssClass="PageHeading" Width="160px" Height="24px">Edit Transaction</asp:Label>
+            </td>
+            <td style="height: 6px; width: 30%;" valign="top" align="center">
+            </td>
+            <td style="height: 6px" valign="top" align="right">
+                <asp:HyperLink ID="butFlag" runat="server" ImageUrl="images/button_flag.gif"></asp:HyperLink>&nbsp;&nbsp;&nbsp;
+                <asp:HyperLink ID="butHelp" runat="server" ImageUrl="images/button_help.gif">HyperLink</asp:HyperLink>
+            </td>
+        </tr>
+    </table>
+    <hr style="z-index: 160; left: 8px; position: absolute; top: 40px" width="95%" size="1" />
+    
+     
+      <telerik:RadDatePicker ID="txtDateReceived" Style="z-index: 103; left: 330px; position: absolute;
+        top: 77px; right: 1077px;" TabIndex="1" runat="server" Width="120px" SharedCalendarID="sharedCalendar"
+        Skin="Vista">
+        <DateInput ID="DateInput1" runat="server" Skin="Vista" Font-Size="13px" ForeColor="Blue">
+        </DateInput>
+    </telerik:RadDatePicker>
+    <telerik:RadDatePicker ID="txtFandEReceivedDate" Style="z-index: 103; left: 441px;
+        position: absolute; top: 327px" TabIndex="67" runat="server" Width="120px" SharedCalendarID="sharedCalendar"
+        Skin="Vista">
+        <DateInput ID="DateInput2" runat="server" Skin="Vista" Font-Size="13px" ForeColor="Blue">
+        </DateInput>
+    </telerik:RadDatePicker>
+    <telerik:RadDatePicker ID="txtDatePaid" Style="z-index: 104; left: 104px; position: absolute;
+        top: 199px" TabIndex="32" runat="server" Width="120px" SharedCalendarID="sharedCalendar"
+        Skin="Vista">
+        <DateInput ID="DateInput3" runat="server" Skin="Vista" Font-Size="13px" ForeColor="Blue">
+        </DateInput>
+    </telerik:RadDatePicker>
+
+        <telerik:RadCalendar ID="sharedCalendar" Skin="Vista" runat="server" EnableMultiSelect="false">
+        </telerik:RadCalendar>
+    
+    
+    
+    
+    
+    <asp:Label ID="lblID" Style="z-index: 105; left: 48px; position: absolute; top: 48px"
+        runat="server">999</asp:Label>
+    <asp:Label ID="Label16" Style="z-index: 106; left: 16px; position: absolute; top: 48px"
+        runat="server">ID:</asp:Label>
+    <asp:Label ID="Label15" Style="z-index: 107; left: 22px; position: absolute; top: 520px"
+        runat="server" Height="17px" Width="593px">(Note: Please make sure you have filled in the JCAF Budget for this project and assigned a valid Object Code to the parent Contract. You cannot allocate until you do.)</asp:Label>
+    <asp:TextBox ID="txtComments" Style="z-index: 108; left: 100px; position: absolute;
+        top: 359px" TabIndex="70" runat="server" CssClass="EditDataDisplay" Width="478px"
+        Height="40px" TextMode="MultiLine"></asp:TextBox>
+    <asp:TextBox ID="txtPurchaseOrderNumber" Style="z-index: 109; left: 103px; position: absolute;
+        top: 291px; right: 752px;" TabIndex="60" runat="server" CssClass="EditDataDisplay"
+        Width="96px" MaxLength="10" BackColor="#FFFFC0"></asp:TextBox>
+    <asp:TextBox ID="txtAccountNumber" runat="server" CssClass="EditDataDisplay" MaxLength="25"
+        Style="z-index: 110; left: 304px; position: absolute; top: 261px" TabIndex="58"
+        Width="210px" BackColor="#FFFFC0"></asp:TextBox>
+    &nbsp;
+    <asp:TextBox ID="txtInternalInvNumber" Style="z-index: 111; left: 488px; position: absolute;
+        top: 200px" TabIndex="40" runat="server" CssClass="EditDataDisplay" Width="96px"></asp:TextBox>
+        
+     
+       <telerik:RadDatePicker ID="txtDueDate" runat="server" CssClass="EditDataDisplay"
+        Style="z-index: 112; left: 104px; position: absolute; top: 258px" TabIndex="55"
+        Width="120px" SharedCalendarID="sharedCalendar"   Skin="Vista" >
+        <DateInput ID="DateInput4" runat="server" Skin="Vista" BackColor="#FFFFC0" Font-Size="13px" ForeColor="Blue">
+        </DateInput>
+    </telerik:RadDatePicker>
+    
+    <asp:TextBox ID="txtCheckNumber" Style="z-index: 113; left: 288px; position: absolute;
+        top: 201px" TabIndex="35" runat="server" CssClass="EditDataDisplay" Width="96px"></asp:TextBox>
+    <asp:TextBox ID="txtInvoiceNumber" Style="z-index: 114; left: 104px; position: absolute;
+        top: 168px" TabIndex="9" runat="server" CssClass="EditDataDisplay" Width="96px"></asp:TextBox>
+    &nbsp;
+    <asp:DropDownList ID="lstStatus" Style="z-index: 115; left: 240px; position: absolute;
+        top: 328px; height: 20px; width: 132px;" TabIndex="65" runat="server" CssClass="EditDataDisplay"
+        OnSelectedIndexChanged="lstStatus_SelectedIndexChanged" AutoPostBack="True" BackColor="#FFFFC0">
+    </asp:DropDownList>
+    <asp:TextBox ID="txtDescription" Style="z-index: 116; left: 104px; position: absolute;
+        top: 139px" TabIndex="5" runat="server" CssClass="EditDataDisplay" Width="304px"></asp:TextBox>
+    <asp:DropDownList ID="lstContractorID" Style="z-index: 117; left: 104px; position: absolute;
+        top: 112px" TabIndex="3" runat="server" CssClass="EditDataDisplay" Width="224px">
+    </asp:DropDownList>
+    <asp:Label ID="Label14" Style="z-index: 118; left: 12px; position: absolute; top: 362px"
+        runat="server">Comments:</asp:Label>
+    <asp:Label ID="Label8" runat="server" Style="z-index: 119; left: 12px; position: absolute;
+        top: 414px">Attachments:</asp:Label>
+    <asp:Label ID="lblPoline" Style="z-index: 120; left: 227px; position: absolute; top: 294px;
+        right: 1231px; width: 71px;" runat="server">PO Line:</asp:Label>
+    <asp:Label ID="Label13" Style="z-index: 120; left: 37px; position: absolute; top: 293px"
+        runat="server">P.O. #:</asp:Label>
+    <asp:Label ID="Label22" runat="server" Style="z-index: 121; left: 239px; position: absolute;
+        top: 264px">Account #:</asp:Label>
+    &nbsp;
+    <asp:Label ID="Label12" Style="z-index: 122; left: 11px; position: absolute; top: 232px"
+        runat="server" Height="16px">Bond Series:</asp:Label>
+    <asp:Label ID="Label11" Style="z-index: 123; left: 400px; position: absolute; top: 205px"
+        runat="server">Internal Inv#:</asp:Label>
+    <asp:Label ID="Label10" Style="z-index: 124; left: 232px; position: absolute; top: 205px"
+        runat="server">Check#:</asp:Label>
+    <asp:Label ID="Label9" Style="z-index: 125; left: 23px; position: absolute; top: 204px"
+        runat="server">Date Paid:</asp:Label>
+    <asp:Label ID="Label21" runat="server" Style="z-index: 126; left: 21px; position: absolute;
+        top: 265px">Due Date:</asp:Label>
+    <asp:Label ID="Label7" Style="z-index: 127; left: 7px; position: absolute; top: 80px"
+        runat="server">Invoice Date:</asp:Label>
+    <asp:Label ID="Label6" Style="z-index: 128; left: 25px; position: absolute; top: 172px"
+        runat="server">Invoice #:</asp:Label>
+    <asp:Label ID="Label5" Style="z-index: 129; left: 381px; position: absolute; top: 331px;
+        height: 12px;" runat="server">F&amp;E Recd:</asp:Label>
+    <asp:Label ID="Label4" Style="z-index: 130; left: 16px; position: absolute; top: 141px"
+        runat="server">Description:</asp:Label>
+    <asp:Label ID="Label3" Style="z-index: 131; left: 20px; position: absolute; top: 112px"
+        runat="server">Contractor:</asp:Label>
+    <asp:Label ID="Label2" Style="z-index: 132; left: 465px; position: absolute; top: 80px"
+        runat="server">Type:</asp:Label>
+    <asp:Label ID="Label20" runat="server" Style="z-index: 133; left: 216px; position: absolute;
+        top: 173px">Object Code:</asp:Label>
+    <asp:Label ID="Label25" runat="server" Style="z-index: 134; left: 181px; position: absolute;
+        top: 234px; right: 1276px; height: 12px; width: 72px;">FY:</asp:Label>
+    <asp:Label ID="Label23" runat="server" Style="z-index: 134; left: 331px; position: absolute;
+        top: 233px; right: 1126px; height: 12px; width: 72px;">Acctg Mo:</asp:Label>
+    <asp:Label ID="lbl1099code1" runat="server" Style="z-index: 136; left: 13px; position: absolute;
+        top: 329px">1099 Code:</asp:Label>
+    <asp:CheckBox ID="chkAccrual" Style="z-index: 137; left: 463px; position: absolute;
+        top: 135px" TabIndex="4" runat="server" Text="Accrual" TextAlign="Left"
+        ToolTip="This transaction is an Accrual Expense"></asp:CheckBox>
+    <asp:CheckBox ID="chkReimbursable" Style="z-index: 137; left: 463px; position: absolute;
+        top: 113px" TabIndex="4" runat="server" Text="Reimbursable" TextAlign="Left"
+        ToolTip="This transaction is a Reimbursable Expense"></asp:CheckBox>
+    <asp:DropDownList ID="lstTransType" Style="z-index: 138; left: 509px; position: absolute;
+        top: 80px;" TabIndex="2" runat="server" CssClass="EditDataDisplay">
+    </asp:DropDownList>
+    &nbsp;
+    <asp:DropDownList ID="lstAccountingMonth" Style="z-index: 139; left: 395px; position: absolute;
+        top: 229px; right: 1089px;" TabIndex="52" runat="server" CssClass="EditDataDisplay"
+        Width="45px">
+        <asp:ListItem></asp:ListItem>
+        <asp:ListItem>01</asp:ListItem>
+        <asp:ListItem>02</asp:ListItem>
+        <asp:ListItem>03</asp:ListItem>
+        <asp:ListItem>04</asp:ListItem>
+        <asp:ListItem>05</asp:ListItem>
+        <asp:ListItem>06</asp:ListItem>
+        <asp:ListItem>07</asp:ListItem>
+        <asp:ListItem>08</asp:ListItem>
+        <asp:ListItem>09</asp:ListItem>
+        <asp:ListItem>10</asp:ListItem>
+        <asp:ListItem>11</asp:ListItem>
+        <asp:ListItem>12</asp:ListItem>
+    </asp:DropDownList>
+    <asp:DropDownList ID="lstFiscalYear" Style="z-index: 139; left: 210px; position: absolute;
+        top: 230px" TabIndex="50" runat="server" CssClass="EditDataDisplay">
+    </asp:DropDownList>
+    <asp:DropDownList ID="lstBondSeries" Style="z-index: 140; left: 104px; position: absolute;
+        top: 230px; right: 802px;" TabIndex="45" runat="server" CssClass="EditDataDisplay"
+        Width="45px">
+    </asp:DropDownList>
+    <asp:DropDownList ID="lstObjectCode" Style="z-index: 142; left: 299px; position: absolute;
+        top: 168px; width: 281px;" TabIndex="30" runat="server" CssClass="EditDataDisplay">
+    </asp:DropDownList>
+    <asp:DropDownList ID="lstCode1099" Style="z-index: 143; left: 101px; position: absolute;
+        top: 327px; width: 78px;" TabIndex="63" runat="server" CssClass="EditDataDisplay"
+        BackColor="#FFFFC0">
+    </asp:DropDownList>
+    <asp:HyperLink ID="lnkAddNew" Style="z-index: 144; left: 336px; position: absolute;
+        top: 115px" runat="server" NavigateUrl="#">add new...</asp:HyperLink>
+ 
+    
+       <telerik:RadDatePicker ID="txtInvoiceDate" Style="z-index: 145; left: 104px; position: absolute;
+        top: 80px" runat="server" Width="120px" SharedCalendarID="sharedCalendar" Skin="Vista" >
+        <DateInput ID="DateInput5" runat="server" Skin="Vista" Font-Size="13px" ForeColor="Blue">
+        </DateInput>
+    </telerik:RadDatePicker>
+    
+    
+    <asp:ImageButton ID="butSave" Style="z-index: 146; left: 36px; position: absolute;
+        top: 484px" TabIndex="150" runat="server" ImageUrl="images/button_save.gif">
+    </asp:ImageButton>
+    <asp:ImageButton ID="butDelete" Style="z-index: 147; left: 250px; position: absolute;
+        top: 485px" TabIndex="200" runat="server" ImageUrl="images/button_delete.gif">
+    </asp:ImageButton>
+    <asp:Label ID="Label18" Style="z-index: 148; left: 374px; position: absolute; top: 554px"
+        runat="server">Contract Balance: </asp:Label>
+    <asp:Label ID="lblContractBalance" Style="z-index: 149; left: 494px; position: absolute;
+        top: 553px" runat="server" CssClass="ViewDataDisplay" Width="120px">999999.99</asp:Label>
+    <asp:Label ID="lblMessage" Style="z-index: 150; left: 120px; position: absolute;
+        top: 48px" runat="server" Width="472px" ForeColor="Red">Note:</asp:Label>
+    <asp:Label ID="lblAllocationMessage" runat="server" BackColor="Transparent" Font-Bold="True"
+        ForeColor="Red" Style="z-index: 151; left: 27px; position: absolute; top: 574px"
+        Width="585px">Note:</asp:Label>
+    <asp:Table ID="tblAlloc" Style="z-index: 152; left: 22px; position: absolute; top: 595px"
+        runat="server" Width="592px" Height="16px">
+    </asp:Table>
+    
+    
+      <telerik:RadAjaxManager ID="RadAjaxManager1" runat="server">
+        <AjaxSettings>
+            <telerik:AjaxSetting AjaxControlID="lstxWorkflowScenerioID">
+                <UpdatedControls>
+                    <telerik:AjaxUpdatedControl ControlID="lblCurrentWorkflowOwner" />
+                    <telerik:AjaxUpdatedControl ControlID="lblMessage" />
+                </UpdatedControls>
+            </telerik:AjaxSetting>
+            <telerik:AjaxSetting AjaxControlID="lstStatus">
+                <UpdatedControls>
+                    <telerik:AjaxUpdatedControl ControlID="lstStatus" />
+                    <telerik:AjaxUpdatedControl ControlID="lblMessage" />
+                </UpdatedControls>
+            </telerik:AjaxSetting>
+            <telerik:AjaxSetting AjaxControlID="WorkflowPopup_AjaxHiddenButton">
+                <UpdatedControls>
+                    <telerik:AjaxUpdatedControl ControlID="lblCurrentWorkflowOwner" />
+                    <telerik:AjaxUpdatedControl ControlID="lstxWorkflowScenerioID" />
+                    <telerik:AjaxUpdatedControl ControlID="lnkWorkflowRoute" />
+                </UpdatedControls>
+            </telerik:AjaxSetting>
+            <telerik:AjaxSetting AjaxControlID="AttachmentsPopup_AjaxHiddenButton">
+                <UpdatedControls>
+                    <telerik:AjaxUpdatedControl ControlID="lstAttachments" />
+                    <telerik:AjaxUpdatedControl ControlID="lnkWorkflowRoute" />
+                </UpdatedControls>
+            </telerik:AjaxSetting>
+            <telerik:AjaxSetting AjaxControlID="RadAjaxManager1">
+                <UpdatedControls>
+                    <telerik:AjaxUpdatedControl ControlID="lblAllocationMessage" />
+                    <telerik:AjaxUpdatedControl ControlID="lblContractBalance" />
+                   <%-- <telerik:AjaxUpdatedControl ControlID="butSave" />--%>
+                </UpdatedControls>
+            </telerik:AjaxSetting>
+            <telerik:AjaxSetting AjaxControlID="txtPurchaseOrderNumber">
+                <UpdatedControls>
+                    <telerik:AjaxUpdatedControl ControlID="cboPOLine" />
+                    <telerik:AjaxUpdatedControl ControlID="lblPOline" />
+                </UpdatedControls>
+            </telerik:AjaxSetting>
+        </AjaxSettings>
+    </telerik:RadAjaxManager>
+    
+    
+ 
+    <asp:LinkButton ID="lnkOverride" runat="server" OnClick="lnkOverride_Click" Style="z-index: 153;
+        left: 194px; position: absolute; top: 316px" TabIndex="500">Override</asp:LinkButton>
+    <asp:HyperLink ID="lnkShowLastUpdateInfo" runat="server" ImageUrl="images/change_history.gif"
+        Style="z-index: 154; left: 602px; position: absolute; top: 49px" ToolTip="show last update information">HyperLink</asp:HyperLink>
+    <asp:HyperLink ID="lnkManageAttachments" runat="server" ImageUrl="images/button_folder_view.gif"
+        Style="z-index: 155; left: 336px; position: absolute; top: 417px" TabIndex="73"
+        ToolTip="Manage Attachments">Manage Attachments</asp:HyperLink>
+    <asp:ListBox ID="lstAttachments" runat="server" Height="49px" Style="z-index: 156;
+        left: 101px; position: absolute; top: 415px; width: 218px;" CssClass="smalltext"
+        TabIndex="71"></asp:ListBox>
+    <asp:Panel ID="panelWorkflow" runat="server" Style="z-index: 157; left: 382px; position: absolute;
+        top: 451px; width: 240px; bottom: 532px; height: 50px;" BorderColor="Silver"
+        BorderStyle="Solid" BorderWidth="1px">
+        <asp:Label ID="lblCurrentWorkflowStatusLabel" runat="server" CssClass="smalltext"
+            Style="z-index: 100; left: 5px; position: absolute; top: 0px" Width="113px">Workflow Owner:</asp:Label>
+        <asp:Label ID="lblCurrentWorkflowOwner" runat="server" CssClass="EditDataDisplay"
+            Style="z-index: 101; left: 7px; position: absolute; top: 19px; width: 225px;">none</asp:Label>
+        <asp:HyperLink ID="lnkShowWorkflowHistory" runat="server" ImageUrl="images/workflow_history.png"
+            ToolTip="Show Workflow history" Style="z-index: 102; left: 213px; position: absolute;
+            top: 2px; width: 16px;">HyperLink</asp:HyperLink>
+        &nbsp; &nbsp;&nbsp;
+    </asp:Panel>
+    <asp:Label ID="lblVerified1" runat="server" Style="z-index: 135; left: 460px; position: absolute;
+        top: 233px">Verified:</asp:Label>
+    <asp:Label ID="Label26" Style="z-index: 129; left: 192px; position: absolute; top: 330px;
+        height: 12px;" runat="server">Status:</asp:Label>
+ 
+    <asp:DropDownList ID="lstVerified" Style="z-index: 141; left: 515px; position: absolute;
+        top: 229px" TabIndex="54" runat="server" CssClass="EditDataDisplay">
+    </asp:DropDownList>
+    <%-- 
+    Put Hidden button on form to handle ajax post back from rad window
+    
+    --%>
+    <div style="display: none">
+        <asp:Button ID="WorkflowPopup_AjaxHiddenButton" runat="server"></asp:Button>
+    </div>
+    <div style="display: none">
+        <asp:Button ID="AttachmentsPopup_AjaxHiddenButton" runat="server"></asp:Button>
+    </div>
+    <asp:DropDownList ID="lstxWorkflowScenerioID" Style="z-index: 158; left: 381px; position: absolute;
+        top: 422px; width: 150px;" TabIndex="80" runat="server" AutoPostBack="true" CssClass="EditDataDisplay"
+        OnSelectedIndexChanged="lstxWorkflowScenerioID_SelectedIndexChanged">
+    </asp:DropDownList>
+    <asp:Label ID="lblWorkflowScenerio" runat="server" Style="z-index: 162; left: 384px;
+        position: absolute; top: 409px">Workflow Scenerio:</asp:Label>
+        <asp:Label ID="lblFHDA_AccountNumber" runat="server" Style="z-index: 162; left: 472px; position: absolute;
+            top: 294px" Width="200px">ABCDE:</asp:Label>
+
+    
+        <telerik:RadComboBox ID="cboPOLineNumber" Style="z-index: 562; left: 284px; position: absolute;
+        top: 288px; height: 18px; width: 175px;" runat="server" TabIndex="61" AllowCustomText="True"
+        Title="PO Line Items" DropDownWidth="250px" Height="150px">
+    </telerik:RadComboBox>
+    
+       <telerik:RadWindowManager ID="RadPopups" runat="server">
+    </telerik:RadWindowManager>
+
+    <asp:HiddenField ID="AllocationRetPercent" runat="server" />
+    
+    </form>
+</body>
+</html>

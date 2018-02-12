@@ -1,0 +1,28 @@
+.RadSiteMap_Prompt .rsmLink,
+.RadSiteMap_Prompt .rsmTemplate
+{
+	font-family: "Segoe UI", Arial, sans-serif;
+	border-bottom: 0;
+	color: #1e395b;
+}
+
+.RadSiteMap_Prompt .rsmLevel1 .rsmLink,
+.RadSiteMap_Prompt .rsmLevel1 .rsmTemplate,
+.RadSiteMap_Prompt .rsmLevel2 .rsmLink,
+.RadSiteMap_Prompt .rsmLevel2 .rsmTemplate,
+.RadSiteMap_Prompt .rsmThreeLevels .rsmLevel1 .rsmLink,
+.RadSiteMap_Prompt .rsmTwoLevels .rsmLevel1 .rsmLink,
+.RadSiteMap_Prompt .rsmOneLevel .rsmItem .rsmLink
+{
+	color: #1e395b;
+}
+
+.RadSiteMap_Prompt .rsmLevel2 .rsmLink:hover,
+.RadSiteMap_Prompt .rsmThreeLevels .rsmLevel1 .rsmLink:hover,
+.RadSiteMap_Prompt .rsmTwoLevels .rsmLevel1 .rsmLink:hover,
+.RadSiteMap_Prompt .rsmOneLevel .rsmItem .rsmLink:hover
+{
+	border: 1px solid #bdd9fb;
+	padding: 1px 4px;
+	background: #d8f0fc url('SiteMap/rsmHover.png') repeat-x 0 0;
+}

@@ -1,0 +1,11 @@
+1/9/2015 12:10:51 PM
+Ds310IV-G774317-Iv276-28-307 & 4848 & 5032.pdf
+D:/PromptAttachments/FHDA/
+DistrictID_55/CollegeID_112/ProjectID_590/ContractID_6384/Invoices/
+Ds310IV-G774317-Iv276-28-307  and  4848  and  5032.pdf
+New File Found: True
+AttachmentID: 9157
+Char Found:  True
+Changed: True
+--------------------------------------------
+
